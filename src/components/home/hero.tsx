@@ -14,7 +14,7 @@ export function Hero(): React.ReactElement {
   }, []);
 
   return (
-    <section className="relative flex min-h-[100dvh] items-center overflow-hidden bg-brand-black">
+    <section className="relative -mt-16 flex min-h-[100dvh] items-center overflow-hidden bg-brand-black">
       <video
         autoPlay
         muted

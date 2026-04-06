@@ -12,7 +12,7 @@ export function Navbar(): React.ReactElement {
   const pathname = usePathname();
 
   return (
-    <nav className="sticky top-0 z-50" style={{ backgroundColor: "#1a1a2e" }}>
+    <nav className="fixed top-0 left-0 right-0 z-50" style={{ backgroundColor: "#1a1a2e" }}>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-90">
           <Image src="/images/logo.svg" alt="Master Cho's Black Belt Academy" width={48} height={48} className="h-12 w-12" />

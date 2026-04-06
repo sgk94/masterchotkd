@@ -59,6 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
             }}
           />
           <Navbar />
+          <div className="h-16" /> {/* Spacer for fixed nav */}
           <PromoModal />
           <main id="main-content">{children}</main>
           <Footer />
