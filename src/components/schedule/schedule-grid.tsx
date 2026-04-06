@@ -47,7 +47,7 @@ export function ScheduleGrid(): React.ReactElement {
                   return (
                     <td
                       key={day.key}
-                      className="border border-brand-taupe p-3 text-center"
+                      className="border border-brand-taupe p-3 text-center text-[15px] font-medium"
                       style={{
                         backgroundColor: time ? row.color : "#fafafa",
                         color: isDark && time ? "white" : undefined,

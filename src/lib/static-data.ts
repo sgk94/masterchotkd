@@ -24,27 +24,27 @@ export const scheduleRows: ScheduleRow[] = [
   },
   {
     className: "Tiny Tigers 3-6",
-    color: "#FFF9C4", // yellow
+    color: "#F9E547", // yellow
     slots: { 1: "3:30-4:10", 2: "4:40-5:20", 3: "3:30-4:10", 4: "4:40-5:20", 5: "4:50-5:30" },
   },
   {
     className: "White-Yellow (Beginner)",
-    color: "#FFCDD2", // red/pink
+    color: "#EF9A9A", // red/pink
     slots: { 1: "4:10-4:50", 2: "6:00-6:40", 3: "4:10-4:50", 4: "6:00-6:40", 5: "4:10-4:50" },
   },
   {
     className: "Camo-Purple (Intermediate)",
-    color: "#C8E6C9", // green
+    color: "#81C784", // green
     slots: { 1: "5:30-6:10", 2: "4:00-4:40", 3: "5:30-6:10", 4: "4:00-4:40", 5: "3:30-4:10" },
   },
   {
     className: "Blue-Black (Advanced)",
-    color: "#B3E5FC", // light blue
+    color: "#64B5F6", // blue
     slots: { 1: "4:50-5:30", 2: "5:20-6:00", 3: "4:50-5:30", 4: "5:20-6:00", 5: "3:30-4:10" },
   },
   {
     className: "Family / All Belts",
-    color: "#E1BEE7", // purple/pink
+    color: "#CE93D8", // purple/pink
     slots: { 1: "6:10-6:50", 2: "7:30-8:15", 3: "6:10-6:50", 4: "7:30-8:15", 5: "5:30-6:15" },
   },
   {
@@ -60,7 +60,7 @@ export const scheduleRows: ScheduleRow[] = [
   },
   {
     className: "Competition Team*",
-    color: "#64B5F6", // blue
+    color: "#42A5F5", // blue
     slots: { 1: "7:30-8:30", 3: "7:30-8:30", 5: "6:30-8:00", 6: "10:30~" },
     note: "*Must be a part of said team to participate",
   },
