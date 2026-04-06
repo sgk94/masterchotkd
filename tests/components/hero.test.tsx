@@ -18,7 +18,7 @@ describe("Hero", () => {
   it("renders the headline", () => {
     render(<Hero />);
     expect(
-      screen.getByText("Making a Difference, One Belt at a Time"),
+      screen.getByText("Making a difference, one belt at a time"),
     ).toBeInTheDocument();
   });
 
@@ -26,14 +26,14 @@ describe("Hero", () => {
     const { container } = render(<Hero />);
     const links = container.querySelectorAll('a[href="/special-offer"]');
     expect(links.length).toBeGreaterThanOrEqual(1);
-    expect(links[0].textContent).toBe("Request Info");
+    expect(links[0].textContent).toBe("Request info");
   });
 
   it("renders the View Schedule CTA button", () => {
     const { container } = render(<Hero />);
     const links = container.querySelectorAll('a[href="/schedule"]');
     expect(links.length).toBeGreaterThanOrEqual(1);
-    expect(links[0].textContent).toBe("View Schedule");
+    expect(links[0].textContent).toBe("View schedule");
   });
 
   it("renders a video element with autoplay, muted, and loop", () => {

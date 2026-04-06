@@ -27,6 +27,17 @@ vi.mock("next/link", () => ({
   ),
 }));
 
+vi.mock("next/image", () => ({
+  default: (props: Record<string, unknown>) => {
+    const { fill, ...rest } = props;
+    return <img {...rest} />;
+  },
+}));
+
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/",
+}));
+
 describe("Navbar", () => {
   it("renders the logo text", () => {
     render(<Navbar />);
