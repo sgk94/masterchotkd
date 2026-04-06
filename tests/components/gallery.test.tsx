@@ -3,10 +3,8 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { Gallery } from "@/components/home/gallery";
 
 vi.mock("next/image", () => ({
-  default: (props: Record<string, unknown>) => {
-    const { fill, sizes, ...rest } = props;
-    return <img {...rest} />;
-  },
+  // eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element
+  default: ({ fill: _f, sizes: _s, ...rest }: Record<string, unknown>) => <img {...rest} />,
 }));
 
 describe("Gallery", () => {

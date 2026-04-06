@@ -28,10 +28,8 @@ vi.mock("next/link", () => ({
 }));
 
 vi.mock("next/image", () => ({
-  default: (props: Record<string, unknown>) => {
-    const { fill, ...rest } = props;
-    return <img {...rest} />;
-  },
+  // eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element
+  default: ({ fill: _f, ...rest }: Record<string, unknown>) => <img {...rest} />,
 }));
 
 vi.mock("next/navigation", () => ({
