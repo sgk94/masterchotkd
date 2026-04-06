@@ -14,31 +14,29 @@ const STORAGE_KEY = "masterchos-student-auth";
 const PASSWORD = "blackbelt";
 
 export default function StudentsLayout({ children }: { children: React.ReactNode }): React.ReactElement {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [state, setState] = useState({ authenticated: false, loaded: false });
   const [input, setInput] = useState("");
   const [error, setError] = useState(false);
-  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const stored = sessionStorage.getItem(STORAGE_KEY);
-    if (stored === "true") setAuthenticated(true);
-    setLoaded(true);
+    setState({ authenticated: stored === "true", loaded: true });
   }, []);
 
   function handleSubmit(e: React.FormEvent): void {
     e.preventDefault();
     if (input.toLowerCase() === PASSWORD) {
       sessionStorage.setItem(STORAGE_KEY, "true");
-      setAuthenticated(true);
+      setState({ authenticated: true, loaded: true });
       setError(false);
     } else {
       setError(true);
     }
   }
 
-  if (!loaded) return <div />;
+  if (!state.loaded) return <div />;
 
-  if (!authenticated) {
+  if (!state.authenticated) {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-md items-center justify-center px-6">
         <div className="w-full rounded-card bg-brand-cream p-8 text-center">
