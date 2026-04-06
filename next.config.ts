@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
+  // output: "export", // only for static deploys (Netlify)
   images: {
-    unoptimized: true,
+    // unoptimized: true, // only for static deploys
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       { protocol: "https", hostname: "picsum.photos" },
