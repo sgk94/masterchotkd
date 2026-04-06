@@ -25,7 +25,7 @@ export function TrialForm(): React.ReactElement {
     const result = trialSchema.safeParse(data);
     if (!result.success) {
       const fe: Record<string, string> = {};
-      result.error.errors.forEach((err) => {
+      result.error.issues.forEach((err) => {
         if (err.path[0]) fe[err.path[0] as string] = err.message;
       });
       setErrors(fe);
