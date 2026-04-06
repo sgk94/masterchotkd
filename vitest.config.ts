@@ -22,7 +22,7 @@ export default defineConfig({
         plugins: [react()],
         test: {
           name: "components",
-          environment: "jsdom",
+          environment: "happy-dom",
           setupFiles: ["./tests/setup.ts"],
           include: ["tests/**/*.test.tsx"],
         },

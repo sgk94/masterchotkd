@@ -18,15 +18,15 @@ export function ContactForm(): React.ReactElement {
     setSubmitting(true);
     const formData = new FormData(e.currentTarget);
     const data = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
+      name: (formData.get("name") as string) ?? "",
+      email: (formData.get("email") as string) ?? "",
       phone: (formData.get("phone") as string) ?? "",
-      message: formData.get("message") as string,
+      message: (formData.get("message") as string) ?? "",
     };
     const result = contactSchema.safeParse(data);
     if (!result.success) {
       const fe: Record<string, string> = {};
-      result.error.errors.forEach((err) => {
+      result.error.issues.forEach((err) => {
         if (err.path[0]) fe[err.path[0] as string] = err.message;
       });
       setErrors(fe);
