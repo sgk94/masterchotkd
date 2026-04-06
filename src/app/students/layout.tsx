@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 
 const studentNavLinks = [
@@ -13,30 +13,31 @@ const studentNavLinks = [
 const STORAGE_KEY = "masterchos-student-auth";
 const PASSWORD = "blackbelt";
 
+function getStoredAuth(): boolean {
+  if (typeof window === "undefined") return false;
+  return sessionStorage.getItem(STORAGE_KEY) === "true";
+}
+
+const emptySubscribe = (): (() => void) => () => {};
+
 export default function StudentsLayout({ children }: { children: React.ReactNode }): React.ReactElement {
-  const [state, setState] = useState({ authenticated: false, loaded: false });
+  const storedAuth = useSyncExternalStore(emptySubscribe, getStoredAuth, () => false);
+  const [authenticated, setAuthenticated] = useState(storedAuth);
   const [input, setInput] = useState("");
   const [error, setError] = useState(false);
-
-  useEffect(() => {
-    const stored = sessionStorage.getItem(STORAGE_KEY);
-    setState({ authenticated: stored === "true", loaded: true });
-  }, []);
 
   function handleSubmit(e: React.FormEvent): void {
     e.preventDefault();
     if (input.toLowerCase() === PASSWORD) {
       sessionStorage.setItem(STORAGE_KEY, "true");
-      setState({ authenticated: true, loaded: true });
+      setAuthenticated(true);
       setError(false);
     } else {
       setError(true);
     }
   }
 
-  if (!state.loaded) return <div />;
-
-  if (!state.authenticated) {
+  if (!authenticated) {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-md items-center justify-center px-6">
         <div className="w-full rounded-card bg-brand-cream p-8 text-center">
