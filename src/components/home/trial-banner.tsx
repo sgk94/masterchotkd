@@ -18,7 +18,7 @@ export function TrialBanner(): React.ReactElement {
             2 weeks for just $50
           </h2>
           <p className="mt-4 max-w-md text-white/60 leading-relaxed">
-            Try our taekwondo classes at no risk. All ages welcome, uniform included. No commitment required.
+            Try our taekwondo classes at no risk. All ages welcome. No commitment required.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button variant="primary" href="/special-offer">

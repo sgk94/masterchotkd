@@ -34,7 +34,7 @@ export default function SpecialOfferPage(): React.ReactElement {
               <span className="text-brand-gold">&#10003;</span> All ages welcome
             </li>
             <li className="flex items-center gap-2">
-              <span className="text-brand-gold">&#10003;</span> Uniform included
+              <span className="text-brand-gold">&#10003;</span> Equipment provided
             </li>
           </ul>
         </div>
