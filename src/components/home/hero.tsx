@@ -29,7 +29,7 @@ export function Hero(): React.ReactElement {
       <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/70 to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-t from-brand-black/50 via-transparent to-brand-black/20" />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-32 lg:py-40">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:py-40">
         <div className="max-w-2xl">
           {/* Eyebrow */}
           <div
