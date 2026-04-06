@@ -2,7 +2,7 @@
 const { PrismaClient } = require("@prisma/client");
 
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
+  prisma: typeof PrismaClient | undefined;
 };
 
 export const db = globalForPrisma.prisma ?? new PrismaClient();
