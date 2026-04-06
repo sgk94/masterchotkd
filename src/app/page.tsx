@@ -1,21 +1,34 @@
 import { Hero } from "@/components/home/hero";
+import { Marquee } from "@/components/home/marquee";
 import { ProgramsGrid } from "@/components/home/programs-grid";
 import { TrialBanner } from "@/components/home/trial-banner";
 import { ValuesSection } from "@/components/home/values-section";
 import { Testimonials } from "@/components/home/testimonials";
 import { Gallery } from "@/components/home/gallery";
 import { BottomCta } from "@/components/home/bottom-cta";
+import { Reveal } from "@/components/ui/reveal";
 
 export default function HomePage(): React.ReactElement {
   return (
     <>
       <Hero />
-      <ProgramsGrid />
-      <TrialBanner />
-      <ValuesSection />
+      <Marquee />
+      <Reveal>
+        <ProgramsGrid />
+      </Reveal>
+      <Reveal>
+        <TrialBanner />
+      </Reveal>
+      <Reveal>
+        <ValuesSection />
+      </Reveal>
       <Testimonials />
-      <Gallery />
-      <BottomCta />
+      <Reveal>
+        <Gallery />
+      </Reveal>
+      <Reveal>
+        <BottomCta />
+      </Reveal>
     </>
   );
 }

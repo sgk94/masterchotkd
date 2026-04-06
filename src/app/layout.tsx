@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
-import { ClerkProvider } from "@clerk/nextjs";
+// import { ClerkProvider } from "@clerk/nextjs"; // TODO: re-enable when Clerk keys are configured
 import { dmSerifDisplay, inter } from "@/lib/fonts";
 import { createMetadata } from "@/lib/metadata";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { PromoModal } from "@/components/home/promo-modal";
 import "./globals.css";
 
 export const metadata: Metadata = createMetadata();
 
 export default function RootLayout({ children }: { children: React.ReactNode }): React.ReactElement {
   return (
-    <ClerkProvider>
+    // <ClerkProvider>
       <html lang="en" className={`${dmSerifDisplay.variable} ${inter.variable}`}>
-        <body className="font-body antialiased">
+        <body className="grain font-body antialiased">
+          <a href="#main-content" className="skip-link">Skip to content</a>
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
@@ -57,10 +59,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
             }}
           />
           <Navbar />
-          <main>{children}</main>
+          <PromoModal />
+          <main id="main-content">{children}</main>
           <Footer />
         </body>
       </html>
-    </ClerkProvider>
+    // </ClerkProvider>
   );
 }

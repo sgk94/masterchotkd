@@ -1,14 +1,15 @@
-import { DM_Serif_Display, Inter } from "next/font/google";
+import { Oswald, Barlow } from "next/font/google";
 
-export const dmSerifDisplay = DM_Serif_Display({
+export const dmSerifDisplay = Oswald({
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "500", "600", "700"],
   variable: "--font-heading",
   display: "swap",
 });
 
-export const inter = Inter({
+export const inter = Barlow({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
   variable: "--font-body",
   display: "swap",
 });

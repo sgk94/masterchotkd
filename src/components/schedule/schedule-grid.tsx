@@ -1,61 +1,75 @@
-import type { ScheduleSlot } from "@/types";
-import { DAYS_OF_WEEK } from "@/types";
+import { scheduleRows } from "@/lib/static-data";
 
-type ScheduleGridProps = {
-  slots: ScheduleSlot[];
-  onBook: (slot: ScheduleSlot) => void;
-};
+const DAYS = [
+  { key: 1, label: "Monday" },
+  { key: 2, label: "Tuesday" },
+  { key: 3, label: "Wednesday" },
+  { key: 4, label: "Thursday" },
+  { key: 5, label: "Friday" },
+  { key: 6, label: "Saturday" },
+];
 
-export function ScheduleGrid({
-  slots,
-  onBook,
-}: ScheduleGridProps): React.ReactElement {
-  const days = [1, 2, 3, 4, 5, 6, 0];
+export function ScheduleGrid(): React.ReactElement {
   return (
     <div className="overflow-x-auto">
-      <div className="grid min-w-[700px] grid-cols-7 gap-2">
-        {days.map((day) => (
-          <div
-            key={day}
-            className="p-3 text-center text-sm font-semibold text-brand-black"
-          >
-            {DAYS_OF_WEEK[day]}
-          </div>
-        ))}
-        {days.map((day) => {
-          const daySlots = slots.filter((s) => s.dayOfWeek === day);
-          return (
-            <div key={day} className="flex flex-col gap-2">
-              {daySlots.length === 0 ? (
-                <div className="rounded-xl bg-brand-cream/50 p-3 text-center text-xs text-brand-black/30">
-                  —
-                </div>
-              ) : (
-                daySlots.map((slot) => (
-                  <button
-                    key={slot.id}
-                    onClick={() => onBook(slot)}
-                    className="rounded-xl bg-brand-cream p-3 text-left transition-colors hover:bg-brand-sand"
-                  >
-                    <p className="text-xs font-semibold text-brand-blue">
-                      {slot.programName}
-                    </p>
-                    <p className="mt-1 text-xs text-brand-black/60">
-                      {slot.startTime} – {slot.endTime}
-                    </p>
-                    <p className="mt-1 text-xs text-brand-gold">
-                      {slot.instructor}
-                    </p>
-                    <p className="mt-1 text-xs text-brand-black/40">
-                      {slot.currentBookings}/{slot.capacity} spots
-                    </p>
-                  </button>
-                ))
-              )}
-            </div>
-          );
-        })}
-      </div>
+      <table className="w-full min-w-[800px] border-collapse text-sm">
+        <thead>
+          <tr>
+            <th className="border border-brand-taupe bg-brand-cream p-3 text-left font-heading text-brand-black">
+              Class
+            </th>
+            {DAYS.map((day) => (
+              <th
+                key={day.key}
+                className="border border-brand-taupe bg-brand-cream p-3 text-center font-heading text-brand-black"
+              >
+                {day.label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {scheduleRows.map((row) => {
+            const isDark = row.color === "#7B1FA2";
+            return (
+              <tr key={row.className}>
+                <td
+                  className="border border-brand-taupe p-3 font-semibold"
+                  style={{
+                    backgroundColor: row.color,
+                    color: isDark ? "white" : undefined,
+                  }}
+                >
+                  {row.className}
+                </td>
+                {DAYS.map((day) => {
+                  const time = row.slots[day.key];
+                  return (
+                    <td
+                      key={day.key}
+                      className="border border-brand-taupe p-3 text-center"
+                      style={{
+                        backgroundColor: time ? row.color : "#fafafa",
+                        color: isDark && time ? "white" : undefined,
+                      }}
+                    >
+                      {time ?? ""}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <p className="mt-4 text-xs text-brand-black/50">
+        * Must be a part of said team in order to participate in these classes.
+        <br />
+        *** Private/Intensive Classes can be scheduled in the office.
+      </p>
+      <p className="mt-2 text-xs font-medium text-brand-black/40">
+        Schedule effective 01/01/2026
+      </p>
     </div>
   );
 }

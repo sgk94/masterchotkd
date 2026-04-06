@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { db } from "@/lib/db";
+// import { db } from "@/lib/db"; // TODO: re-enable when DB is connected
+import { staticPrograms } from "@/lib/static-data";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
@@ -8,7 +9,7 @@ export const metadata = createMetadata({
 });
 
 export default async function ProgramsPage(): Promise<React.ReactElement> {
-  const programs = await db.program.findMany({ orderBy: { order: "asc" } });
+  const programs = staticPrograms;
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16 lg:py-24">

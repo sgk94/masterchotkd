@@ -1,10 +1,11 @@
-import { db } from "@/lib/db";
+// import { db } from "@/lib/db"; // TODO: re-enable when DB is connected
+import { staticTestimonials } from "@/lib/static-data";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({ title: "Reviews", description: "See what students say about Master Cho's Taekwondo." });
 
 export default async function ReviewsPage(): Promise<React.ReactElement> {
-  const testimonials = await db.testimonial.findMany({ orderBy: { order: "asc" } });
+  const testimonials = staticTestimonials;
   return (
     <div className="mx-auto max-w-7xl px-6 py-16 lg:py-24">
       <div className="text-center">

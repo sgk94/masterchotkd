@@ -1,45 +1,47 @@
 const values = [
   {
-    icon: "\u2605",
+    number: "01",
     title: "Loyalty & Respect",
     description:
-      "25+ years teaching self-defense and confidence through traditional Taekwondo.",
+      "Over 25 years teaching self-defense and confidence through the traditional art of Taekwondo.",
   },
   {
-    icon: "\u2665",
+    number: "02",
     title: "Home, School & Family",
     description:
-      "Teaching life skills that build confident, responsible members of the community.",
+      "Our curriculum builds confident leaders, successful students, and responsible community members.",
   },
   {
-    icon: "\u25C6",
+    number: "03",
     title: "Discipline & Growth",
     description:
-      "Emphasizing balance in all things, encouraging personal growth at every level.",
+      "Emphasizing balance in all things — encouraging personal growth at every stage of the journey.",
   },
 ];
 
 export function ValuesSection(): React.ReactElement {
   return (
-    <section className="px-6 py-16 text-center lg:py-24">
-      <h2 className="font-heading text-3xl text-brand-black sm:text-4xl">
-        Dedicated to an Exceptional Experience
-      </h2>
-      <p className="mt-2 text-brand-black/60">
-        The best in the Lynnwood area
-      </p>
-      <div className="mx-auto mt-10 grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-3">
-        {values.map((value) => (
-          <div key={value.title} className="rounded-card bg-brand-cream p-8">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-gold text-xl text-white">
-              {value.icon}
+    <section className="px-6 py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl">
+        <div className="max-w-xl">
+          <h2 className="font-heading text-3xl tracking-tight text-brand-black sm:text-4xl">
+            Dedicated to an exceptional experience
+          </h2>
+          <p className="mt-3 text-brand-black/60">
+            The best in the Lynnwood area
+          </p>
+        </div>
+        <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-card bg-brand-taupe/30 sm:grid-cols-3">
+          {values.map((value) => (
+            <div key={value.title} className="bg-brand-cream p-8 sm:p-10">
+              <span className="font-heading text-3xl text-brand-gold/40">{value.number}</span>
+              <h3 className="mt-3 font-heading text-lg text-brand-black">{value.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-brand-black/60">
+                {value.description}
+              </p>
             </div>
-            <h3 className="mt-4 font-heading text-lg">{value.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-brand-black/60">
-              {value.description}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
