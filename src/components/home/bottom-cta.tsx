@@ -14,7 +14,7 @@ export function BottomCta(): React.ReactElement {
             Special introductory trial
           </h2>
           <p className="mx-auto mt-4 max-w-md text-brand-black/50 leading-relaxed">
-            4 weeks of taekwondo classes for just $70. No commitment required.
+            2 weeks of taekwondo classes for just $50. No commitment required.
           </p>
           <div className="mt-8">
             <Button variant="primary" href="/special-offer">

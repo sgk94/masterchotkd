@@ -48,7 +48,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       await sendEmail({
         to: result.data.email,
         subject: "Your Introductory Trial — Master Cho's Taekwondo",
-        html: `<h2>Welcome to Master Cho's!</h2><p>Hi ${sanitize(result.data.name)},</p><p>Thank you for your interest in our introductory trial — 4 weeks of classes for just $70!</p><p>We'll be in touch shortly.</p>`,
+        html: `<h2>Welcome to Master Cho's!</h2><p>Hi ${sanitize(result.data.name)},</p><p>Thank you for your interest in our introductory trial — 2 weeks of classes for just $50!</p><p>We'll be in touch shortly.</p>`,
       });
     } catch {
       /* ok */

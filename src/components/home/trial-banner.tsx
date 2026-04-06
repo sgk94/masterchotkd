@@ -15,7 +15,7 @@ export function TrialBanner(): React.ReactElement {
             Limited time
           </p>
           <h2 className="mt-3 font-heading text-3xl tracking-tight text-white sm:text-4xl">
-            4 weeks for just $70
+            2 weeks for just $50
           </h2>
           <p className="mt-4 max-w-md text-white/60 leading-relaxed">
             Try our taekwondo classes at no risk. All ages welcome, uniform included. No commitment required.
@@ -31,11 +31,11 @@ export function TrialBanner(): React.ReactElement {
         </div>
 
         {/* Price tag */}
-        <div className="absolute bottom-8 right-8 hidden items-center justify-center lg:flex">
-          <div className="flex h-28 w-28 items-center justify-center rounded-full border border-brand-gold/20 bg-brand-gold/5">
+        <div className="absolute bottom-6 right-6 hidden items-center justify-center lg:flex">
+          <div className="flex h-40 w-40 items-center justify-center rounded-full border border-brand-gold/20 bg-brand-gold/5">
             <div className="text-center">
-              <span className="block font-heading text-3xl text-brand-gold">$70</span>
-              <span className="block text-[10px] uppercase tracking-wider text-white/40">4 weeks</span>
+              <span className="block font-heading text-5xl text-brand-gold">$50</span>
+              <span className="block text-xs uppercase tracking-wider text-white/40">2 weeks</span>
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@ import { TrialForm } from "@/components/forms/trial-form";
 
 export const metadata = createMetadata({
   title: "Special Offer",
-  description: "Try 4 weeks of taekwondo classes for just $70.",
+  description: "Try 2 weeks of taekwondo classes for just $50.",
 });
 
 export default function SpecialOfferPage(): React.ReactElement {
@@ -18,8 +18,8 @@ export default function SpecialOfferPage(): React.ReactElement {
             Special Introductory Trial
           </h1>
           <p className="mt-4 text-xl text-brand-black/70">
-            4 weeks of taekwondo classes for just{" "}
-            <span className="font-bold text-brand-red">$70</span>
+            2 weeks of taekwondo classes for just{" "}
+            <span className="font-bold text-brand-red">$50</span>
           </p>
           <p className="mt-4 leading-relaxed text-brand-black/60">
             Try our Taekwondo classes at no risk. Check out the schedule and
