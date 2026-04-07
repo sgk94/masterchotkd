@@ -1,10 +1,5 @@
 import { Button } from "@/components/ui/button";
-
-const staticTestimonials = [
-  { id: "1", name: "Christina Michelle", rating: 5, text: "Great for kids and great discipline! Great instructors as well." },
-  { id: "2", name: "Louis Good", rating: 5, text: "Chief Master Cho is a excellent and patient instructor that runs a fantastic school!" },
-  { id: "3", name: "Julana Phan", rating: 5, text: "Great instructor. If you want your kid to learn confident, self-defense & discipline. Good place to go." },
-];
+import { staticTestimonials } from "@/lib/static-data";
 
 export async function Testimonials(): Promise<React.ReactElement> {
   return (

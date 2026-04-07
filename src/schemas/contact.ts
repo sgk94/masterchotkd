@@ -1,22 +1,10 @@
 import { z } from "zod";
+import { nameField, emailField, phoneField } from "./fields";
 
 export const contactSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, "Name must be at least 2 characters")
-    .max(100),
-  email: z
-    .string()
-    .trim()
-    .email("Please enter a valid email address")
-    .max(254),
-  phone: z
-    .string()
-    .max(20)
-    .regex(/^[\d\s\-\+\(\)]*$/, "Invalid phone format")
-    .optional()
-    .or(z.literal("")),
+  name: nameField.pipe(z.string().min(2, "Name must be at least 2 characters")),
+  email: emailField,
+  phone: phoneField.optional().or(z.literal("")),
   message: z
     .string()
     .trim()

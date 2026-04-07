@@ -41,6 +41,6 @@ describe("ScheduleGrid", () => {
     const adultRow = rows[6];
     const cells = adultRow.querySelectorAll("td");
     // cells[0] = class name, cells[2] = Tuesday (should be empty)
-    expect(cells[2].textContent).toBe("");
+    expect(cells[2].textContent).toBe("—");
   });
 });

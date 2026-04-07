@@ -1,18 +1,10 @@
 import { z } from "zod";
+import { nameField, emailField, phoneField } from "./fields";
 
 export const bookingSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(100),
-  email: z
-    .string()
-    .trim()
-    .email("Please enter a valid email address")
-    .max(254),
-  phone: z
-    .string()
-    .trim()
-    .min(1, "Phone number is required")
-    .max(20)
-    .regex(/^[\d\s\-\+\(\)]+$/, "Invalid phone format"),
+  name: nameField,
+  email: emailField,
+  phone: phoneField.min(1, "Phone number is required"),
   scheduleId: z.string().uuid("Invalid class selection"),
   date: z.string().date("Invalid date"),
 });

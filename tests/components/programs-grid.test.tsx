@@ -35,7 +35,7 @@ describe("ProgramsGrid", () => {
 
   it("renders subtitles for each program", () => {
     render(<ProgramsGrid />);
-    expect(screen.getByText("Ages 3-6")).toBeInTheDocument();
+    expect(screen.getByText("Ages 4-6")).toBeInTheDocument();
     expect(screen.getByText("All ages")).toBeInTheDocument();
     expect(screen.getByText("Advanced students")).toBeInTheDocument();
     expect(screen.getByText("Tournament athletes")).toBeInTheDocument();

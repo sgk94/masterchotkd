@@ -1,13 +1,14 @@
 // import { db } from "@/lib/db"; // TODO: re-enable when DB is connected
 import { staticTestimonials } from "@/lib/static-data";
 import { createMetadata } from "@/lib/metadata";
+import { PageContainer } from "@/components/ui/page-container";
 
 export const metadata = createMetadata({ title: "Reviews", description: "See what students say about Master Cho's Taekwondo." });
 
 export default async function ReviewsPage(): Promise<React.ReactElement> {
   const testimonials = staticTestimonials;
   return (
-    <div className="mx-auto max-w-7xl px-6 py-16 lg:py-24">
+    <PageContainer>
       <div className="text-center">
         <p className="text-sm font-semibold uppercase tracking-widest text-brand-gold">Wall of Love</p>
         <h1 className="mt-2 font-heading text-4xl text-brand-black sm:text-5xl">Real People, Real Results</h1>
@@ -22,6 +23,6 @@ export default async function ReviewsPage(): Promise<React.ReactElement> {
           </div>
         ))}
       </div>
-    </div>
+    </PageContainer>
   );
 }

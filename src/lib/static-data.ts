@@ -1,10 +1,10 @@
 // TODO: Remove this file once database is connected. Used for UI preview only.
 
 export const staticPrograms = [
-  { id: "1", name: "Tiny Tigers", slug: "tiny-tigers", description: "Designed for our youngest students in mind, this program focuses on teaching foundational life skills accompanied by listening, following directions, and self-confidence.", ageRange: "Ages 4-6", imageUrl: "/images/Tiny Tigers.png", order: 1 },
-  { id: "2", name: "Black Belt Club", slug: "black-belt-club", description: "Designed for students committed to mastering Taekwondo, our standard program offers up to three classes per week, allowing students to fully immerse themselves in the art and progress at an accelerated pace.", ageRange: "All ages", imageUrl: "/images/Black Belt Club.png", order: 2 },
-  { id: "3", name: "Leadership Club", slug: "leadership-club", description: "For those looking to gain a deeper understanding and immersion in Taekwondo. Grand Master Cho believes one of the most effective ways to learn is by experiencing and teaching — firsthand.", ageRange: "Advanced students", imageUrl: "/images/Leadership_Demo Team.png", order: 3 },
-  { id: "4", name: "Competition Team", slug: "competition-team", description: "For dedicated athletes who want to compete at local, regional, and national tournaments. Focused training on sparring, forms, and breaking techniques.", ageRange: "Tournament athletes", imageUrl: "/images/Competition Team.png", order: 4 },
+  { id: "1", name: "Tiny Tigers", slug: "tiny-tigers", description: "Designed for our youngest students in mind, this program focuses on teaching foundational life skills accompanied by listening, following directions, and self-confidence.", ageRange: "Ages 4-6", imageUrl: "/images/Tiny-Tigers.jpg", order: 1 },
+  { id: "2", name: "Black Belt Club", slug: "black-belt-club", description: "Designed for students committed to mastering Taekwondo, our standard program offers up to three classes per week, allowing students to fully immerse themselves in the art and progress at an accelerated pace.", ageRange: "All ages", imageUrl: "/images/Black-Belt-Club.jpg", order: 2 },
+  { id: "3", name: "Leadership Club", slug: "leadership-club", description: "For those looking to gain a deeper understanding and immersion in Taekwondo. Grand Master Cho believes one of the most effective ways to learn is by experiencing and teaching — firsthand.", ageRange: "Advanced students", imageUrl: "/images/Leadership_Demo-Team.jpg", order: 3 },
+  { id: "4", name: "Competition Team", slug: "competition-team", description: "For dedicated athletes who want to compete at local, regional, and national tournaments. Focused training on sparring, forms, and breaking techniques.", ageRange: "Tournament athletes", imageUrl: "/images/Competition-Team.jpg", order: 4 },
 ];
 
 // Schedule effective 01/01/2026

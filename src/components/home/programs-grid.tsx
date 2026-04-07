@@ -3,58 +3,57 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { staticPrograms } from "@/lib/static-data";
 
-const programs = [
-  {
-    name: "Tiny Tigers",
-    slug: "tiny-tigers",
-    subtitle: "Ages 3-6",
-    description: "Building confidence and coordination through playful martial arts fundamentals",
-    image: "/images/Tiny Tigers.png",
+type ProgramLayout = {
+  bg: string;
+  span: string;
+  height: string;
+  headingSize: string;
+  featured: boolean;
+  imagePosition?: string;
+};
+
+const layoutBySlug: Record<string, ProgramLayout> = {
+  "tiny-tigers": {
     bg: "from-amber-800/80 via-amber-700/70 to-amber-900/90",
     span: "sm:col-span-7 sm:row-span-2",
     height: "h-56 sm:h-[22rem]",
     headingSize: "text-3xl sm:text-4xl lg:text-5xl",
     featured: true,
   },
-  {
-    name: "Competition Team",
-    slug: "competition-team",
-    subtitle: "Tournament athletes",
-    description: "Elite training for competitors",
-    image: "/images/Competition Team.png",
+  "competition-team": {
     bg: "from-brand-gold/70 via-amber-700/60 to-amber-900/90",
     span: "sm:col-span-5",
     height: "h-56 sm:h-[10.5rem]",
     headingSize: "text-2xl sm:text-3xl",
     featured: false,
   },
-  {
-    name: "Leadership Club",
-    slug: "leadership-club",
-    subtitle: "Advanced students",
-    description: "Demo team & mentorship",
-    image: "/images/Leadership_Demo Team.png",
+  "leadership-club": {
     bg: "from-brand-red/70 via-rose-700/60 to-brand-red/90",
     span: "sm:col-span-5",
     height: "h-56 sm:h-[10.5rem]",
     headingSize: "text-2xl sm:text-3xl",
     featured: false,
   },
-  {
-    name: "Black Belt Club",
-    slug: "black-belt-club",
-    subtitle: "All ages",
-    description: "The core journey to mastery",
-    image: "/images/Black Belt Club.png",
-    imagePosition: "object-[center_35%]",
+  "black-belt-club": {
     bg: "from-brand-blue/80 via-indigo-900/70 to-brand-black/90",
     span: "sm:col-span-12",
     height: "h-56 sm:h-72",
     headingSize: "text-2xl sm:text-3xl lg:text-4xl",
     featured: false,
+    imagePosition: "object-[center_35%]",
   },
-];
+};
+
+/* Grid order matters for bento layout: Tiny Tigers (row-span-2 left),
+   Competition + Leadership (stacked right), Black Belt Club (full width) */
+const gridOrder = ["tiny-tigers", "competition-team", "leadership-club", "black-belt-club"];
+
+const programs = gridOrder.map((slug) => {
+  const p = staticPrograms.find((sp) => sp.slug === slug)!;
+  return { ...p, subtitle: p.ageRange, image: p.imageUrl, ...layoutBySlug[slug] };
+});
 
 export function ProgramsGrid(): React.ReactElement {
   const gridRef = useRef<HTMLDivElement>(null);
@@ -128,6 +127,7 @@ export function ProgramsGrid(): React.ReactElement {
                   src={program.image}
                   alt=""
                   fill
+                  sizes={program.featured ? "(max-width: 640px) 100vw, 58vw" : program.span === "sm:col-span-12" ? "(max-width: 640px) 100vw, 100vw" : "(max-width: 640px) 100vw, 42vw"}
                   className={`absolute inset-0 object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04] ${"imagePosition" in program && program.imagePosition ? program.imagePosition : ""}`}
                 />
               ) : null}

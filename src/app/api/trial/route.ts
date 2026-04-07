@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(): Promise<NextResponse> {
   return NextResponse.json(
-    { error: "API not configured. Database connection required." },
+    { error: "Service unavailable" },
     { status: 503 }
   );
 }

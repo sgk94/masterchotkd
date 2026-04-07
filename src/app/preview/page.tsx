@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-const IMG = "/images/Tiny Tigers.png";
+const IMG = "/images/Tiny-Tigers.jpg";
 
 /* ─── Option A: Split Layout ─── */
 function OptionA(): React.ReactElement {

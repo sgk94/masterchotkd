@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { FormField } from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
+import { useFormSubmit } from "@/hooks/use-form-submit";
 import { bookingSchema } from "@/schemas/booking";
 import type { ScheduleSlot } from "@/types";
 
@@ -12,47 +12,17 @@ export function BookingForm({
   slot,
   onClose,
 }: BookingFormProps): React.ReactElement {
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  async function handleSubmit(
-    e: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> {
-    e.preventDefault();
-    setErrors({});
-    setSubmitting(true);
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      phone: formData.get("phone") as string,
-      date: formData.get("date") as string,
+  const { errors, submitting, success, handleSubmit } = useFormSubmit({
+    schema: bookingSchema,
+    endpoint: "/api/booking",
+    extractData: (fd) => ({
+      name: fd.get("name") as string,
+      email: fd.get("email") as string,
+      phone: fd.get("phone") as string,
+      date: fd.get("date") as string,
       scheduleId: slot.id,
-    };
-    const result = bookingSchema.safeParse(data);
-    if (!result.success) {
-      const fieldErrors: Record<string, string> = {};
-      result.error.issues.forEach((err) => {
-        if (err.path[0]) fieldErrors[err.path[0] as string] = err.message;
-      });
-      setErrors(fieldErrors);
-      setSubmitting(false);
-      return;
-    }
-    const response = await fetch("/api/booking", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(result.data),
-    });
-    if (response.ok) {
-      setSuccess(true);
-    } else {
-      const body = (await response.json()) as { error?: string };
-      setErrors({ form: body.error ?? "Something went wrong." });
-    }
-    setSubmitting(false);
-  }
+    }),
+  });
 
   if (success) {
     return (

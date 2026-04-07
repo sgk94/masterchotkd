@@ -4,10 +4,10 @@ import { useState } from "react";
 import Image from "next/image";
 
 const galleryItems = [
-  { alt: "Tiny Tigers class in session", src: "/images/Tiny Tigers (2).png", span: "" },
-  { alt: "Black Belt Club training", src: "/images/Black Belt Club (2).png", span: "" },
-  { alt: "Competition Team practice", src: "/images/Competition Team (2).png", span: "" },
-  { alt: "Leadership program students", src: "/images/Leadership.png", span: "" },
+  { alt: "Tiny Tigers class in session", src: "/images/Tiny-Tigers-2.jpg", span: "" },
+  { alt: "Black Belt Club training", src: "/images/Black-Belt-Club-2.jpg", span: "" },
+  { alt: "Competition Team practice", src: "/images/Competition-Team-2.jpg", span: "" },
+  { alt: "Leadership program students", src: "/images/Leadership.jpg", span: "" },
 ];
 
 export function Gallery(): React.ReactElement {

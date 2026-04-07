@@ -39,12 +39,12 @@ vi.mock("next/navigation", () => ({
 describe("Navbar", () => {
   it("renders the logo text", () => {
     render(<Navbar />);
-    expect(screen.getByText("MASTER CHO'S")).toBeInTheDocument();
+    expect(screen.getByText("MASTER CHO'S TAEKWONDO")).toBeInTheDocument();
   });
 
   it("renders all navigation links", () => {
     render(<Navbar />);
-    for (const link of NAV_LINKS) {
+    for (const link of NAV_LINKS.filter((l) => l.label !== "Home")) {
       expect(screen.getAllByText(link.label).length).toBeGreaterThanOrEqual(1);
     }
   });

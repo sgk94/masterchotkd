@@ -37,7 +37,7 @@ describe("ContactForm", () => {
 
     await waitFor(() => {
       expect(
-        screen.getAllByText("Name must be at least 2 characters").length,
+        screen.getAllByText("Name is required").length,
       ).toBeGreaterThanOrEqual(1);
     });
 

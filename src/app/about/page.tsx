@@ -1,11 +1,12 @@
 import { createMetadata } from "@/lib/metadata";
 import { Button } from "@/components/ui/button";
+import { PageContainer } from "@/components/ui/page-container";
 
 export const metadata = createMetadata({ title: "About", description: "Learn about Master Cho's Taekwondo — 25+ years in Lynnwood, WA." });
 
 export default function AboutPage(): React.ReactElement {
   return (
-    <div className="mx-auto max-w-7xl px-6 py-16 lg:py-24">
+    <PageContainer>
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
         <div>
           <h1 className="font-heading text-4xl text-brand-black sm:text-5xl">About Master Cho&apos;s</h1>
@@ -22,6 +23,6 @@ export default function AboutPage(): React.ReactElement {
           <div className="rounded-card bg-brand-cream p-8"><div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-brand-gold text-white">♥</div><h3 className="font-heading text-lg">Home, School & Family</h3><p className="mt-2 text-sm leading-relaxed text-brand-black/60">Our curriculum teaches life skills that help students become confident leaders and responsible members of the community.</p></div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

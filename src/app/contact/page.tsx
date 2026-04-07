@@ -1,5 +1,6 @@
 import { createMetadata } from "@/lib/metadata";
 import { ContactForm } from "@/components/forms/contact-form";
+import { PageContainer } from "@/components/ui/page-container";
 
 export const metadata = createMetadata({
   title: "Contact",
@@ -8,7 +9,7 @@ export const metadata = createMetadata({
 
 export default function ContactPage(): React.ReactElement {
   return (
-    <div className="mx-auto max-w-7xl px-6 py-16 lg:py-24">
+    <PageContainer>
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
         <div>
           <h1 className="font-heading text-4xl text-brand-black sm:text-5xl">
@@ -57,6 +58,6 @@ export default function ContactPage(): React.ReactElement {
           <ContactForm />
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

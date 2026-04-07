@@ -1,5 +1,6 @@
 import { createMetadata } from "@/lib/metadata";
 import { TrialForm } from "@/components/forms/trial-form";
+import { PageContainer } from "@/components/ui/page-container";
 
 export const metadata = createMetadata({
   title: "Special Offer",
@@ -8,7 +9,7 @@ export const metadata = createMetadata({
 
 export default function SpecialOfferPage(): React.ReactElement {
   return (
-    <div className="mx-auto max-w-7xl px-6 py-16 lg:py-24">
+    <PageContainer>
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
         <div>
           <p className="text-sm font-semibold uppercase tracking-widest text-brand-gold">
@@ -45,6 +46,6 @@ export default function SpecialOfferPage(): React.ReactElement {
           <TrialForm />
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

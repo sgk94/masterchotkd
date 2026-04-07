@@ -1,49 +1,20 @@
 "use client";
 
-import { useState } from "react";
 import { FormField } from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
+import { useFormSubmit } from "@/hooks/use-form-submit";
 import { trialSchema } from "@/schemas/trial";
 
 export function TrialForm(): React.ReactElement {
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  async function handleSubmit(
-    e: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> {
-    e.preventDefault();
-    setErrors({});
-    setSubmitting(true);
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      phone: formData.get("phone") as string,
-    };
-    const result = trialSchema.safeParse(data);
-    if (!result.success) {
-      const fe: Record<string, string> = {};
-      result.error.issues.forEach((err) => {
-        if (err.path[0]) fe[err.path[0] as string] = err.message;
-      });
-      setErrors(fe);
-      setSubmitting(false);
-      return;
-    }
-    const response = await fetch("/api/trial", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(result.data),
-    });
-    if (response.ok) {
-      setSuccess(true);
-    } else {
-      setErrors({ form: "Something went wrong." });
-    }
-    setSubmitting(false);
-  }
+  const { errors, submitting, success, handleSubmit } = useFormSubmit({
+    schema: trialSchema,
+    endpoint: "/api/trial",
+    extractData: (fd) => ({
+      name: fd.get("name") as string,
+      email: fd.get("email") as string,
+      phone: fd.get("phone") as string,
+    }),
+  });
 
   if (success)
     return (

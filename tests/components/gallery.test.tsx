@@ -10,11 +10,10 @@ vi.mock("next/image", () => ({
 describe("Gallery", () => {
   it("renders all gallery images", () => {
     render(<Gallery />);
-    expect(screen.getByAltText("Taekwondo students in training")).toBeInTheDocument();
-    expect(screen.getByAltText("Students practicing poomsae forms")).toBeInTheDocument();
-    expect(screen.getByAltText("Belt promotion ceremony")).toBeInTheDocument();
-    expect(screen.getByAltText("Master Cho instructing students")).toBeInTheDocument();
-    expect(screen.getByAltText("Sparring practice session")).toBeInTheDocument();
+    expect(screen.getByAltText("Tiny Tigers class in session")).toBeInTheDocument();
+    expect(screen.getByAltText("Black Belt Club training")).toBeInTheDocument();
+    expect(screen.getByAltText("Competition Team practice")).toBeInTheDocument();
+    expect(screen.getByAltText("Leadership program students")).toBeInTheDocument();
   });
 
   it("opens lightbox on image click", () => {
