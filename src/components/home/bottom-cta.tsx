@@ -8,40 +8,19 @@ const ease = "cubic-bezier(0.32, 0.72, 0, 1)";
 
 const benefits = [
   {
-    title: "Unshakable Confidence",
-    description: "Kids learn to believe in themselves, speak up, and stand tall in any situation.",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
-      </svg>
-    ),
+    num: "01",
+    title: "Loyalty & Respect",
+    description: "Over 25 years teaching self-defense and confidence through the traditional art of Taekwondo.",
   },
   {
-    title: "Laser Focus",
-    description: "Improved concentration that translates directly to better grades and behavior.",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" />
-      </svg>
-    ),
+    num: "02",
+    title: "Home, School & Family",
+    description: "Our curriculum builds confident leaders, successful students, and responsible community members.",
   },
   {
-    title: "Discipline & Respect",
-    description: "Learning to listen, follow directions, and respect authority figures.",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><path d="M22 4 12 14.01l-3-3" />
-      </svg>
-    ),
-  },
-  {
-    title: "Positive Community",
-    description: "Surrounded by supportive mentors and friends who encourage growth.",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
-      </svg>
-    ),
+    num: "03",
+    title: "Discipline & Growth",
+    description: "Emphasizing balance in all things — encouraging personal growth at every stage of the journey.",
   },
 ];
 
@@ -89,54 +68,69 @@ export function BottomCta(): React.ReactElement {
 
   return (
     <div ref={sectionRef}>
-      {/* Section 1: More Than Just Kicks & Punches — dark bg with benefit cards */}
-      <section className="relative overflow-hidden bg-brand-black px-6 py-24 lg:py-32">
-        {/* Background image */}
+      {/* Section 1: More Than Just Kicks & Punches */}
+      <section className="relative overflow-hidden bg-brand-black px-4 py-28 sm:px-6 lg:py-36">
+        {/* Background image — deep fade */}
         <Image
           src="/images/Black-Belt-Club.jpg"
           alt=""
           fill
           sizes="100vw"
-          className="object-cover opacity-15"
+          className="object-cover opacity-10"
         />
-        <div className="absolute inset-0 bg-brand-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-black via-brand-black/80 to-brand-black" />
 
-        <div className="relative z-10 mx-auto max-w-5xl">
+        {/* Decorative radial glow */}
+        <div className="pointer-events-none absolute left-1/2 top-0 h-[600px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-gold/[0.04] blur-3xl" />
+
+        <div className="relative z-10 mx-auto max-w-6xl">
+          {/* Header */}
           <div
-            className="text-center"
             data-reveal="0"
-            style={{ opacity: 0, transform: "translateY(1.5rem)", transitionTimingFunction: ease, transitionDuration: "900ms", transitionProperty: "opacity, transform" }}
+            className="text-center transition-[opacity,transform] duration-[900ms] will-change-[transform,opacity]"
+            style={{ opacity: 0, transform: "translateY(1.5rem)", transitionTimingFunction: ease }}
           >
-            <h2 className="font-heading text-3xl tracking-tight text-white sm:text-4xl">
+            <span className="inline-block rounded-full border border-brand-gold/20 bg-brand-gold/5 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-gold/70">
+              Our Philosophy
+            </span>
+            <h2 className="mt-6 font-heading text-3xl tracking-tight text-white sm:text-4xl lg:text-5xl">
               More Than Just Kicks & Punches
             </h2>
-            <div className="mx-auto mt-4 h-1 w-12 rounded-full bg-green-500" />
-            <p className="mx-auto mt-5 max-w-xl text-white/60 leading-relaxed">
+            <div className="mx-auto mt-5 h-0.5 w-10 rounded-full bg-brand-gold/60" />
+            <p className="mx-auto mt-5 max-w-xl leading-relaxed text-white/45">
               We don&apos;t just teach self-defense. We teach character development that lasts a lifetime.
             </p>
           </div>
 
-          <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {/* Benefit cards — asymmetric bento */}
+          <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3">
             {benefits.map((b, i) => (
-              <div
-                key={b.title}
-                data-reveal={(i + 1) * 100}
-                className="transition-[opacity,transform] duration-[900ms] will-change-[transform,opacity]"
-                style={{ opacity: 0, transform: "translateY(1.5rem)", transitionTimingFunction: ease }}
-              >
-                <div className="rounded-xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur-none">
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/10 text-green-400">
-                      {b.icon}
-                    </div>
-                    <div>
-                      <h3 className="font-heading text-base text-white">{b.title}</h3>
-                      <p className="mt-1.5 text-sm leading-relaxed text-white/50">{b.description}</p>
+                <div
+                  key={b.title}
+                  data-reveal={(i + 1) * 120}
+                  className="transition-[opacity,transform] duration-[900ms] will-change-[transform,opacity]"
+                  style={{ opacity: 0, transform: "translateY(1.5rem)", transitionTimingFunction: ease }}
+                >
+                  {/* Double-bezel glass card */}
+                  <div className="group h-full rounded-[2rem] bg-white/[0.03] p-[1px] ring-1 ring-white/[0.08] transition-all duration-700 hover:bg-white/[0.05] hover:ring-white/[0.12]" style={{ transitionTimingFunction: ease }}>
+                    <div className="flex h-full flex-col rounded-[calc(2rem-1px)] p-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:p-8">
+                      {/* Number + gold accent line */}
+                      <div className="flex items-center gap-4">
+                        <span className="font-heading text-4xl text-brand-gold/25 transition-colors duration-700 group-hover:text-brand-gold/45" style={{ transitionTimingFunction: ease }}>
+                          {b.num}
+                        </span>
+                        <div className="h-px flex-1 bg-gradient-to-r from-brand-gold/20 to-transparent transition-all duration-700 group-hover:from-brand-gold/40" style={{ transitionTimingFunction: ease }} />
+                      </div>
+                      <h3 className="mt-5 font-heading text-lg text-white/90 transition-colors duration-500 group-hover:text-white">
+                        {b.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-white/40 transition-colors duration-500 group-hover:text-white/55">
+                        {b.description}
+                      </p>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </section>

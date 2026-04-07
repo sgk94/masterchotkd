@@ -4,7 +4,7 @@
 Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), replacing their Foxspin-hosted website ($300/mo) and reducing dependency on Foxspin management ($300/mo). Target: ~$25/mo hosting.
 
 ## Current Status
-- **Phase 1 MVP: Built** — 17 pages, 3 API routes (stubbed), CI/CD, deployed to Vercel
+- **Phase 1 MVP: Built** — 21 pages, 3 API routes (stubbed), CI/CD, deployed to Vercel
 - **Design polish done** — scroll animations, premium typography, double-bezel cards, marquee, mega-menu navbar
 - **Images optimized** — real dojang + instructor photos, resized to 2560px JPEG
 - **Static data mode** — DB, Clerk, Resend, Upstash not connected yet
@@ -116,19 +116,23 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 
 ## Site Structure
 
-### Pages (17 routes)
+### Pages (21 routes)
 - `/` — Home (hero, marquee, programs, problem/solution CTA, trial banner, values, testimonials, gallery)
 - `/about` — Story + philosophy + instructors (3 alternating photo sections)
 - `/programs` — Overview (4 cards with real images)
-- `/programs/[slug]` — Detail (tiny-tigers, black-belt-club, leadership-club, competition-team)
+- `/programs/tiny-tigers` — Full detail: hero, schedule, 7-belt curriculum cards, parent FAQ, CTA
+- `/programs/black-belt-club` — Full detail: hero, 3-level schedule grid, 9-belt curriculum cards, FAQ, CTA
+- `/programs/leadership-club` — Full detail: hero, schedule, requirements, FAQ, CTA
+- `/programs/competition-team` — Full detail: hero, schedule, requirements, FAQ, CTA
+- `/programs/[slug]` — Generic fallback (used if no static route matches)
 - `/schedule` — Weekly class table (premium redesign with double-bezel)
 - `/reviews` — Wall of Love
 - `/contact` — Form + location
 - `/special-offer` — Trial ($50 / 2 weeks)
 - `/students` — Hub (password-gated)
-- `/students/curriculum` — Choose program (4 cards)
+- `/students/curriculum` — Choose program (3 cards: Weekly Training, Tiny Tigers, Color Belt)
 - `/students/curriculum/tiny-tigers` — Belt cards (White → Camo)
-- `/students/curriculum/black-belt-club` — Belt cards (White → Black)
+- `/students/curriculum/black-belt-club` — Belt cards (White → Black) ⚠️ page exists but hidden from hub — review if needed
 - `/students/curriculum/color-belt` — Beginner/Intermediate/Advanced cycle breakdown (card-based)
 - `/students/curriculum/weekly-training` — 5-week training structure timeline
 - `/students/forms` — Poomsae videos (placeholders)

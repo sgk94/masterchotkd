@@ -30,6 +30,7 @@ const rightLinks: NavItem[] = [
     label: "Students",
     href: "/students",
     children: [
+      { label: "Tiny Tigers", href: "/programs/tiny-tigers", description: "Ages 4-6 resources" },
       { label: "Curriculum", href: "/students/curriculum", description: "Belt requirements" },
       { label: "Poomsae Forms", href: "/students/forms", description: "Video library" },
       { label: "Resources", href: "/students/resources", description: "Training materials" },
