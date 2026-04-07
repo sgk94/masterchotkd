@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 const ease = "cubic-bezier(0.32, 0.72, 0, 1)";
@@ -26,11 +27,12 @@ export function Hero(): React.ReactElement {
         <source src="/videos/hero.mp4" type="video/mp4" />
       </video>
       {/* Layered gradient for depth */}
-      <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/70 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/80 to-brand-black/40" />
       <div className="absolute inset-0 bg-gradient-to-t from-brand-black/50 via-transparent to-brand-black/20" />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:py-40">
-        <div className="max-w-2xl">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl items-center px-4 py-20 sm:px-6 lg:py-40">
+        {/* Left — text content */}
+        <div className="max-w-xl flex-1">
           {/* Eyebrow */}
           <div
             style={{
@@ -80,6 +82,33 @@ export function Hero(): React.ReactElement {
             <Button variant="outline" href="/schedule">
               View schedule
             </Button>
+          </div>
+        </div>
+
+        {/* Right — circular cropped image (Nestig style) */}
+        <div
+          className="hidden flex-1 items-center justify-end lg:flex"
+          style={{
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? "translateX(0) scale(1)" : "translateX(40px) scale(0.95)",
+            transition: `opacity 1s ${ease} 600ms, transform 1s ${ease} 600ms`,
+          }}
+        >
+          <div className="relative">
+            {/* Decorative ring */}
+            <div className="absolute -inset-4 rounded-full border border-brand-gold/15" />
+            <div className="absolute -inset-8 rounded-full border border-white/[0.04]" />
+            {/* Circular image */}
+            <div className="h-[420px] w-[420px] overflow-hidden rounded-full border-4 border-white/10 shadow-2xl shadow-black/30">
+              <Image
+                src="https://picsum.photos/seed/tkd-hero/840/840"
+                alt="Taekwondo students training at Master Cho's"
+                width={840}
+                height={840}
+                className="h-full w-full object-cover"
+                priority
+              />
+            </div>
           </div>
         </div>
       </div>

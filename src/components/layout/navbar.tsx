@@ -3,39 +3,66 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NAV_LINKS } from "@/types";
 import { Button } from "@/components/ui/button";
 import { MobileMenu } from "./mobile-menu";
+
+const leftLinks = [
+  { label: "Programs", href: "/programs" },
+  { label: "Schedule", href: "/schedule" },
+  { label: "About", href: "/about" },
+];
+
+const rightLinks = [
+  { label: "Students", href: "/students" },
+  { label: "Reviews", href: "/reviews" },
+  { label: "Contact", href: "/contact" },
+];
 
 export function Navbar(): React.ReactElement {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
+  function navLink(link: { label: string; href: string }): React.ReactElement {
+    const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+    return (
+      <Link
+        key={link.href}
+        href={link.href}
+        className={`relative text-sm transition-colors duration-300 ${isActive ? "text-white" : "text-white/60 hover:text-white"}`}
+      >
+        {link.label}
+        {isActive && (
+          <span className="absolute -bottom-1 left-0 h-0.5 w-full rounded-full bg-brand-gold" />
+        )}
+      </Link>
+    );
+  }
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50" style={{ backgroundColor: "#1a1a2e" }}>
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-90">
-          <Image src="/images/logo.svg" alt="Master Cho's Black Belt Academy" width={48} height={48} className="h-12 w-12" />
-          <span className="hidden font-heading text-xl font-bold text-brand-gold sm:inline">MASTER CHO&apos;S</span>
-        </Link>
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+        {/* Left — dojang links */}
         <div className="hidden items-center gap-6 md:flex">
-          {NAV_LINKS.map((link) => {
-            const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`relative text-sm transition-colors ${isActive ? "text-white" : "text-white/60 hover:text-white"}`}
-              >
-                {link.label}
-                {isActive && (
-                  <span className="absolute -bottom-1 left-0 h-0.5 w-full rounded-full bg-brand-gold" />
-                )}
-              </Link>
-            );
-          })}
-          <Button variant="primary" href="/special-offer">Special Offer</Button>
+          {leftLinks.map(navLink)}
         </div>
+
+        {/* Center — logo */}
+        <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
+          <Image src="/images/logo.svg" alt="Master Cho's Black Belt Academy" width={44} height={44} className="h-11 w-11" />
+          <span className="hidden font-heading text-lg font-bold tracking-wide text-brand-gold sm:inline">
+            MASTER CHO&apos;S
+          </span>
+        </Link>
+
+        {/* Right — student links + CTA */}
+        <div className="hidden items-center gap-6 md:flex">
+          {rightLinks.map(navLink)}
+          <Button variant="primary" href="/special-offer" className="px-5 py-2.5 text-xs">
+            Special Offer
+          </Button>
+        </div>
+
+        {/* Mobile hamburger */}
         <button className="flex h-11 w-11 items-center justify-center text-white md:hidden" onClick={() => setMobileOpen(true)} aria-label="Open menu">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
