@@ -117,7 +117,7 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 ## Site Structure
 
 ### Pages (17 routes)
-- `/` — Home (hero, marquee, programs, trial banner, values, testimonials, gallery, CTA)
+- `/` — Home (hero, marquee, programs, problem/solution CTA, trial banner, values, testimonials, gallery)
 - `/about` — Story + philosophy + instructors (3 alternating photo sections)
 - `/programs` — Overview (4 cards with real images)
 - `/programs/[slug]` — Detail (tiny-tigers, black-belt-club, leadership-club, competition-team)

@@ -16,6 +16,7 @@ export default function HomePage(): React.ReactElement {
       <Reveal>
         <ProgramsGrid />
       </Reveal>
+      <BottomCta />
       <Reveal>
         <TrialBanner />
       </Reveal>
@@ -25,9 +26,6 @@ export default function HomePage(): React.ReactElement {
       <Testimonials />
       <Reveal>
         <Gallery />
-      </Reveal>
-      <Reveal>
-        <BottomCta />
       </Reveal>
     </>
   );
