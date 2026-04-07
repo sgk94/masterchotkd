@@ -105,7 +105,7 @@ export function Hero(): React.ReactElement {
         }}
       >
         <Image
-          src="https://picsum.photos/seed/tkd-hero/1200/1600"
+          src="/images/Competition-Team.jpg"
           alt="Taekwondo students training at Master Cho's"
           fill
           className="object-cover"

@@ -4,10 +4,11 @@
 Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), replacing their Foxspin-hosted website ($300/mo) and reducing dependency on Foxspin management ($300/mo). Target: ~$25/mo hosting.
 
 ## Current Status
-- **Phase 1 MVP: Built** — 14 pages, 3 API routes (stubbed), CI/CD, deployed to Vercel
-- **Design polish done** — scroll animations, premium typography, double-bezel cards, marquee
+- **Phase 1 MVP: Built** — 17 pages, 3 API routes (stubbed), CI/CD, deployed to Vercel
+- **Design polish done** — scroll animations, premium typography, double-bezel cards, marquee, mega-menu navbar
+- **Images optimized** — real dojang + instructor photos, resized to 2560px JPEG
 - **Static data mode** — DB, Clerk, Resend, Upstash not connected yet
-- **68 tests passing** (22 unit + 34 component + 12 E2E specs written)
+- **68 tests passing** (14 test files via Vitest; 12 E2E specs written for Playwright)
 - **Deployed:** Vercel (auto-deploys from `main` branch on `sgk94/masterchotkd`)
 - **GitHub:** github.com/sgk94/masterchotkd
 
@@ -19,7 +20,7 @@ Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), rep
 - **Pain points:** $600/mo total, can't make quick changes
 
 ## Programs
-1. Tiny Tigers (ages 3-6)
+1. Tiny Tigers (ages 4-6)
 2. Black Belt Club (all ages)
 3. Leadership Club / Demo Team (advanced)
 4. Competition Team (tournament athletes)
@@ -32,12 +33,17 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 - Public website with all pages
 - Static schedule display (read-only table, effective 01/01/2026)
 - Student resources behind password auth (password: "blackbelt", uses `useSyncExternalStore`)
-- Curriculum pages (Tiny Tigers + Black Belt Club)
+- Curriculum pages (Tiny Tigers, Black Belt Club, Color Belt, Weekly Training)
 - Contact/trial/booking API routes (stubbed — return 503 until DB connected)
 - SEO (sitemap, robots, JSON-LD)
 - CI/CD (GitHub Actions + Lighthouse at warn 0.85)
 - Promo modal (BOGO deal, session-scoped)
 - Trial offer: $50 / 2 weeks (no uniform included)
+- Real program + instructor images (JPEG, 2560px wide)
+- Security headers: CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
+- Shared form hook (`useFormSubmit`) and Zod field builders
+- Mega-menu navbar with dropdowns for Programs (image cards) and Students (list)
+- Animated gold neon border on trial banner
 
 ### Phase 2 — Student Portal (not started)
 ### Phase 3 — Admin Dashboard (not started)
@@ -47,11 +53,11 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 - **Framework:** Next.js 16.2.2 (App Router, Server Components)
 - **Language:** TypeScript (strict mode)
 - **Styling:** Tailwind CSS v4 (CSS-only config via `@theme` in globals.css — NO tailwind.config.ts)
-- **Animation:** Framer Motion (mobile menu), CSS animations (scroll reveals, marquee)
+- **Animation:** Framer Motion (mobile menu), CSS animations (scroll reveals, marquee, border-spin)
 - **Auth:** Clerk (configured but disabled — password gate for now)
 - **Database:** PostgreSQL (Neon — schema defined, not connected)
 - **ORM:** Prisma 7.6 (`db.ts` uses `require()` to avoid CI type errors)
-- **Validation:** Zod v4 (uses `.issues` not `.errors` on ZodError)
+- **Validation:** Zod v4 (uses `.issues` not `.errors` on ZodError); shared field builders in `schemas/fields.ts`
 - **Email:** Resend (configured, not connected)
 - **Rate Limiting:** Upstash Redis + @upstash/ratelimit
 - **Sanitization:** sanitize-html
@@ -81,60 +87,78 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 | Taupe | #d4c5b0 | Borders |
 
 ### Design Patterns
-- Double-bezel cards (outer shell ring + inner content)
+- Double-bezel cards via `<BezelCard>` (`src/components/ui/bezel-card.tsx`) — also used in schedule grid
 - Pill buttons (`rounded-full`) with tinted shadows
-- Pill eyebrow badges for section labels
+- Pill eyebrow badges via `<EyebrowBadge>` (`src/components/ui/eyebrow-badge.tsx`) — 3 variants: pill, gold-text, gold-pill
+- Page container via `<PageContainer>` (`src/components/ui/page-container.tsx`)
 - Scroll-reveal via IntersectionObserver (`src/components/ui/reveal.tsx`)
 - Kinetic marquee (`src/components/home/marquee.tsx`)
 - Grain texture overlay (CSS `::after` pseudo-element)
 - Premium easing: `cubic-bezier(0.32, 0.72, 0, 1)`
-- Fixed navbar (solid bg `#1a1a2e`, no backdrop-blur)
+- Mega-menu navbar: `rounded-[1.5rem]` container, expands with `grid-template-rows` animation for Programs (image cards layout) and Students (list layout)
 - Active nav link: gold underline via `usePathname()`
+- Animated gold border: `border-spin` keyframe with conic-gradient + blur glow layer (trial banner)
 
 ### Key Design Decisions
-- Schedule is static read-only table (not interactive booking)
+- Navbar: Nestig-style mega-menu — Programs dropdown shows link list + 4 image cards, Students shows list + descriptions
+- Schedule: premium double-bezel table with dark header, muted color-coded pills, left accent borders
 - Student auth via password ("blackbelt"), not Clerk
 - Promo modal: BOGO deal, shows once per session
-- Hero: full viewport (100dvh), video bg, staggered entrance animation
-- Gallery: picsum.photos placeholders (replace with real photos)
-- Testimonials on cream bg (user rejected dark/frosted look)
+- Hero: full viewport (100dvh), Competition Team image, staggered entrance animation
+- Gallery: 4 real dojang photos (uses `(2)` variants to avoid duplicating program grid images)
+- Testimonials on cream bg, gold accent "See all reviews" button
+- Trial banner: animated gold neon border (spinning conic-gradient, 8s loop, blur glow layer)
 - Trial offer: $50 / 2 weeks, no uniform included
+- Programs grid: asymmetric bento layout — Tiny Tigers (col-span-7 row-span-2), Competition+Leadership stacked right (col-span-5), Black Belt Club full width (col-span-12)
+- About page: alternating left/right instructor photo sections (Grand Master Cho, Master Cho, Instructor Lasala)
+- Color Belt Curriculum: card-based layout (3 cards per level) instead of tables
+- Weekly Training: timeline cards with stripe color indicators
 
 ## Site Structure
 
-### Pages (14 routes)
+### Pages (17 routes)
 - `/` — Home (hero, marquee, programs, trial banner, values, testimonials, gallery, CTA)
-- `/about` — Story + philosophy
-- `/programs` — Overview (4 cards)
+- `/about` — Story + philosophy + instructors (3 alternating photo sections)
+- `/programs` — Overview (4 cards with real images)
 - `/programs/[slug]` — Detail (tiny-tigers, black-belt-club, leadership-club, competition-team)
-- `/schedule` — Weekly class table (read-only)
+- `/schedule` — Weekly class table (premium redesign with double-bezel)
 - `/reviews` — Wall of Love
 - `/contact` — Form + location
 - `/special-offer` — Trial ($50 / 2 weeks)
 - `/students` — Hub (password-gated)
-- `/students/curriculum` — Choose program
+- `/students/curriculum` — Choose program (4 cards)
 - `/students/curriculum/tiny-tigers` — Belt cards (White → Camo)
 - `/students/curriculum/black-belt-club` — Belt cards (White → Black)
+- `/students/curriculum/color-belt` — Beginner/Intermediate/Advanced cycle breakdown (card-based)
+- `/students/curriculum/weekly-training` — 5-week training structure timeline
 - `/students/forms` — Poomsae videos (placeholders)
 - `/students/resources` — Training materials (placeholders)
+- `/preview` — Design exploration (dev-only, should be gated or removed before production)
 
 ### Other Routes
 - `/not-found` — Custom 404
-- `POST /api/booking` — stubbed (503)
-- `POST /api/contact` — stubbed (503)
-- `POST /api/trial` — stubbed (503)
+- `POST /api/booking` — stubbed (503, generic error message)
+- `POST /api/contact` — stubbed (503, generic error message)
+- `POST /api/trial` — stubbed (503, generic error message)
 - `/sitemap.xml` — dynamic
 - `/robots.txt` — blocks /students/, /api/
 
-### Components (20)
+### Components (23)
 **Home:** hero, marquee, programs-grid, trial-banner, values-section, testimonials, gallery, bottom-cta, promo-modal
-**Layout:** navbar, mobile-menu, footer
-**UI:** button, reveal
+**Layout:** navbar (with mega-menu), mobile-menu, footer
+**UI:** button, reveal, bezel-card, page-container, eyebrow-badge
 **Forms:** form-field, contact-form, trial-form, booking-form
 **Schedule:** schedule-grid, schedule-client
 
-### Lib (9 modules)
-db, server-env, client-env, fonts, metadata, email, rate-limit, sanitize, static-data
+### Hooks (1)
+- `use-form-submit` — shared form submission logic (schema validation, fetch, error mapping)
+
+### Schemas (4)
+- `fields.ts` — shared Zod field builders (nameField, emailField, phoneField)
+- `contact.ts`, `trial.ts`, `booking.ts` — form schemas using shared fields
+
+### Lib (10 modules)
+db, server-env, client-env, fonts, metadata, email, rate-limit, sanitize, static-data, api-security
 
 ## Gotchas
 - `db.ts` uses `require("@prisma/client")` — Prisma 7 import breaks CI type check otherwise
@@ -144,13 +168,27 @@ db, server-env, client-env, fonts, metadata, email, rate-limit, sanitize, static
 - `useSyncExternalStore` for student auth (React strict mode lint rule bans `setState` in `useEffect`)
 - Lighthouse gate set to `warn` at 0.85 (not `error` at 0.9) for preview phase
 - pnpm 10 declared in `packageManager` — CI must not specify `version: 9`
-- Gallery images from picsum.photos need `remotePatterns` in next.config
+- Hero uses Competition Team image (`/images/Competition-Team.jpg`), picsum.photos still in `remotePatterns` for potential future use
 - Middleware file shows deprecation warning in Next.js 16 ("use proxy instead")
+- `logo.svg` is 259 KB because it contains embedded raster (base64 PNG) — SVGO can't optimize it, needs vector redraw
+- Programs grid order is hardcoded in `gridOrder` array — must match bento layout positions
+- `api-security.ts` has `validateOrigin()` and `getClientIp()` ready for when API routes are re-enabled
+- CSP allows `unsafe-inline` + `unsafe-eval` for scripts (required by Next.js) — tighten with nonces later
+- Navbar mega-menu uses 200ms leave timeout to prevent flicker — `onMouseLeave` only on outer container
+- Trial banner `border-spin` animation defined in `globals.css` — uses `transform: rotate()` not `rotate` shorthand
+- Button `outline` variant has `border-white/30 text-white` baked in — override with `!` prefix (e.g., testimonials button)
 
-## Tests (68 total)
-**Unit (22):** contact, trial, booking schema validation
-**Component (34):** navbar, hero, contact-form, button, programs-grid, gallery, schedule-grid, promo-modal, values-section, trial-banner, bottom-cta
-**E2E (12 specs):** homepage, contact (written, need running app to execute)
+## Images
+All in `public/images/` — JPEG format, 2560px wide:
+**Programs:** `Tiny-Tigers.jpg`, `Black-Belt-Club.jpg`, `Competition-Team.jpg`, `Leadership_Demo-Team.jpg`
+**Gallery:** `Tiny-Tigers-2.jpg`, `Black-Belt-Club-2.jpg`, `Competition-Team-2.jpg`, `Leadership.jpg`
+**Instructors:** `GMC.jpg`, `MC.jpg`, `Instructor-Lasala.jpg`
+**Other:** `camo-pattern.jpg` (belt swatch), `logo.svg` (259 KB, embedded raster)
+
+## Tests (68 total, 14 test files)
+**Unit (6):** contact, trial, booking schema validation (3 files)
+**Component (62):** navbar, hero, contact-form, button, programs-grid, gallery, schedule-grid, promo-modal, values-section, trial-banner, bottom-cta (11 files)
+**E2E (12 specs):** homepage, contact (Playwright, need running app to execute)
 
 ## To Get Fully Running
 1. Set up Neon DB → `DATABASE_URL` in `.env.local`
@@ -160,9 +198,11 @@ db, server-env, client-env, fonts, metadata, email, rate-limit, sanitize, static
 5. Upstash Redis keys → `.env.local`
 6. Restore full API route implementations (in git history, search for "stub API routes")
 7. Replace `static-data` imports with DB queries
-8. Replace gallery picsum.photos with real photos
-9. Add hero video to `public/videos/hero.mp4`
-10. Remove `@ts-nocheck` / `require()` workaround from `db.ts`
+8. Add hero video to `public/videos/hero.mp4`
+9. Remove `@ts-nocheck` / `require()` workaround from `db.ts`
+10. Get logo redrawn as proper vector SVG (current one has embedded raster)
+11. Gate or remove `/preview` page for production
+12. Tighten CSP (replace `unsafe-inline` with nonces)
 
 ## Repo
 - **GitHub:** github.com/sgk94/masterchotkd

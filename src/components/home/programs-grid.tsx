@@ -25,14 +25,14 @@ const layoutBySlug: Record<string, ProgramLayout> = {
   "competition-team": {
     bg: "from-brand-gold/70 via-amber-700/60 to-amber-900/90",
     span: "sm:col-span-5",
-    height: "h-56 sm:h-[10.5rem]",
+    height: "h-56 sm:h-48",
     headingSize: "text-2xl sm:text-3xl",
     featured: false,
   },
   "leadership-club": {
     bg: "from-brand-red/70 via-rose-700/60 to-brand-red/90",
     span: "sm:col-span-5",
-    height: "h-56 sm:h-[10.5rem]",
+    height: "h-56 sm:h-48",
     headingSize: "text-2xl sm:text-3xl",
     featured: false,
   },
@@ -86,7 +86,7 @@ export function ProgramsGrid(): React.ReactElement {
   }, []);
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:py-32">
+    <section className="mx-auto max-w-7xl px-4 pt-12 pb-24 sm:px-6 lg:pt-16 lg:pb-32">
       {/* Section header */}
       <div className="max-w-xl">
         <span className="inline-block rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
@@ -103,7 +103,7 @@ export function ProgramsGrid(): React.ReactElement {
       {/* Asymmetric bento grid */}
       <div
         ref={gridRef}
-        className="mt-12 grid grid-cols-1 gap-3.5 sm:grid-cols-12 sm:gap-4"
+        className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-12 sm:gap-4"
       >
         {programs.map((program, i) => (
           /* Outer shell — double-bezel */
@@ -119,7 +119,7 @@ export function ProgramsGrid(): React.ReactElement {
             {/* Inner core */}
             <Link
               href={`/programs/${program.slug}`}
-              className={`group relative flex ${program.height} items-end overflow-hidden rounded-[calc(2rem-6px)] p-6 sm:p-8 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98]`}
+              className={`group relative flex ${program.featured ? "h-56 sm:h-full" : program.height} items-end overflow-hidden rounded-[calc(2rem-6px)] p-6 sm:p-8 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98]`}
             >
               {/* Photo background (if available) */}
               {"image" in program && program.image ? (
@@ -162,7 +162,7 @@ export function ProgramsGrid(): React.ReactElement {
                 </p>
                 {program.featured && (
                   <p className="mt-2 max-w-xs text-sm leading-relaxed text-white/70">
-                    {program.description}
+                    Designed for our youngest students
                   </p>
                 )}
 

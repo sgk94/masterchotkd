@@ -19,7 +19,7 @@ export function Marquee(): React.ReactElement {
       <div className="animate-marquee flex w-max gap-8">
         {repeated.map((item, i) => (
           <span key={`${item}-${i}`} className="flex items-center gap-8 whitespace-nowrap">
-            <span className="font-heading text-sm tracking-wide text-brand-black/40 uppercase">
+            <span className="font-heading text-sm tracking-wide text-brand-black/60 uppercase">
               {item}
             </span>
             <span className="text-brand-gold/40">

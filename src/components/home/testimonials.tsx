@@ -14,7 +14,7 @@ export async function Testimonials(): Promise<React.ReactElement> {
               Real people, real results
             </h2>
           </div>
-          <Button variant="outline" href="/reviews" className="border-brand-black text-brand-black hover:bg-brand-black/5">
+          <Button variant="outline" href="/reviews" className="!border-brand-gold !text-brand-gold hover:!bg-brand-gold/5">
             See all reviews
           </Button>
         </div>
