@@ -4,11 +4,10 @@ import { useState } from "react";
 import Image from "next/image";
 
 const galleryItems = [
-  { alt: "Taekwondo students in training", src: "https://picsum.photos/seed/tkd-class/800/800", span: "" },
-  { alt: "Students practicing poomsae forms", src: "https://picsum.photos/seed/tkd-forms/800/1000", span: "row-span-2" },
-  { alt: "Belt promotion ceremony", src: "https://picsum.photos/seed/tkd-belt/800/800", span: "" },
-  { alt: "Master Cho instructing students", src: "https://picsum.photos/seed/tkd-master/800/800", span: "" },
-  { alt: "Sparring practice session", src: "https://picsum.photos/seed/tkd-spar/1200/800", span: "md:col-span-2" },
+  { alt: "Tiny Tigers class in session", src: "/images/Tiny Tigers (2).png", span: "" },
+  { alt: "Black Belt Club training", src: "/images/Black Belt Club (2).png", span: "" },
+  { alt: "Competition Team practice", src: "/images/Competition Team (2).png", span: "" },
+  { alt: "Leadership program students", src: "/images/Leadership.png", span: "" },
 ];
 
 export function Gallery(): React.ReactElement {
@@ -18,7 +17,7 @@ export function Gallery(): React.ReactElement {
     <section className="mx-auto max-w-7xl px-6 py-20 lg:py-28">
       <div className="max-w-xl">
         <h2 className="font-heading text-3xl tracking-tight text-brand-black sm:text-4xl">
-          Life at the dojo
+          Life at the dojang
         </h2>
         <p className="mt-2 text-brand-black/60">Training, competing, and growing together</p>
       </div>
@@ -28,7 +27,7 @@ export function Gallery(): React.ReactElement {
             key={img.alt}
             onClick={() => setLightboxIndex(index)}
             className={`group relative overflow-hidden rounded-2xl bg-brand-sand ${img.span}`}
-            style={{ aspectRatio: img.span.includes("row-span") ? "4/5" : "1/1" }}
+            style={{ aspectRatio: "1/1" }}
           >
             <Image
               src={img.src}

@@ -38,7 +38,8 @@ export function Reveal({ children, className = "", delay = 0, stagger = false }:
       style={{
         opacity: stagger ? undefined : visible ? 1 : 0,
         transform: stagger ? undefined : visible ? "translateY(0)" : "translateY(24px)",
-        transition: `opacity 0.6s ease-out ${delay}ms, transform 0.6s ease-out ${delay}ms`,
+        transition: `opacity 0.8s cubic-bezier(0.32,0.72,0,1) ${delay}ms, transform 0.8s cubic-bezier(0.32,0.72,0,1) ${delay}ms`,
+        willChange: visible ? "auto" : "transform, opacity",
       }}
     >
       {stagger ? (visible ? children : <div style={{ opacity: 0 }}>{children}</div>) : children}

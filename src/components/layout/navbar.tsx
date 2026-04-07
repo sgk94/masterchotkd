@@ -39,8 +39,8 @@ export function Navbar(): React.ReactElement {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50" style={{ backgroundColor: "#1a1a2e" }}>
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+    <nav className="fixed top-0 left-0 right-0 z-50 px-4 pt-4">
+      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full px-6 py-2.5 shadow-lg shadow-black/20 ring-1 ring-white/[0.06]" style={{ backgroundColor: "#1a1a2e" }}>
         {/* Left — dojang links */}
         <div className="hidden items-center gap-6 md:flex">
           {leftLinks.map(navLink)}
@@ -50,7 +50,7 @@ export function Navbar(): React.ReactElement {
         <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
           <Image src="/images/logo.svg" alt="Master Cho's Black Belt Academy" width={44} height={44} className="h-11 w-11" />
           <span className="hidden font-heading text-lg font-bold tracking-wide text-brand-gold sm:inline">
-            MASTER CHO&apos;S
+            MASTER CHO&apos;S TAEKWONDO
           </span>
         </Link>
 

@@ -30,9 +30,9 @@ export function Hero(): React.ReactElement {
       <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/80 to-brand-black/40" />
       <div className="absolute inset-0 bg-gradient-to-t from-brand-black/50 via-transparent to-brand-black/20" />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl items-center px-4 py-20 sm:px-6 lg:py-40">
+      <div className="relative z-10 flex w-full items-center py-20 pl-4 pr-0 sm:pl-6 lg:pl-[max(1.5rem,calc((100%-80rem)/2+1.5rem))] lg:py-40">
         {/* Left — text content */}
-        <div className="max-w-xl flex-1">
+        <div className="max-w-xl">
           {/* Eyebrow */}
           <div
             style={{
@@ -41,7 +41,7 @@ export function Hero(): React.ReactElement {
               transition: `opacity 0.8s ${ease} 200ms, transform 0.8s ${ease} 200ms`,
             }}
           >
-            <span className="inline-block rounded-full border border-brand-gold/30 bg-brand-gold/5 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[3px] text-brand-gold">
+            <span className="inline-block rounded-full border border-brand-gold/30 bg-brand-gold/5 px-6 py-2.5 text-sm font-medium uppercase tracking-[3px] text-brand-gold">
               Lynnwood&apos;s premier academy
             </span>
           </div>
@@ -85,32 +85,34 @@ export function Hero(): React.ReactElement {
           </div>
         </div>
 
-        {/* Right — circular cropped image (Nestig style) */}
-        <div
-          className="hidden flex-1 items-center justify-end lg:flex"
-          style={{
-            opacity: mounted ? 1 : 0,
-            transform: mounted ? "translateX(0) scale(1)" : "translateX(40px) scale(0.95)",
-            transition: `opacity 1s ${ease} 600ms, transform 1s ${ease} 600ms`,
-          }}
-        >
-          <div className="relative">
-            {/* Decorative ring */}
-            <div className="absolute -inset-4 rounded-full border border-brand-gold/15" />
-            <div className="absolute -inset-8 rounded-full border border-white/[0.04]" />
-            {/* Circular image */}
-            <div className="h-[420px] w-[420px] overflow-hidden rounded-full border-4 border-white/10 shadow-2xl shadow-black/30">
-              <Image
-                src="https://picsum.photos/seed/tkd-hero/840/840"
-                alt="Taekwondo students training at Master Cho's"
-                width={840}
-                height={840}
-                className="h-full w-full object-cover"
-                priority
-              />
-            </div>
-          </div>
-        </div>
+      </div>
+
+      {/* Right — full-height image, semicircular left edge, flush top/right/bottom */}
+      <svg className="absolute" width="0" height="0" aria-hidden="true">
+        <defs>
+          <clipPath id="hero-clip" clipPathUnits="objectBoundingBox">
+            <path d="M 0.35,0 Q 0,0.5 0.35,1 L 1,1 L 1,0 Z" />
+          </clipPath>
+        </defs>
+      </svg>
+      <div
+        className="absolute inset-y-0 right-0 hidden w-[55%] lg:block"
+        style={{
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? "translateX(0)" : "translateX(60px)",
+          transition: `opacity 1.1s ${ease} 500ms, transform 1.1s ${ease} 500ms`,
+          clipPath: "url(#hero-clip)",
+        }}
+      >
+        <Image
+          src="https://picsum.photos/seed/tkd-hero/1200/1600"
+          alt="Taekwondo students training at Master Cho's"
+          fill
+          className="object-cover"
+          priority
+        />
+        {/* Feather the curved edge into the dark bg */}
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-black/40 via-transparent to-transparent" />
       </div>
 
       {/* Scroll indicator */}
