@@ -1,5 +1,26 @@
 import type { NextConfig } from "next";
 
+const clerkCspOrigins = [
+  "https://*.clerk.accounts.dev",
+  "https://*.clerk.dev",
+  "https://*.clerk.services",
+];
+
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${clerkCspOrigins.join(" ")}`,
+  "style-src 'self' 'unsafe-inline'",
+  `img-src 'self' https://picsum.photos https://fastly.picsum.photos data: blob: ${clerkCspOrigins.join(
+    " ",
+  )}`,
+  `font-src 'self' ${clerkCspOrigins.join(" ")}`,
+  `connect-src 'self' ${clerkCspOrigins.join(" ")}`,
+  `frame-src 'self' ${clerkCspOrigins.join(" ")}`,
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join("; ");
+
 const nextConfig: NextConfig = {
   // output: "export", // only for static deploys (Netlify)
   images: {
@@ -27,8 +48,7 @@ const nextConfig: NextConfig = {
         },
         {
           key: "Content-Security-Policy",
-          value:
-            "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https://picsum.photos https://fastly.picsum.photos data: blob:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';",
+          value: contentSecurityPolicy,
         },
       ],
     },
