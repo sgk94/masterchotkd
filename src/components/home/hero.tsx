@@ -55,7 +55,7 @@ export function Hero(): React.ReactElement {
           </div>
 
           <h1
-            className="mt-6 font-heading text-4xl leading-[1.05] tracking-tight text-green-500 sm:text-5xl lg:text-7xl"
+            className="mt-6 font-heading text-4xl leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-7xl"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? "translateY(0)" : "translateY(24px)",
