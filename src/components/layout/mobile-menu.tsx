@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { Show, UserButton, SignInButton, ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
 import { NAV_LINKS } from "@/types";
 import { Button } from "@/components/ui/button";
 
@@ -29,8 +30,27 @@ export function MobileMenu({ open, onClose }: MobileMenuProps): React.ReactEleme
                 <Link key={link.href} href={link.href} onClick={onClose} className="font-heading text-2xl text-white transition-colors hover:text-brand-gold">{link.label}</Link>
               ))}
             </div>
-            <div className="mt-auto">
+            <div className="mt-auto flex flex-col gap-4">
               <Button variant="primary" href="/special-offer" className="w-full">Special Offer</Button>
+              <ClerkLoading>
+                <button className="w-full rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white">
+                  Sign In
+                </button>
+              </ClerkLoading>
+              <ClerkLoaded>
+                <Show when="signed-out">
+                  <SignInButton>
+                    <button className="w-full rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10">
+                      Sign In
+                    </button>
+                  </SignInButton>
+                </Show>
+                <Show when="signed-in">
+                  <div className="flex items-center justify-center">
+                    <UserButton />
+                  </div>
+                </Show>
+              </ClerkLoaded>
             </div>
           </motion.div>
         </>

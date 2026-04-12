@@ -28,14 +28,29 @@ const challenges = [
   {
     title: "Struggling with Focus?",
     description: "Difficulty paying attention at school or following directions at home.",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" />
+      </svg>
+    ),
   },
   {
     title: "Low Confidence?",
     description: "Shying away from challenges or hesitant to speak up in groups.",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" /><path d="M18 21v-1a5 5 0 0 0-5-5h-2a5 5 0 0 0-5 5v1" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
   },
   {
     title: "Too Much Screen Time?",
     description: "Spending hours on tablets instead of moving and interacting.",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="5" y="2" width="14" height="20" rx="2" /><line x1="12" y1="18" x2="12" y2="18.01" />
+      </svg>
+    ),
   },
 ];
 
@@ -146,7 +161,7 @@ export function BottomCta(): React.ReactElement {
             <h2 className="font-heading text-3xl tracking-tight text-brand-black sm:text-4xl">
               Is your child facing these challenges?
             </h2>
-            <div className="mx-auto mt-4 h-1 w-12 rounded-full bg-green-500" />
+            <div className="mx-auto mt-4 h-1 w-12 rounded-full bg-brand-gold" />
             <p className="mx-auto mt-5 max-w-2xl leading-relaxed text-brand-black/50">
               In just 2 weeks, you&apos;ll see a noticeable change. Your child will start listening better, focusing longer, and showing more confidence. Parents consistently tell us they wish they&apos;d started sooner.
             </p>
@@ -162,8 +177,8 @@ export function BottomCta(): React.ReactElement {
               >
                 <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
                   <div className="rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-50 text-brand-red">
-                      <span className="text-sm font-semibold">?</span>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-gold/10 text-brand-gold">
+                      {c.icon}
                     </div>
                     <h3 className="mt-4 font-heading text-lg text-brand-black">{c.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-brand-black/50">{c.description}</p>
@@ -180,7 +195,7 @@ export function BottomCta(): React.ReactElement {
             style={{ opacity: 0, transform: "translateY(1.5rem)", transitionTimingFunction: ease, transitionDuration: "900ms", transitionProperty: "opacity, transform" }}
           >
             <Button variant="primary" href="/special-offer">
-              Start your 2-week trial — $50
+              Start your 2-week trial — $49
             </Button>
             <p className="mt-3 text-xs text-brand-black/35">No commitment required. All ages welcome.</p>
           </div>

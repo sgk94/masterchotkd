@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 const ease = "cubic-bezier(0.32, 0.72, 0, 1)";
@@ -16,17 +15,17 @@ export function Hero(): React.ReactElement {
 
   return (
     <section className="relative -mt-16 flex min-h-[100dvh] items-center overflow-hidden bg-brand-black">
+      {/* Background video */}
       <video
         autoPlay
         muted
         loop
         playsInline
-        poster="/images/hero-poster.jpg"
         className="absolute inset-0 h-full w-full object-cover"
       >
         <source src="/videos/hero.mp4" type="video/mp4" />
       </video>
-      {/* Layered gradient for depth */}
+      {/* Gradient overlays for text readability */}
       <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/80 to-brand-black/40" />
       <div className="absolute inset-0 bg-gradient-to-t from-brand-black/50 via-transparent to-brand-black/20" />
 
@@ -85,34 +84,6 @@ export function Hero(): React.ReactElement {
           </div>
         </div>
 
-      </div>
-
-      {/* Right — full-height image, semicircular left edge, flush top/right/bottom */}
-      <svg className="absolute" width="0" height="0" aria-hidden="true">
-        <defs>
-          <clipPath id="hero-clip" clipPathUnits="objectBoundingBox">
-            <path d="M 0.35,0 Q 0,0.5 0.35,1 L 1,1 L 1,0 Z" />
-          </clipPath>
-        </defs>
-      </svg>
-      <div
-        className="absolute inset-y-0 right-0 hidden w-[55%] lg:block"
-        style={{
-          opacity: mounted ? 1 : 0,
-          transform: mounted ? "translateX(0)" : "translateX(60px)",
-          transition: `opacity 1.1s ${ease} 500ms, transform 1.1s ${ease} 500ms`,
-          clipPath: "url(#hero-clip)",
-        }}
-      >
-        <Image
-          src="/images/Competition-Team.jpg"
-          alt="Taekwondo students training at Master Cho's"
-          fill
-          className="object-cover"
-          priority
-        />
-        {/* Feather the curved edge into the dark bg */}
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-black/40 via-transparent to-transparent" />
       </div>
 
       {/* Scroll indicator */}

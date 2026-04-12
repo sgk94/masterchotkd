@@ -12,6 +12,7 @@ type ProgramLayout = {
   headingSize: string;
   featured: boolean;
   imagePosition?: string;
+  mobileOrder: number;
 };
 
 const layoutBySlug: Record<string, ProgramLayout> = {
@@ -21,6 +22,7 @@ const layoutBySlug: Record<string, ProgramLayout> = {
     height: "h-56 sm:h-[22rem]",
     headingSize: "text-3xl sm:text-4xl lg:text-5xl",
     featured: true,
+    mobileOrder: 0,
   },
   "competition-team": {
     bg: "from-brand-gold/70 via-amber-700/60 to-amber-900/90",
@@ -28,6 +30,7 @@ const layoutBySlug: Record<string, ProgramLayout> = {
     height: "h-56 sm:h-48",
     headingSize: "text-2xl sm:text-3xl",
     featured: false,
+    mobileOrder: 2,
   },
   "leadership-club": {
     bg: "from-brand-red/70 via-rose-700/60 to-brand-red/90",
@@ -35,6 +38,7 @@ const layoutBySlug: Record<string, ProgramLayout> = {
     height: "h-56 sm:h-48",
     headingSize: "text-2xl sm:text-3xl",
     featured: false,
+    mobileOrder: 3,
   },
   "black-belt-club": {
     bg: "from-brand-blue/80 via-indigo-900/70 to-brand-black/90",
@@ -43,6 +47,7 @@ const layoutBySlug: Record<string, ProgramLayout> = {
     headingSize: "text-2xl sm:text-3xl lg:text-4xl",
     featured: false,
     imagePosition: "object-[center_35%]",
+    mobileOrder: 1,
   },
 };
 
@@ -110,10 +115,11 @@ export function ProgramsGrid(): React.ReactElement {
           <div
             key={program.slug}
             data-reveal={i * 120}
-            className={`${program.span} rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15 transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.32,0.72,0,1)] will-change-[transform,opacity]`}
+            className={`${program.span} sm:!order-none rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15 transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.32,0.72,0,1)] will-change-[transform,opacity]`}
             style={{
               opacity: 0,
               transform: "translateY(2rem) scale(0.97)",
+              order: program.mobileOrder,
             }}
           >
             {/* Inner core */}

@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Show, UserButton, SignInButton, ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { MobileMenu } from "./mobile-menu";
 
@@ -130,6 +131,21 @@ export function Navbar(): React.ReactElement {
             <Button variant="primary" href="/special-offer" className="px-5 py-2.5 text-xs">
               Special Offer
             </Button>
+            <ClerkLoading>
+              <span className="text-sm text-white/60">Sign In</span>
+            </ClerkLoading>
+            <ClerkLoaded>
+              <Show when="signed-out">
+                <SignInButton>
+                  <button className="text-sm text-white/60 transition-colors duration-300 hover:text-white">
+                    Sign In
+                  </button>
+                </SignInButton>
+              </Show>
+              <Show when="signed-in">
+                <UserButton />
+              </Show>
+            </ClerkLoaded>
           </div>
 
           {/* Mobile hamburger */}
@@ -212,45 +228,61 @@ export function Navbar(): React.ReactElement {
                     </div>
                   </div>
                 ) : (
-                  /* Standard list layout */
-                  <div>
-                    <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.2em] text-white/30">
-                      {activeItem.label}
-                    </p>
-                    <div className="flex flex-col gap-1">
-                      {activeItem.children.map((child) => (
+                  /* Students list layout — gated for signed-out users */
+                  <>
+                  <Show when="signed-in">
+                    <div>
+                      <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.2em] text-white/30">
+                        {activeItem.label}
+                      </p>
+                      <div className="flex flex-col gap-1">
+                        {activeItem.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            className="group flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors duration-300 hover:bg-white/[0.04]"
+                            style={{ transitionTimingFunction: ease }}
+                          >
+                            <div>
+                              <p className="text-sm font-medium text-white/80 transition-colors duration-300 group-hover:text-white">
+                                {child.label}
+                              </p>
+                              {child.description && (
+                                <p className="mt-0.5 text-xs text-white/30 transition-colors duration-300 group-hover:text-white/50">
+                                  {child.description}
+                                </p>
+                              )}
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                      <div className="mt-5">
                         <Link
-                          key={child.href}
-                          href={child.href}
-                          className="group flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors duration-300 hover:bg-white/[0.04]"
+                          href={activeItem.href}
+                          className="inline-flex items-center gap-2 rounded-full border border-brand-gold/30 px-5 py-2.5 text-xs font-medium text-brand-gold transition-all duration-500 hover:border-brand-gold/60 hover:bg-brand-gold/10 hover:text-brand-gold active:scale-[0.97]"
                           style={{ transitionTimingFunction: ease }}
                         >
-                          <div>
-                            <p className="text-sm font-medium text-white/80 transition-colors duration-300 group-hover:text-white">
-                              {child.label}
-                            </p>
-                            {child.description && (
-                              <p className="mt-0.5 text-xs text-white/30 transition-colors duration-300 group-hover:text-white/50">
-                                {child.description}
-                              </p>
-                            )}
-                          </div>
+                          View all {activeItem.label.toLowerCase()}
+                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
+                            <path d="M2 6h8M7 3l3 3-3 3" />
+                          </svg>
                         </Link>
-                      ))}
+                      </div>
                     </div>
-                    <div className="mt-5">
-                      <Link
-                        href={activeItem.href}
-                        className="inline-flex items-center gap-2 rounded-full border border-brand-gold/30 px-5 py-2.5 text-xs font-medium text-brand-gold transition-all duration-500 hover:border-brand-gold/60 hover:bg-brand-gold/10 hover:text-brand-gold active:scale-[0.97]"
-                        style={{ transitionTimingFunction: ease }}
-                      >
-                        View all {activeItem.label.toLowerCase()}
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M2 6h8M7 3l3 3-3 3" />
-                        </svg>
-                      </Link>
+                  </Show>
+                  <Show when="signed-out">
+                    <div className="flex flex-col items-center justify-center py-8">
+                      <p className="font-heading text-lg font-bold tracking-wide text-white/80">
+                        Student Access Only
+                      </p>
+                      <SignInButton>
+                        <button className="mt-4 inline-flex items-center justify-center rounded-full bg-brand-red px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-700">
+                          Log In
+                        </button>
+                      </SignInButton>
                     </div>
-                  </div>
+                  </Show>
+                  </>
                 )}
               </div>
             )}
