@@ -48,6 +48,12 @@ export function Navbar(): React.ReactElement {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const prevPathnameRef = useRef(pathname);
+
+  if (prevPathnameRef.current !== pathname) {
+    prevPathnameRef.current = pathname;
+    setActiveDropdown(null);
+  }
 
   function handleEnter(label: string, hasChildren: boolean): void {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -61,10 +67,6 @@ export function Navbar(): React.ReactElement {
   function handleContainerEnter(): void {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   }
-
-  useEffect(() => {
-    setActiveDropdown(null);
-  }, [pathname]);
 
   useEffect(() => {
     return () => {

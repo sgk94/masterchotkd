@@ -15,9 +15,9 @@ vi.mock("next/link", () => ({
 }));
 
 describe("TrialBanner", () => {
-  it("renders $50 / 2 weeks offer", () => {
+  it("renders $49 / 2 weeks offer", () => {
     render(<TrialBanner />);
-    expect(screen.getByText("2 weeks for just $50")).toBeInTheDocument();
+    expect(screen.getByText("2 weeks for just $49")).toBeInTheDocument();
   });
 
   it('renders "Claim this offer" CTA', () => {
@@ -32,9 +32,9 @@ describe("TrialBanner", () => {
     expect(link!.textContent).toBe("Claim this offer");
   });
 
-  it("renders the price tag with $50 and 2 weeks", () => {
+  it("renders the price tag with $49 and 2 weeks", () => {
     render(<TrialBanner />);
-    expect(screen.getByText("$50")).toBeInTheDocument();
+    expect(screen.getByText("$49")).toBeInTheDocument();
     expect(screen.getByText("2 weeks")).toBeInTheDocument();
   });
 });

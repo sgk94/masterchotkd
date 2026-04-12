@@ -36,6 +36,14 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/",
 }));
 
+vi.mock("@clerk/nextjs", () => ({
+  ClerkLoading: ({ children }: React.PropsWithChildren) => <>{children}</>,
+  ClerkLoaded: ({ children }: React.PropsWithChildren) => <>{children}</>,
+  Show: ({ children }: React.PropsWithChildren) => <>{children}</>,
+  SignInButton: ({ children }: React.PropsWithChildren) => <>{children}</>,
+  UserButton: () => <div data-testid="user-button" />,
+}));
+
 describe("Navbar", () => {
   it("renders the logo text", () => {
     render(<Navbar />);
