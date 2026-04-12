@@ -47,11 +47,11 @@ export function Navbar(): React.ReactElement {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
+  const [prevPathname, setPrevPathname] = useState(pathname);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const prevPathnameRef = useRef(pathname);
 
-  if (prevPathnameRef.current !== pathname) {
-    prevPathnameRef.current = pathname;
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setActiveDropdown(null);
   }
 
