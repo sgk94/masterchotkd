@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const ease = "cubic-bezier(0.32, 0.72, 0, 1)";
@@ -19,46 +18,32 @@ const scheduleRows = [
     },
   },
   {
-    label: "Camo-Purple (Intermediate)",
+    label: "Family / All Belts",
     times: {
-      Monday: "5:30 – 6:10",
-      Tuesday: "4:00 – 4:40",
-      Wednesday: "5:30 – 6:10",
-      Thursday: "4:00 – 4:40",
-      Friday: "3:30 – 4:10",
+      Monday: "6:10 – 6:50",
+      Tuesday: "7:30 – 8:15",
+      Wednesday: "6:10 – 6:50",
+      Thursday: "7:30 – 8:15",
+      Friday: "5:30 – 6:15",
     },
   },
   {
-    label: "Blue-Black (Advanced)",
+    label: "Adult & Teens",
     times: {
-      Monday: "4:50 – 5:30",
-      Tuesday: "5:20 – 6:00",
-      Wednesday: "4:50 – 5:30",
-      Thursday: "5:20 – 6:00",
-      Friday: "3:30 – 4:10",
+      Monday: "6:50 – 7:30",
+      Wednesday: "6:50 – 7:30",
+      Friday: "5:30 – 6:15",
     },
   },
 ];
 
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] as const;
 
-const beltCycles = [
-  { belt: "White", color: "#f5f5f5", border: true, poomsae: "Basic Form", handTech: "1–6", board: "Hammer Fist" },
-  { belt: "Orange", color: "#FFE0B2", border: false, poomsae: "Taegeuk 1", handTech: "7–12", board: "Knife Hand" },
-  { belt: "Yellow", color: "#FFF176", border: false, poomsae: "Taegeuk 2", handTech: "13–18", board: "Palm Strike" },
-  { belt: "Camo", color: "#C8E6C9", border: false, poomsae: "Taegeuk 3", handTech: "19–24", board: "Side Kick" },
-  { belt: "Green", color: "#66BB6A", border: false, poomsae: "Taegeuk 4", handTech: "25–30", board: "Back Kick" },
-  { belt: "Purple", color: "#CE93D8", border: false, poomsae: "Taegeuk 5", handTech: "31–36", board: "Spinning Back Kick" },
-  { belt: "Blue", color: "#64B5F6", border: false, poomsae: "Taegeuk 6", handTech: "37–42", board: "Jump Front Kick" },
-  { belt: "Brown", color: "#A1887F", border: false, poomsae: "Taegeuk 7", handTech: "43–48", board: "Spinning Hook Kick" },
-  { belt: "Red", color: "#EF5350", border: false, poomsae: "Taegeuk 8", handTech: "49–54", board: "Tornado Kick" },
-];
-
 const whatToExpect = [
   { title: "Comprehensive Training", description: "Poomsae, sparring, weapons, breaking, and hand techniques — a complete martial arts education." },
   { title: "Character Development", description: "Building discipline, respect, and confidence that extends beyond the dojang." },
-  { title: "Belt Progression", description: "Work through 9 color belt levels from White to Red, then advance toward your Black Belt." },
-  { title: "Flexible Schedule", description: "Up to 3 classes per week with Beginner, Intermediate, and Advanced sessions available." },
+  { title: "Structured Advancement", description: "Students grow through consistent training, clear goals, and instructor feedback at every stage." },
+  { title: "Flexible Schedule", description: "New students can get started with beginner, family/all belts, and adult & teen classes throughout the week." },
 ];
 
 const faq = [
@@ -172,7 +157,7 @@ export default function BlackBeltClubPage(): React.ReactElement {
           <h2 className="mt-5 font-heading text-2xl tracking-tight text-brand-black sm:text-3xl">
             Black Belt Club Schedule
           </h2>
-          <p className="mt-2 text-sm text-brand-black/40">40-minute classes, Monday – Friday &middot; Beginner, Intermediate &amp; Advanced</p>
+          <p className="mt-2 text-sm text-brand-black/40">Classes open to new students, based on our current public schedule</p>
         </div>
         <div
           className="mt-8"
@@ -198,82 +183,11 @@ export default function BlackBeltClubPage(): React.ReactElement {
                   </div>
                   {days.map((day) => (
                     <div key={day} className="bg-white p-4 text-center">
-                      <p className="font-heading text-sm text-brand-black">{row.times[day]}</p>
+                      <p className="font-heading text-sm text-brand-black">{row.times[day] ?? "—"}</p>
                     </div>
                   ))}
                 </div>
               ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Belt Curriculum */}
-      <div className="mt-20">
-        <div
-          data-reveal="0"
-          className="transition-[opacity,transform] duration-[900ms] will-change-[transform,opacity]"
-          style={{ opacity: 0, transform: "translateY(1.5rem)", transitionTimingFunction: ease }}
-        >
-          <span className="inline-block rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
-            Belt Progression
-          </span>
-          <h2 className="mt-5 font-heading text-2xl tracking-tight text-brand-black sm:text-3xl">
-            Color Belt Curriculum
-          </h2>
-          <p className="mt-2 text-sm text-brand-black/40">White belt through Red — 9 levels toward Black Belt</p>
-        </div>
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {beltCycles.map((row, i) => (
-            <div
-              key={row.belt}
-              data-reveal={(i + 1) * 80}
-              className="transition-[opacity,transform] duration-[900ms] will-change-[transform,opacity]"
-              style={{ opacity: 0, transform: "translateY(1.5rem)", transitionTimingFunction: ease }}
-            >
-              <div className="h-full rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-                <div className="flex h-full flex-col rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="h-8 w-8 rounded-full shadow-sm"
-                      style={{
-                        backgroundColor: row.color,
-                        border: row.border ? "2px solid #d4c5b0" : "none",
-                      }}
-                    />
-                    <h3 className="font-heading text-lg text-brand-black">{row.belt}</h3>
-                  </div>
-                  <div className="my-4 h-px bg-brand-taupe/15" />
-                  <div className="flex flex-col gap-2.5">
-                    {[
-                      { label: "Poomsae", value: row.poomsae },
-                      { label: "Hand Tech", value: row.handTech },
-                      { label: "Board Break", value: row.board },
-                    ].map((f) => (
-                      <div key={f.label} className="flex items-center justify-between">
-                        <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-brand-black/35">{f.label}</span>
-                        <span className="text-sm font-medium text-brand-black/70">{f.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Weapons note */}
-        <div
-          className="mt-6"
-          data-reveal="800"
-          style={{ opacity: 0, transform: "translateY(1.5rem)", transitionTimingFunction: ease, transitionDuration: "900ms", transitionProperty: "opacity, transform" }}
-        >
-          <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-            <div className="rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
-              <h3 className="font-heading text-base text-brand-black">Weapons</h3>
-              <p className="mt-2 text-sm leading-relaxed text-brand-black/55">
-                Weapons are based on the current cycle: Bahng Mang Ee, Jahng Bong, or Sahng Jeol Bong. Need to purchase a weapon? Ask one of our instructors!
-              </p>
             </div>
           </div>
         </div>

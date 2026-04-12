@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const ease = "cubic-bezier(0.32, 0.72, 0, 1)";
@@ -15,21 +14,11 @@ const schedule = [
   { day: "Friday", time: "4:50 – 5:30" },
 ];
 
-const beltCycles = [
-  { belt: "White", color: "#f5f5f5", border: true, poomsae: "Half Basic", oneStep: "White 1", handTech: "1–6", board: "Hammer Fist" },
-  { belt: "White / Orange", color: "#FFF3E0", border: false, poomsae: "Full Basic", oneStep: "White 1–2", handTech: "1–6", board: "Front Kick" },
-  { belt: "Orange", color: "#FFE0B2", border: false, poomsae: "Half Taegeuk 1", oneStep: "Orange 1", handTech: "7–12", board: "Knife Hand" },
-  { belt: "Orange / Yellow", color: "#FFF9C4", border: false, poomsae: "Full Taegeuk 1", oneStep: "Orange 1–2", handTech: "7–12", board: "Axe Kick" },
-  { belt: "Yellow", color: "#FFF176", border: false, poomsae: "Half Taegeuk 2", oneStep: "Yellow 1", handTech: "13–18", board: "Palm Strike" },
-  { belt: "Yellow / Camo", color: "#E8F5E9", border: false, poomsae: "Full Taegeuk 2", oneStep: "Yellow 1–2", handTech: "13–18", board: "Push Kick" },
-  { belt: "Camo", color: "#C8E6C9", border: false, poomsae: "Half Taegeuk 3", oneStep: "Camo 1", handTech: "19–24", board: "Side Kick" },
-];
-
 const whatToExpect = [
   { title: "Fun & Engaging Classes", description: "Age-appropriate drills, games, and activities that keep kids excited while learning real martial arts skills." },
   { title: "Life Skills Development", description: "Listening, following directions, self-confidence, and respect — skills that carry over to school and home." },
-  { title: "Belt Progression", description: "Students advance through colored belts (White → Camo), earning stripes for mastering each skill area." },
-  { title: "Weapons Training", description: "Based on the current cycle: Bahng Mang Ee, Jahng Bong, or Sahng Jeol Bong. Ask an instructor for help purchasing." },
+  { title: "Positive Milestones", description: "Students stay motivated with clear goals, encouragement, and celebrations that build confidence over time." },
+  { title: "Supportive Instruction", description: "Our instructors guide each child with patience and structure so families feel confident from day one." },
 ];
 
 const faq = [
@@ -160,78 +149,6 @@ export default function TinyTigersPage(): React.ReactElement {
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Belt Curriculum */}
-      <div className="mt-20">
-        <div
-          data-reveal="0"
-          className="transition-[opacity,transform] duration-[900ms] will-change-[transform,opacity]"
-          style={{ opacity: 0, transform: "translateY(1.5rem)", transitionTimingFunction: ease }}
-        >
-          <span className="inline-block rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
-            Belt Progression
-          </span>
-          <h2 className="mt-5 font-heading text-2xl tracking-tight text-brand-black sm:text-3xl">
-            Tiny Tiger Curriculum
-          </h2>
-          <p className="mt-2 text-sm text-brand-black/40">White belt through Camo — 7 levels</p>
-        </div>
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {beltCycles.map((row, i) => (
-            <div
-              key={row.belt}
-              data-reveal={(i + 1) * 80}
-              className="transition-[opacity,transform] duration-[900ms] will-change-[transform,opacity]"
-              style={{ opacity: 0, transform: "translateY(1.5rem)", transitionTimingFunction: ease }}
-            >
-              <div className="h-full rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-                <div className="flex h-full flex-col rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="h-8 w-8 rounded-full shadow-sm"
-                      style={{
-                        backgroundColor: row.color,
-                        border: row.border ? "2px solid #d4c5b0" : "none",
-                      }}
-                    />
-                    <h3 className="font-heading text-lg text-brand-black">{row.belt}</h3>
-                  </div>
-                  <div className="my-4 h-px bg-brand-taupe/15" />
-                  <div className="flex flex-col gap-2.5">
-                    {[
-                      { label: "Poomsae", value: row.poomsae },
-                      { label: "One-Step", value: row.oneStep },
-                      { label: "Hand Tech", value: row.handTech },
-                      { label: "Board Break", value: row.board },
-                    ].map((f) => (
-                      <div key={f.label} className="flex items-center justify-between">
-                        <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-brand-black/35">{f.label}</span>
-                        <span className="text-sm font-medium text-brand-black/70">{f.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Weapons note */}
-        <div
-          className="mt-6"
-          data-reveal="600"
-          style={{ opacity: 0, transform: "translateY(1.5rem)", transitionTimingFunction: ease, transitionDuration: "900ms", transitionProperty: "opacity, transform" }}
-        >
-          <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-            <div className="rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
-              <h3 className="font-heading text-base text-brand-black">Weapons</h3>
-              <p className="mt-2 text-sm leading-relaxed text-brand-black/55">
-                Weapons are based on the current cycle: Bahng Mang Ee, Jahng Bong, or Sahng Jeol Bong. Need to purchase a weapon? Ask one of our instructors!
-              </p>
             </div>
           </div>
         </div>

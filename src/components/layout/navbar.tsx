@@ -11,6 +11,7 @@ type SubItem = { label: string; href: string; description?: string; image?: stri
 type NavItem = { label: string; href: string; children?: SubItem[]; layout?: "cards" | "list" };
 
 const leftLinks: NavItem[] = [
+  { label: "About", href: "/about" },
   {
     label: "Programs",
     href: "/programs",
@@ -23,21 +24,20 @@ const leftLinks: NavItem[] = [
     ],
   },
   { label: "Schedule", href: "/schedule" },
-  { label: "About", href: "/about" },
+  { label: "Reviews", href: "/reviews" },
 ];
 
 const rightLinks: NavItem[] = [
   {
-    label: "Students",
+    label: "Members",
     href: "/students",
     children: [
-      { label: "Tiny Tigers", href: "/programs/tiny-tigers", description: "Ages 4-6 resources" },
+      { label: "Tiny Tigers", href: "/students/curriculum/tiny-tigers", description: "Ages 4-6 resources" },
       { label: "Curriculum", href: "/students/curriculum", description: "Belt requirements" },
       { label: "Poomsae Forms", href: "/students/forms", description: "Video library" },
       { label: "Resources", href: "/students/resources", description: "Training materials" },
     ],
   },
-  { label: "Reviews", href: "/reviews" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -230,7 +230,7 @@ export function Navbar(): React.ReactElement {
                     </div>
                   </div>
                 ) : (
-                  /* Students list layout — gated for signed-out users */
+                  /* Members list layout — gated for signed-out users */
                   <>
                   <Show when="signed-in">
                     <div>
@@ -275,7 +275,7 @@ export function Navbar(): React.ReactElement {
                   <Show when="signed-out">
                     <div className="flex flex-col items-center justify-center py-8">
                       <p className="font-heading text-lg font-bold tracking-wide text-white/80">
-                        Student Access Only
+                        Member Access Only
                       </p>
                       <SignInButton>
                         <button className="mt-4 inline-flex items-center justify-center rounded-full bg-brand-red px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-700">

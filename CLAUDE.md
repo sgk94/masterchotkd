@@ -178,6 +178,7 @@ db, server-env, client-env, fonts, metadata, email, rate-limit, sanitize, static
 - Programs grid order is hardcoded in `gridOrder` array — must match bento layout positions
 - `api-security.ts` has `validateOrigin()` and `getClientIp()` ready for when API routes are re-enabled
 - CSP allows `unsafe-inline` + `unsafe-eval` for scripts (required by Next.js) — tighten with nonces later
+- CSP currently also allows Clerk wildcard domains plus `https://challenges.cloudflare.com` so Clerk JS and CAPTCHA work in dev; before production, tighten these to the minimum exact origins the live auth flow needs
 - Navbar mega-menu uses 200ms leave timeout to prevent flicker — `onMouseLeave` only on outer container
 - Trial banner `border-spin` animation defined in `globals.css` — uses `transform: rotate()` not `rotate` shorthand
 - Button `outline` variant has `border-white/30 text-white` baked in — override with `!` prefix (e.g., testimonials button)
@@ -207,6 +208,7 @@ All in `public/images/` — JPEG format, 2560px wide:
 10. Get logo redrawn as proper vector SVG (current one has embedded raster)
 11. Gate or remove `/preview` page for production
 12. Tighten CSP (replace `unsafe-inline` with nonces)
+13. Review Clerk/CAPTCHA CSP allowances for production — prefer exact Clerk origins over wildcards and keep only the minimum external auth hosts required
 
 ## Repo
 - **GitHub:** github.com/sgk94/masterchotkd
