@@ -14,23 +14,32 @@ export function Hero(): React.ReactElement {
   }, []);
 
   return (
-    <section className="relative -mt-16 flex min-h-[100dvh] items-center overflow-hidden bg-brand-black">
-      {/* Background video */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 h-full w-full object-cover"
+    <section className="relative -mt-16 flex min-h-[100dvh] items-center overflow-hidden bg-[#0a0a2e]">
+      {/* Video — positioned right, wider so it underlaps the title */}
+      <div
+        className="absolute inset-y-0 right-0 hidden w-[75%] lg:block"
+        style={{
+          opacity: mounted ? 0.75 : 0,
+          transition: `opacity 1.2s ${ease} 400ms`,
+        }}
       >
-        <source src="/videos/hero.mp4" type="video/mp4" />
-      </video>
-      {/* Gradient overlays for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/80 to-brand-black/40" />
-      <div className="absolute inset-0 bg-gradient-to-t from-brand-black/50 via-transparent to-brand-black/20" />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="h-full w-full object-cover"
+        >
+          <source src="/videos/hero.mp4" type="video/mp4" />
+        </video>
+        {/* Vignette — fades video into the background on all edges */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a2e] via-[#0a0a2e]/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a2e] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a2e] via-transparent to-transparent" />
+      </div>
 
-      <div className="relative z-10 flex w-full items-center py-20 pl-4 pr-0 sm:pl-6 lg:pl-[max(1.5rem,calc((100%-80rem)/2+1.5rem))] lg:py-40">
-        {/* Left — text content */}
+      {/* Text content */}
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-32 pt-32 lg:py-40 lg:pt-40">
         <div className="max-w-xl">
           {/* Eyebrow */}
           <div
@@ -83,7 +92,6 @@ export function Hero(): React.ReactElement {
             </Button>
           </div>
         </div>
-
       </div>
 
       {/* Scroll indicator */}
