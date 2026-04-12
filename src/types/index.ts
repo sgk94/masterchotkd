@@ -48,6 +48,6 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Programs", href: "/programs" },
   { label: "Schedule", href: "/schedule" },
   { label: "Reviews", href: "/reviews" },
-  { label: "Students", href: "/students" },
+  { label: "Members", href: "/students" },
   { label: "Contact", href: "/contact" },
 ];

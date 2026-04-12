@@ -6,16 +6,20 @@ const clerkCspOrigins = [
   "https://*.clerk.services",
 ];
 
+const captchaCspOrigins = [
+  "https://challenges.cloudflare.com",
+];
+
 const contentSecurityPolicy = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${clerkCspOrigins.join(" ")}`,
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${[...clerkCspOrigins, ...captchaCspOrigins].join(" ")}`,
   "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' https://picsum.photos https://fastly.picsum.photos data: blob: ${clerkCspOrigins.join(
+  `img-src 'self' https://picsum.photos https://fastly.picsum.photos data: blob: ${[...clerkCspOrigins, ...captchaCspOrigins].join(
     " ",
   )}`,
   `font-src 'self' ${clerkCspOrigins.join(" ")}`,
-  `connect-src 'self' ${clerkCspOrigins.join(" ")}`,
-  `frame-src 'self' ${clerkCspOrigins.join(" ")}`,
+  `connect-src 'self' ${[...clerkCspOrigins, ...captchaCspOrigins].join(" ")}`,
+  `frame-src 'self' ${[...clerkCspOrigins, ...captchaCspOrigins].join(" ")}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
