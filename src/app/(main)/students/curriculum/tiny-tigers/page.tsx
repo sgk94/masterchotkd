@@ -40,6 +40,12 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
         >
           Poomsae Videos
         </a>
+        <a
+          href="#resources"
+          className="inline-flex shrink-0 items-center rounded-full border border-brand-taupe/30 bg-brand-cream px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-brand-black/60 transition-colors hover:text-brand-black"
+        >
+          Resources
+        </a>
       </div>
 
       <section id="curriculum-overview" className="scroll-mt-28">
@@ -148,6 +154,56 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section id="resources" className="mt-12 scroll-mt-28">
+        <span className="inline-block rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
+          Resources
+        </span>
+        <h2 className="mt-5 font-heading text-2xl tracking-tight text-brand-black sm:text-3xl">
+          Tiny Tigers Resources
+        </h2>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-brand-black/55">
+          Open printable materials and member references in a new tab.
+        </p>
+
+        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <a
+            href="/student-resources/tiny-tiger-handbook"
+            target="_blank"
+            rel="noreferrer"
+            className="overflow-hidden rounded-[1.5rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15 transition-transform duration-300 hover:-translate-y-0.5"
+          >
+            <div className="flex h-full flex-col rounded-[calc(1.5rem-6px)] bg-white p-5">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-cream text-brand-black/55">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+                  <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z" />
+                  <path d="M14 2v5h5" />
+                  <path d="M9 13h6" />
+                  <path d="M9 17h6" />
+                </svg>
+              </div>
+
+              <div className="mt-5">
+                <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-brand-black/35">
+                  PDF Resource
+                </p>
+                <h3 className="mt-2 font-heading text-xl text-brand-black">Handbook</h3>
+                <p className="mt-2 text-sm leading-relaxed text-brand-black/55">
+                  Open the Tiny Tigers handbook in a new browser tab.
+                </p>
+              </div>
+
+              <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-brand-red">
+                View handbook
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+                  <path d="M7 17L17 7" />
+                  <path d="M9 7h8v8" />
+                </svg>
+              </div>
+            </div>
+          </a>
         </div>
       </section>
     </div>
