@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { staticTestimonials } from "@/lib/static-data";
 
 export async function Testimonials(): Promise<React.ReactElement> {
+  const featuredReviews = staticTestimonials.slice(0, 3);
+
   return (
     <section className="bg-brand-cream px-6 py-20 lg:py-28">
       <div className="mx-auto max-w-7xl">
@@ -13,13 +15,16 @@ export async function Testimonials(): Promise<React.ReactElement> {
             <h2 className="mt-3 font-heading text-3xl tracking-tight text-brand-black sm:text-4xl">
               Real people, real results
             </h2>
+            <p className="mt-3 text-sm text-brand-black/60">
+              Real Google review quotes from Master Cho&apos;s families and students. Names abbreviated for privacy.
+            </p>
           </div>
           <Button variant="outline" href="/reviews" className="!border-brand-gold !text-brand-gold hover:!bg-brand-gold/5">
             See all reviews
           </Button>
         </div>
         <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
-          {staticTestimonials.map((t) => (
+          {featuredReviews.map((t) => (
             <div key={t.id} className="rounded-xl bg-brand-white p-7 shadow-sm">
               <div className="text-brand-gold tracking-wider">
                 {"★".repeat(t.rating)}
@@ -27,11 +32,13 @@ export async function Testimonials(): Promise<React.ReactElement> {
               <p className="mt-4 text-sm leading-relaxed text-brand-black/70">
                 &ldquo;{t.text}&rdquo;
               </p>
-              <div className="mt-5 flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-red/10 text-xs font-semibold text-brand-red">
-                  {t.name.split(" ").map((n) => n[0]).join("")}
+              <div className="mt-5 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-red/10 text-xs font-semibold text-brand-red">
+                    {t.name.split(" ").map((n) => n[0]).join("")}
+                  </div>
+                  <p className="text-sm font-medium text-brand-black/50">{t.name}</p>
                 </div>
-                <p className="text-sm font-medium text-brand-black/50">{t.name}</p>
               </div>
             </div>
           ))}
