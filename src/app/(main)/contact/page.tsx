@@ -45,9 +45,8 @@ export default function ContactPage(): React.ReactElement {
                 Follow Us
               </h3>
               <div className="mt-1 flex gap-4">
-                {/* TODO: Replace with actual Facebook/Instagram page URLs */}
                 <a
-                  href="https://facebook.com"
+                  href="https://www.facebook.com/masterchostaekwondo/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-brand-blue transition-colors hover:text-brand-red"
@@ -55,7 +54,7 @@ export default function ContactPage(): React.ReactElement {
                   Facebook
                 </a>
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/masterchostaekwondo/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-brand-blue transition-colors hover:text-brand-red"
