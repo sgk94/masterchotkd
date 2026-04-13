@@ -79,7 +79,7 @@ export default function WeeklyTrainingPage(): React.ReactElement {
     <div>
       {/* Back link */}
       <Link
-        href="/students/curriculum"
+        href="/members/curriculum"
         className="group inline-flex items-center gap-2 text-sm text-brand-black/40 transition-colors duration-500 hover:text-brand-black/70"
         style={{ transitionTimingFunction: ease }}
       >

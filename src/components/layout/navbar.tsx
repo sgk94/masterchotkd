@@ -30,12 +30,13 @@ const leftLinks: NavItem[] = [
 const rightLinks: NavItem[] = [
   {
     label: "Members",
-    href: "/students",
+    href: "/members",
     children: [
-      { label: "Tiny Tigers", href: "/students/curriculum/tiny-tigers", description: "Ages 4-6 resources" },
-      { label: "Curriculum", href: "/students/curriculum", description: "Belt requirements" },
-      { label: "Poomsae Forms", href: "/students/forms", description: "Video library" },
-      { label: "Resources", href: "/students/resources", description: "Training materials" },
+      { label: "Announcements", href: "/members", description: "Monthly updates" },
+      { label: "Current Cycle", href: "/members/current-cycle", description: "Current cycle materials" },
+      { label: "Tiny Tigers", href: "/members/curriculum/tiny-tigers", description: "Ages 4-6 resources" },
+      { label: "Color Belt", href: "/members/curriculum/color-belt", description: "Color belt curriculum" },
+      { label: "Resources", href: "/members/resources", description: "Training materials" },
     ],
   },
   { label: "Contact", href: "/contact" },
@@ -257,18 +258,6 @@ export function Navbar(): React.ReactElement {
                             </div>
                           </Link>
                         ))}
-                      </div>
-                      <div className="mt-5">
-                        <Link
-                          href={activeItem.href}
-                          className="inline-flex items-center gap-2 rounded-full border border-brand-gold/30 px-5 py-2.5 text-xs font-medium text-brand-gold transition-all duration-500 hover:border-brand-gold/60 hover:bg-brand-gold/10 hover:text-brand-gold active:scale-[0.97]"
-                          style={{ transitionTimingFunction: ease }}
-                        >
-                          View all {activeItem.label.toLowerCase()}
-                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
-                            <path d="M2 6h8M7 3l3 3-3 3" />
-                          </svg>
-                        </Link>
                       </div>
                     </div>
                   </Show>

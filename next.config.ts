@@ -35,6 +35,28 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "fastly.picsum.photos" },
     ],
   },
+  redirects: async () => [
+    {
+      source: "/students",
+      destination: "/members",
+      permanent: true,
+    },
+    {
+      source: "/students/:path*",
+      destination: "/members/:path*",
+      permanent: true,
+    },
+  ],
+  rewrites: async () => [
+    {
+      source: "/members",
+      destination: "/students",
+    },
+    {
+      source: "/members/:path*",
+      destination: "/students/:path*",
+    },
+  ],
   headers: async () => [
     {
       source: "/(.*)",
