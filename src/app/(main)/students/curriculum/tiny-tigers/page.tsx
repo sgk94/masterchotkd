@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FloatingSectionNav } from "@/components/members/floating-section-nav";
 
 const camoPattern = "url(/images/camo-pattern.jpg)";
 
@@ -26,6 +27,15 @@ const weaponVideos = [
   { title: "Tiny Tigers Bahng Mang Ee", weapon: "Bahng Mang Ee" },
   { title: "Tiny Tigers Jahng Bong", weapon: "Jahng Bong" },
   { title: "Tiny Tigers Sahng Jeol Bong", weapon: "Sahng Jeol Bong" },
+];
+
+const sectionLinks = [
+  { href: "#curriculum-overview", label: "Curriculum" },
+  { href: "#poomsae-videos", label: "Poomsae Videos" },
+  { href: "#weapon-videos", label: "Weapon Videos" },
+  { href: "#hand-techniques", label: "Hand Techniques" },
+  { href: "#board-breaking", label: "Board Breaking" },
+  { href: "#resources", label: "Resources" },
 ];
 
 const tinyTigerHandTechniques = [
@@ -127,47 +137,24 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
       <h1 className="mt-4 font-heading text-3xl text-brand-black">Tiny Tiger Curriculum</h1>
       <p className="mt-2 text-sm font-medium text-brand-gold">Ages 3-6</p>
 
-      <div className="mt-6 flex gap-2 overflow-x-auto pb-1">
-        <a
-          href="#curriculum-overview"
-          className="inline-flex shrink-0 items-center rounded-full border border-brand-taupe/30 bg-brand-cream px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-brand-black/60 transition-colors hover:text-brand-black"
-        >
-          Curriculum
-        </a>
-        <a
-          href="#poomsae-videos"
-          className="inline-flex shrink-0 items-center rounded-full border border-brand-taupe/30 bg-brand-cream px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-brand-black/60 transition-colors hover:text-brand-black"
-        >
-          Poomsae Videos
-        </a>
-        <a
-          href="#weapon-videos"
-          className="inline-flex shrink-0 items-center rounded-full border border-brand-taupe/30 bg-brand-cream px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-brand-black/60 transition-colors hover:text-brand-black"
-        >
-          Weapon Videos
-        </a>
-        <a
-          href="#hand-techniques"
-          className="inline-flex shrink-0 items-center rounded-full border border-brand-taupe/30 bg-brand-cream px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-brand-black/60 transition-colors hover:text-brand-black"
-        >
-          Hand Techniques
-        </a>
-        <a
-          href="#board-breaking"
-          className="inline-flex shrink-0 items-center rounded-full border border-brand-taupe/30 bg-brand-cream px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-brand-black/60 transition-colors hover:text-brand-black"
-        >
-          Board Breaking
-        </a>
-        <a
-          href="#resources"
-          className="inline-flex shrink-0 items-center rounded-full border border-brand-taupe/30 bg-brand-cream px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-brand-black/60 transition-colors hover:text-brand-black"
-        >
-          Resources
-        </a>
+      <div className="mt-6 flex gap-2 overflow-x-auto pb-1 lg:hidden">
+        {sectionLinks.map((link) => (
+          <a
+            key={link.href}
+            href={link.href}
+            className="inline-flex shrink-0 items-center rounded-full border border-brand-taupe/30 bg-brand-cream px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-brand-black/60 transition-colors hover:text-brand-black"
+          >
+            {link.label}
+          </a>
+        ))}
       </div>
 
+      <div className="mt-8 lg:grid lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-6 xl:grid-cols-[12rem_minmax(0,1fr)] xl:gap-8">
+        <FloatingSectionNav ariaLabel="Tiny Tigers section navigation" links={sectionLinks} />
+
+        <div className="min-w-0 space-y-12">
       <section id="curriculum-overview" className="scroll-mt-28">
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:auto-rows-fr xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:auto-rows-fr xl:grid-cols-3">
         {cycles.map((row) => (
           <div
             key={row.cycle}
@@ -191,22 +178,22 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
                 {row.cycle}
               </h3>
             </div>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-3 px-4 py-4 text-sm text-brand-black/70">
-              <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-brand-black/40">Poomsae</p>
-                <p className="mt-1 leading-snug">{row.poomsae}</p>
+            <div className="space-y-3 px-4 py-4 text-sm text-brand-black/70">
+              <div className="grid grid-cols-[4.4rem_minmax(0,1fr)] items-baseline gap-x-3">
+                <p className="text-[10px] font-medium uppercase leading-none tracking-[0.14em] text-brand-black/40">Poomsae</p>
+                <p className="leading-tight">{row.poomsae}</p>
               </div>
-              <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-brand-black/40">One-Step</p>
-                <p className="mt-1 leading-snug">{row.oneStep}</p>
+              <div className="grid grid-cols-[4.4rem_minmax(0,1fr)] items-baseline gap-x-3">
+                <p className="text-[10px] font-medium uppercase leading-none tracking-[0.14em] text-brand-black/40">One-Step</p>
+                <p className="leading-tight">{row.oneStep}</p>
               </div>
-              <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-brand-black/40">Hand Tech</p>
-                <p className="mt-1 leading-snug">{row.handTech}</p>
+              <div className="grid grid-cols-[4.4rem_minmax(0,1fr)] items-baseline gap-x-3">
+                <p className="text-[10px] font-medium uppercase leading-none tracking-[0.14em] text-brand-black/40">Hand Tech</p>
+                <p className="leading-tight">{row.handTech}</p>
               </div>
-              <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-brand-black/40">Board</p>
-                <p className="mt-1 leading-snug">{row.board}</p>
+              <div className="grid grid-cols-[4.4rem_minmax(0,1fr)] items-baseline gap-x-3">
+                <p className="text-[10px] font-medium uppercase leading-none tracking-[0.14em] text-brand-black/40">Board</p>
+                <p className="leading-tight">{row.board}</p>
               </div>
             </div>
           </div>
@@ -237,7 +224,7 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
           Practice each Tiny Tigers form with the matching video for your current cycle.
         </p>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {poomsaeVideos.map((video) => (
             <div
               key={`${video.belt}-${video.title}`}
@@ -286,7 +273,7 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
           Practice Tiny Tigers weapon videos separately from the poomsae lessons.
         </p>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
           {weaponVideos.map((video) => (
             <div
               key={video.title}
@@ -319,7 +306,7 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
           Keep this section compact by default, then open it to review the Tiny Tigers hand-technique ranges.
         </p>
 
-        <div className="mt-8 max-w-5xl">
+        <div className="mt-8 max-w-4xl 2xl:max-w-5xl">
           <ExpandableVideoCard
             eyebrow="All Cycles"
             title="Tiny Tigers Hand Techniques"
@@ -348,7 +335,7 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
           Open this card to review the Tiny Tigers board-breaking requirement for each cycle.
         </p>
 
-        <div className="mt-8 max-w-5xl">
+        <div className="mt-8 max-w-4xl 2xl:max-w-5xl">
           <ExpandableVideoCard
             eyebrow="All Cycles"
             title="Tiny Tigers Board Breaks"
@@ -389,7 +376,7 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
           Open printable materials and member references in a new tab.
         </p>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           <a
             href="/student-resources/tiny-tiger-handbook"
             target="_blank"
@@ -427,6 +414,8 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
           </a>
         </div>
       </section>
+      </div>
+    </div>
     </div>
   );
 }
