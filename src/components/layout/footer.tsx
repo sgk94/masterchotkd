@@ -20,9 +20,8 @@ export function Footer(): React.ReactElement {
           <h4 className="mb-4 text-sm font-semibold text-brand-gold">Contact</h4>
           <ul className="flex flex-col gap-2">
             <li><a href="tel:+14253610688" className="text-sm text-white/70 hover:text-white transition-colors">425-361-0688</a></li>
-            {/* TODO: Replace with actual Facebook/Instagram page URLs */}
-            <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 hover:text-white transition-colors">Facebook</a></li>
-            <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 hover:text-white transition-colors">Instagram</a></li>
+            <li><a href="https://www.facebook.com/masterchostaekwondo/" target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 hover:text-white transition-colors">Facebook</a></li>
+            <li><a href="https://www.instagram.com/masterchostaekwondo/" target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 hover:text-white transition-colors">Instagram</a></li>
           </ul>
         </div>
         <div className="text-center">

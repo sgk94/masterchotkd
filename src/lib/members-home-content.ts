@@ -86,9 +86,8 @@ export function getMembersHomeContent(): MembersHomeContent {
       title: "Stay Connected",
       description:
         "Looking for a place to connect with other parents, find updates, and keep up with news? Follow our social pages. Announcements can be posted there as well as here on the Members page.",
-      // TODO: Replace with actual Facebook/Instagram page URLs
-      facebookUrl: "https://facebook.com",
-      instagramUrl: "https://instagram.com",
+      facebookUrl: "https://www.facebook.com/masterchostaekwondo/",
+      instagramUrl: "https://www.instagram.com/masterchostaekwondo/",
     },
     announcementsEyebrow: "Latest Updates",
     announcements: [
@@ -107,10 +106,9 @@ export function getMembersHomeContent(): MembersHomeContent {
       title: "Spark Member App",
       description: "Download the member app to stay updated with announcements and events.",
       iosLabel: "iOS Member App Download",
-      // TODO: Replace with actual App Store / Google Play URLs
-      iosUrl: "#",
+      iosUrl: "https://apps.apple.com/us/app/spark-member/id1453013929",
       androidLabel: "Android Member App Download",
-      androidUrl: "#",
+      androidUrl: "https://play.google.com/store/apps/details?id=com.sparkmembership.generalapp",
       stepsTitle: "Steps For The Member App",
       steps: [
         'Download the "Spark Member" app on iOS or Android.',
