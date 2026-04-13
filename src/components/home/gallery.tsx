@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 
 const galleryItems = [
@@ -12,6 +12,27 @@ const galleryItems = [
 
 export function Gallery(): React.ReactElement {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+
+  const goNext = useCallback(() => {
+    setLightboxIndex((prev) => (prev !== null ? (prev + 1) % galleryItems.length : null));
+  }, []);
+
+  const goPrev = useCallback(() => {
+    setLightboxIndex((prev) => (prev !== null ? (prev - 1 + galleryItems.length) % galleryItems.length : null));
+  }, []);
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    function handleKeyDown(e: KeyboardEvent): void {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowRight") goNext();
+      if (e.key === "ArrowLeft") goPrev();
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxIndex, closeLightbox, goNext, goPrev]);
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-20 lg:py-28">
@@ -45,18 +66,35 @@ export function Gallery(): React.ReactElement {
       {lightboxIndex !== null && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-brand-black/90 p-4 backdrop-blur-sm"
-          onClick={() => setLightboxIndex(null)}
+          onClick={closeLightbox}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Photo: ${galleryItems[lightboxIndex].alt}`}
         >
           <button
+            className="absolute left-5 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            onClick={(e) => { e.stopPropagation(); goPrev(); }}
+            aria-label="Previous photo"
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M11 4L6 9l5 5" /></svg>
+          </button>
+          <button
             className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-            onClick={() => setLightboxIndex(null)}
+            onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
             aria-label="Close lightbox"
           >
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <line x1="1" y1="1" x2="17" y2="17" /><line x1="17" y1="1" x2="1" y2="17" />
             </svg>
           </button>
-          <div className="relative h-[80vh] w-full max-w-4xl overflow-hidden rounded-2xl">
+          <button
+            className="absolute right-5 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            onClick={(e) => { e.stopPropagation(); goNext(); }}
+            aria-label="Next photo"
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M7 4l5 5-5 5" /></svg>
+          </button>
+          <div className="relative h-[80vh] w-full max-w-4xl overflow-hidden rounded-2xl" onClick={(e) => e.stopPropagation()}>
             <Image
               src={galleryItems[lightboxIndex].src}
               alt={galleryItems[lightboxIndex].alt}

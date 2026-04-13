@@ -1,7 +1,5 @@
 import { Resend } from "resend";
-import { serverEnv } from "@/lib/server-env";
-
-const resend = new Resend(serverEnv.RESEND_API_KEY);
+import { getServerEnv } from "@/lib/server-env";
 
 type SendEmailParams = { to: string; subject: string; html: string };
 
@@ -10,8 +8,10 @@ export async function sendEmail({
   subject,
   html,
 }: SendEmailParams): Promise<void> {
+  const env = getServerEnv();
+  const resend = new Resend(env.RESEND_API_KEY);
   await resend.emails.send({
-    from: serverEnv.RESEND_FROM_EMAIL,
+    from: env.RESEND_FROM_EMAIL,
     to,
     subject,
     html,

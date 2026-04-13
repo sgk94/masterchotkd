@@ -16,7 +16,7 @@ export default function StudentsLayout({ children }: { children: React.ReactNode
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16 lg:py-24">
-      <div className="mb-8 flex flex-wrap gap-6 border-b border-brand-taupe">
+      <nav className="mb-10 flex flex-wrap gap-2">
         {studentNavLinks.map((link) => {
           const isActive =
             link.href === "/members"
@@ -27,20 +27,17 @@ export default function StudentsLayout({ children }: { children: React.ReactNode
             <Link
               key={link.href}
               href={link.href}
-              className={`relative pb-4 text-sm font-medium transition-colors duration-300 ${
+              className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 ${
                 isActive
-                  ? "text-brand-red"
-                  : "text-brand-black/50 hover:text-brand-black"
+                  ? "bg-brand-red text-white shadow-[0_2px_8px_rgba(196,30,42,0.25)]"
+                  : "bg-brand-cream text-brand-black/50 hover:bg-brand-sand hover:text-brand-black"
               }`}
             >
               {link.label}
-              {isActive && (
-                <span className="absolute inset-x-0 bottom-[-1px] h-[2px] bg-brand-red" />
-              )}
             </Link>
           );
         })}
-      </div>
+      </nav>
       {children}
     </div>
   );

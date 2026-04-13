@@ -1,5 +1,3 @@
-"use client";
-
 const items = [
   "Tiny Tigers",
   "Black Belt Club",

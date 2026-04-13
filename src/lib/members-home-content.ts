@@ -5,6 +5,7 @@ export type MembersHomeAnnouncement = {
   label: string;
   title: string;
   body: string;
+  featured?: boolean;
 };
 
 export type MembersHomeQuickLink = {
@@ -56,12 +57,14 @@ export function getMembersHomeContent(): MembersHomeContent {
           id: "upcoming-cycle-weapon-focus",
           label: `Upcoming ${currentCycle.cycle}`,
           title: "Upcoming Weapon Focus",
+          featured: true,
           body: `${currentCycle.cycle} begins on ${formatCycleDate(currentCycle.startDate)}. The weapon focus will be ${currentCycle.weapon} (${currentCycle.shortWeapon}).`,
         }
       : {
           id: "current-cycle-weapon-focus",
           label: currentCycle.cycle,
           title: "Current Weapon Focus",
+          featured: true,
           body: currentCycle.nextChangeDate
             ? `The current testing cycle is ${currentCycle.cycle}, and the weapon focus is ${currentCycle.weapon} (${currentCycle.shortWeapon}). The next cycle change is ${formatCycleDate(currentCycle.nextChangeDate)}.`
             : `The current testing cycle is ${currentCycle.cycle}, and the weapon focus is ${currentCycle.weapon} (${currentCycle.shortWeapon}).`,
@@ -83,6 +86,7 @@ export function getMembersHomeContent(): MembersHomeContent {
       title: "Stay Connected",
       description:
         "Looking for a place to connect with other parents, find updates, and keep up with news? Follow our social pages. Announcements can be posted there as well as here on the Members page.",
+      // TODO: Replace with actual Facebook/Instagram page URLs
       facebookUrl: "https://facebook.com",
       instagramUrl: "https://instagram.com",
     },
@@ -103,6 +107,7 @@ export function getMembersHomeContent(): MembersHomeContent {
       title: "Spark Member App",
       description: "Download the member app to stay updated with announcements and events.",
       iosLabel: "iOS Member App Download",
+      // TODO: Replace with actual App Store / Google Play URLs
       iosUrl: "#",
       androidLabel: "Android Member App Download",
       androidUrl: "#",

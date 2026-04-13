@@ -44,6 +44,31 @@ const rightLinks: NavItem[] = [
 
 const ease = "cubic-bezier(0.32, 0.72, 0, 1)";
 
+const iconProps = { width: 22, height: 22, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.5, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+
+const memberNavItems: Record<string, { icon: React.ReactElement; animation: string }> = {
+  "Announcements": {
+    icon: <svg {...iconProps}><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>,
+    animation: "group-hover:animate-[icon-ring_0.6s_ease-in-out]",
+  },
+  "Current Cycle": {
+    icon: <svg {...iconProps}><path d="M21 2v6h-6" /><path d="M3 12a9 9 0 0 1 15-6.7L21 8" /><path d="M3 22v-6h6" /><path d="M21 12a9 9 0 0 1-15 6.7L3 16" /></svg>,
+    animation: "group-hover:animate-[icon-spin-slow_1.2s_ease-in-out]",
+  },
+  "Tiny Tigers": {
+    icon: <svg {...iconProps}><path d="M12 2L2 7l10 5 10-5-10-5Z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>,
+    animation: "group-hover:animate-[icon-bounce-layers_0.6s_ease-in-out]",
+  },
+  "Color Belt": {
+    icon: <svg {...iconProps}><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" /></svg>,
+    animation: "group-hover:animate-[icon-flip-open_0.6s_ease-in-out]",
+  },
+  "Resources": {
+    icon: <svg {...iconProps}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /></svg>,
+    animation: "group-hover:animate-[icon-slide-up_0.5s_ease-in-out]",
+  },
+};
+
 export function Navbar(): React.ReactElement {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -231,33 +256,36 @@ export function Navbar(): React.ReactElement {
                     </div>
                   </div>
                 ) : (
-                  /* Members list layout — gated for signed-out users */
+                  /* Members grid layout — gated for signed-out users */
                   <>
                   <Show when="signed-in">
                     <div>
-                      <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.2em] text-white/30">
+                      <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.2em] text-white/30">
                         {activeItem.label}
                       </p>
-                      <div className="flex flex-col gap-1">
-                        {activeItem.children.map((child) => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            className="group flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors duration-300 hover:bg-white/[0.04]"
-                            style={{ transitionTimingFunction: ease }}
-                          >
-                            <div>
-                              <p className="text-sm font-medium text-white/80 transition-colors duration-300 group-hover:text-white">
-                                {child.label}
-                              </p>
-                              {child.description && (
-                                <p className="mt-0.5 text-xs text-white/30 transition-colors duration-300 group-hover:text-white/50">
-                                  {child.description}
+                      <div className="grid grid-cols-5 gap-2">
+                        {activeItem.children.map((child) => {
+                          const item = memberNavItems[child.label];
+                          const icon = item?.icon ?? <svg {...iconProps}><circle cx="12" cy="12" r="10" /></svg>;
+                          const anim = item?.animation ?? "";
+                          return (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              className="group flex flex-col items-center gap-2.5 rounded-xl px-3 py-4 text-center transition-all duration-300 hover:bg-white/[0.06]"
+                              style={{ transitionTimingFunction: ease }}
+                            >
+                              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.06] text-white/50 ring-1 ring-white/[0.08] transition-all duration-300 group-hover:bg-brand-gold/15 group-hover:text-brand-gold group-hover:ring-brand-gold/25 group-hover:scale-110 group-hover:-translate-y-0.5">
+                                <span className={`inline-block ${anim}`}>{icon}</span>
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-white/70 transition-colors duration-300 group-hover:text-white">
+                                  {child.label}
                                 </p>
-                              )}
-                            </div>
-                          </Link>
-                        ))}
+                              </div>
+                            </Link>
+                          );
+                        })}
                       </div>
                     </div>
                   </Show>

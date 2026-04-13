@@ -21,6 +21,17 @@ export default function ContactPage(): React.ReactElement {
           <div className="mt-10 space-y-6">
             <div>
               <h3 className="font-heading text-lg text-brand-black">
+                Phone
+              </h3>
+              <a
+                href="tel:+14253610688"
+                className="mt-1 inline-block text-brand-blue transition-colors hover:text-brand-red"
+              >
+                425-361-0688
+              </a>
+            </div>
+            <div>
+              <h3 className="font-heading text-lg text-brand-black">
                 Location
               </h3>
               <p className="mt-1 text-brand-black/60">
@@ -34,6 +45,7 @@ export default function ContactPage(): React.ReactElement {
                 Follow Us
               </h3>
               <div className="mt-1 flex gap-4">
+                {/* TODO: Replace with actual Facebook/Instagram page URLs */}
                 <a
                   href="https://facebook.com"
                   target="_blank"

@@ -7,4 +7,11 @@ const serverEnvSchema = z.object({
   RESEND_FROM_EMAIL: z.string().email(),
 });
 
-export const serverEnv = serverEnvSchema.parse(process.env);
+let _serverEnv: z.infer<typeof serverEnvSchema> | null = null;
+
+export function getServerEnv(): z.infer<typeof serverEnvSchema> {
+  if (!_serverEnv) {
+    _serverEnv = serverEnvSchema.parse(process.env);
+  }
+  return _serverEnv;
+}
