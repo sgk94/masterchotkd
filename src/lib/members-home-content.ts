@@ -1,3 +1,5 @@
+import { formatCycleDate, getCurrentCycleWindow } from "@/lib/current-cycle";
+
 export type MembersHomeAnnouncement = {
   id: string;
   label: string;
@@ -46,78 +48,92 @@ export type MembersHomeContent = {
   quickLinks: MembersHomeQuickLink[];
 };
 
-export const membersHomeContent: MembersHomeContent = {
-  hero: {
-    eyebrow: "Members Page",
-    title: "Announcements",
-    description:
-      "This page is your members-only home base for monthly updates, testing reminders, app information, and school announcements.",
-    noteEyebrow: "Monthly Note",
-    noteTitle: "What To Expect Here",
-    noteBody:
-      "Think of this like a member newsletter. We can use it for cycle reminders, tournament notes, holiday schedules, app updates, gear reminders, and any important school news students and families should see.",
-  },
-  socials: {
-    eyebrow: "Socials",
-    title: "Stay Connected",
-    description:
-      "Looking for a place to connect with other parents, find updates, and keep up with news? Follow our social pages. Announcements can be posted there as well as here on the Members page.",
-    facebookUrl: "https://facebook.com",
-    instagramUrl: "https://instagram.com",
-  },
-  announcementsEyebrow: "Latest Updates",
-  announcements: [
-    {
-      id: "testing-cycle-2-weapon-focus",
-      label: "Testing Cycle 2",
-      title: "Current Weapon Focus",
-      body:
-        "This testing cycle, we are using Jahng Bong (JB). If you do not have one yet, please talk with an instructor so we can help you get the right equipment.",
+export function getMembersHomeContent(): MembersHomeContent {
+  const currentCycle = getCurrentCycleWindow();
+  const cycleAnnouncement =
+    currentCycle.status === "upcoming"
+      ? {
+          id: "upcoming-cycle-weapon-focus",
+          label: `Upcoming ${currentCycle.cycle}`,
+          title: "Upcoming Weapon Focus",
+          body: `${currentCycle.cycle} begins on ${formatCycleDate(currentCycle.startDate)}. The weapon focus will be ${currentCycle.weapon} (${currentCycle.shortWeapon}).`,
+        }
+      : {
+          id: "current-cycle-weapon-focus",
+          label: currentCycle.cycle,
+          title: "Current Weapon Focus",
+          body: currentCycle.nextChangeDate
+            ? `The current testing cycle is ${currentCycle.cycle}, and the weapon focus is ${currentCycle.weapon} (${currentCycle.shortWeapon}). The next cycle change is ${formatCycleDate(currentCycle.nextChangeDate)}.`
+            : `The current testing cycle is ${currentCycle.cycle}, and the weapon focus is ${currentCycle.weapon} (${currentCycle.shortWeapon}).`,
+        };
+
+  return {
+    hero: {
+      eyebrow: "Members Page",
+      title: "Announcements",
+      description:
+        "This page is your members-only home base for monthly updates, testing reminders, app information, and school announcements.",
+      noteEyebrow: "Monthly Note",
+      noteTitle: "What To Expect Here",
+      noteBody:
+        "Think of this like a member newsletter. We can use it for cycle reminders, tournament notes, holiday schedules, app updates, gear reminders, and any important school news students and families should see.",
     },
-    {
-      id: "member-app-update",
-      label: "Member App",
-      title: "Stay Updated With Announcements And Events",
-      body:
-        "Download the Spark Member app to keep up with announcements, events, attendance, class schedule, and payment history.",
+    socials: {
+      eyebrow: "Socials",
+      title: "Stay Connected",
+      description:
+        "Looking for a place to connect with other parents, find updates, and keep up with news? Follow our social pages. Announcements can be posted there as well as here on the Members page.",
+      facebookUrl: "https://facebook.com",
+      instagramUrl: "https://instagram.com",
     },
-  ],
-  memberApp: {
-    eyebrow: "Member App",
-    setupEyebrow: "Setup",
-    title: "Spark Member App",
-    description: "Download the member app to stay updated with announcements and events.",
-    iosLabel: "iOS Member App Download",
-    iosUrl: "#",
-    androidLabel: "Android Member App Download",
-    androidUrl: "#",
-    stepsTitle: "Steps For The Member App",
-    steps: [
-      'Download the "Spark Member" app on iOS or Android.',
-      "Enter our Taekwondo Location ID: 6287.",
-      "Enter the email tied to your Taekwondo account.",
-      "Check your email for a password reset link and create a password.",
-      "Log in and you are all set.",
+    announcementsEyebrow: "Latest Updates",
+    announcements: [
+      cycleAnnouncement,
+      {
+        id: "member-app-update",
+        label: "Member App",
+        title: "Stay Updated With Announcements And Events",
+        body:
+          "Download the Spark Member app to keep up with announcements, events, attendance, class schedule, and payment history.",
+      },
     ],
-    footer:
-      "Our member app allows you to stay caught up on announcements and events, see your class schedule, view your attendance record, and view your payment history.",
-  },
-  quickLinksEyebrow: "Quick Links",
-  quickLinks: [
-    {
-      title: "Curriculum",
-      description: "Belt requirements and testing criteria for each rank.",
-      href: "/members/curriculum",
+    memberApp: {
+      eyebrow: "Member App",
+      setupEyebrow: "Setup",
+      title: "Spark Member App",
+      description: "Download the member app to stay updated with announcements and events.",
+      iosLabel: "iOS Member App Download",
+      iosUrl: "#",
+      androidLabel: "Android Member App Download",
+      androidUrl: "#",
+      stepsTitle: "Steps For The Member App",
+      steps: [
+        'Download the "Spark Member" app on iOS or Android.',
+        "Enter our Taekwondo Location ID: 6287.",
+        "Enter the email tied to your Taekwondo account.",
+        "Check your email for a password reset link and create a password.",
+        "Log in and you are all set.",
+      ],
+      footer:
+        "Our member app allows you to stay caught up on announcements and events, see your class schedule, view your attendance record, and view your payment history.",
     },
-    {
-      title: "Poomsae Forms",
-      description: "Video library of all forms organized by belt level.",
-      href: "/members/forms",
-    },
-    {
-      title: "Resources",
-      description: "Additional training materials and documents.",
-      href: "/members/resources",
-    },
-  ],
-};
+    quickLinksEyebrow: "Quick Links",
+    quickLinks: [
+      {
+        title: "Curriculum",
+        description: "Belt requirements and testing criteria for each rank.",
+        href: "/members/curriculum",
+      },
+      {
+        title: "Poomsae Forms",
+        description: "Video library of all forms organized by belt level.",
+        href: "/members/forms",
+      },
+      {
+        title: "Resources",
+        description: "Additional training materials and documents.",
+        href: "/members/resources",
+      },
+    ],
+  };
+}

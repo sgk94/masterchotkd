@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { FloatingSectionNav } from "@/components/members/floating-section-nav";
 import { skillLevelPalette } from "@/lib/static-data";
 
 const camoPattern = "url(/images/camo-pattern.jpg)";
@@ -417,7 +418,7 @@ export default function ColorBeltPage(): React.ReactElement {
         belt and cycle.
       </p>
 
-      <div className="mt-6 flex gap-2 overflow-x-auto pb-1">
+      <div className="mt-6 flex gap-2 overflow-x-auto pb-1 lg:hidden">
         {sectionLinks.map((link) => (
           <a
             key={link.href}
@@ -429,7 +430,11 @@ export default function ColorBeltPage(): React.ReactElement {
         ))}
       </div>
 
-      <section id="curriculum-overview" className="mt-8 scroll-mt-28">
+      <div className="mt-8 lg:grid lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-6 xl:grid-cols-[12rem_minmax(0,1fr)] xl:gap-8">
+        <FloatingSectionNav ariaLabel="Color Belt section navigation" links={sectionLinks} />
+
+        <div className="min-w-0 space-y-12">
+      <section id="curriculum-overview" className="scroll-mt-28">
         <SectionPill label="Curriculum" />
         <h2 className="mt-5 font-heading text-2xl tracking-tight text-brand-black sm:text-3xl">
           Color Belt Curriculum Overview
@@ -528,7 +533,7 @@ export default function ColorBeltPage(): React.ReactElement {
           Practice the form that matches your current belt and cycle.
         </p>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
           {curriculumEntries.map((entry) => (
             <VideoCard
               key={`poomsae-${entry.level}-${entry.cycle}`}
@@ -548,7 +553,7 @@ export default function ColorBeltPage(): React.ReactElement {
           Weapons are grouped separately so students can find the correct training weapon faster.
         </p>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
           {weaponCards.map((card) => (
             <VideoCard
               key={card.weapon}
@@ -567,7 +572,7 @@ export default function ColorBeltPage(): React.ReactElement {
           These stay compact in the grid and expand when you hover so there is room for each video later.
         </p>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
           {curriculumEntries.map((entry) => (
             <ExpandableVideoCard
               key={`one-step-${entry.level}-${entry.cycle}`}
@@ -680,6 +685,8 @@ export default function ColorBeltPage(): React.ReactElement {
           </div>
         </div>
       </section>
+      </div>
+    </div>
     </div>
   );
 }
