@@ -28,6 +28,21 @@ const weaponVideos = [
   { title: "Tiny Tigers Sahng Jeol Bong", weapon: "Sahng Jeol Bong" },
 ];
 
+const tinyTigerHandTechniques = [
+  "White / White-Orange: 1-6",
+  "Orange / Orange-Yellow: 7-12",
+  "Yellow / Yellow-Camo: 13-18",
+  "Camo: 19-24",
+];
+
+const tinyTigerBoardBreaks = cycles.map((cycle) => ({
+  cycle: cycle.cycle,
+  board: cycle.board,
+  cycleColor: cycle.cycleColor,
+  secondaryColor: cycle.secondaryColor,
+  border: cycle.border,
+}));
+
 function getBeltCircleStyle(options: {
   color: string;
   secondaryColor?: string;
@@ -62,6 +77,49 @@ function getBeltCircleStyle(options: {
   };
 }
 
+function ExpandableVideoCard({
+  eyebrow,
+  title,
+  subtitle,
+  details,
+  expandedLayout = "split",
+}: {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  details: React.ReactNode;
+  expandedLayout?: "stack" | "split";
+}): React.ReactElement {
+  return (
+    <div className="group overflow-hidden rounded-[1.5rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
+      <div className="rounded-[calc(1.5rem-6px)] bg-white">
+        <div className="p-4">
+          <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-brand-black/35">
+            {eyebrow}
+          </p>
+          <p className="mt-1 font-heading text-base text-brand-black">{title}</p>
+          <p className="text-sm font-medium text-brand-black/60">{subtitle}</p>
+        </div>
+
+        <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-hover:grid-rows-[1fr] group-focus-within:grid-rows-[1fr]">
+          <div className="overflow-hidden">
+            <div className="border-t border-brand-taupe/15 px-4 pb-4 pt-3">
+              <div className={expandedLayout === "split" ? "grid gap-3 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] md:items-start" : ""}>
+                <div className="flex aspect-video items-center justify-center rounded-[1rem] bg-brand-sand px-4 text-center text-sm text-brand-black/40">
+                  Video area coming soon
+                </div>
+                <div className={`text-sm text-brand-black/60 ${expandedLayout === "split" ? "" : "mt-3"}`}>
+                  {details}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function TinyTigersCurriculumPage(): React.ReactElement {
   return (
     <div>
@@ -87,6 +145,18 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
           className="inline-flex shrink-0 items-center rounded-full border border-brand-taupe/30 bg-brand-cream px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-brand-black/60 transition-colors hover:text-brand-black"
         >
           Weapon Videos
+        </a>
+        <a
+          href="#hand-techniques"
+          className="inline-flex shrink-0 items-center rounded-full border border-brand-taupe/30 bg-brand-cream px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-brand-black/60 transition-colors hover:text-brand-black"
+        >
+          Hand Techniques
+        </a>
+        <a
+          href="#board-breaking"
+          className="inline-flex shrink-0 items-center rounded-full border border-brand-taupe/30 bg-brand-cream px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-brand-black/60 transition-colors hover:text-brand-black"
+        >
+          Board Breaking
         </a>
         <a
           href="#resources"
@@ -235,6 +305,76 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section id="hand-techniques" className="mt-12 scroll-mt-28">
+        <span className="inline-block rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
+          Video Library
+        </span>
+        <h2 className="mt-5 font-heading text-2xl tracking-tight text-brand-black sm:text-3xl">
+          Tiny Tigers Hand Techniques
+        </h2>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-brand-black/55">
+          Keep this section compact by default, then open it to review the Tiny Tigers hand-technique ranges.
+        </p>
+
+        <div className="mt-8 max-w-5xl">
+          <ExpandableVideoCard
+            eyebrow="All Cycles"
+            title="Tiny Tigers Hand Techniques"
+            subtitle="White through Camo hand-technique ranges"
+            details={
+              <div className="grid gap-3 sm:grid-cols-2">
+                {tinyTigerHandTechniques.map((item) => (
+                  <div key={item} className="rounded-2xl border border-brand-taupe/15 bg-brand-cream/35 p-4">
+                    <p className="text-base leading-relaxed text-brand-black/75">{item}</p>
+                  </div>
+                ))}
+              </div>
+            }
+          />
+        </div>
+      </section>
+
+      <section id="board-breaking" className="mt-12 scroll-mt-28">
+        <span className="inline-block rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
+          Video Library
+        </span>
+        <h2 className="mt-5 font-heading text-2xl tracking-tight text-brand-black sm:text-3xl">
+          Tiny Tigers Board Breaking
+        </h2>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-brand-black/55">
+          Open this card to review the Tiny Tigers board-breaking requirement for each cycle.
+        </p>
+
+        <div className="mt-8 max-w-5xl">
+          <ExpandableVideoCard
+            eyebrow="All Cycles"
+            title="Tiny Tigers Board Breaks"
+            subtitle="Board-breaking goals for each Tiny Tigers cycle"
+            details={
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                {tinyTigerBoardBreaks.map((item) => (
+                  <div key={item.cycle} className="rounded-2xl border border-brand-taupe/15 bg-brand-cream/35 p-3">
+                    <div className="flex items-center gap-2.5">
+                      <div
+                        className="h-4 w-4 rounded-full shadow-sm"
+                        style={getBeltCircleStyle({
+                          color: item.cycleColor,
+                          secondaryColor: item.secondaryColor,
+                          border: item.border,
+                          usesCamo: item.cycle.includes("Camo"),
+                        })}
+                      />
+                      <p className="text-sm font-medium text-brand-black">{item.cycle}</p>
+                    </div>
+                    <p className="mt-2 text-sm leading-snug text-brand-black/65">{item.board}</p>
+                  </div>
+                ))}
+              </div>
+            }
+          />
         </div>
       </section>
 

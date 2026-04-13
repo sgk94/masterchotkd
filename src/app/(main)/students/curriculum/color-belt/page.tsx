@@ -187,6 +187,32 @@ const sectionLinks = [
   { href: "#resources", label: "Resources" },
 ];
 
+const cycleHeaders = ["Cycle 1", "Cycle 2", "Cycle 3"];
+
+const overviewLevels = [
+  {
+    level: "Beginner",
+    subtitle: "White -> Orange -> Yellow",
+    accent: skillLevelPalette.beginner.accent,
+    accentBg: skillLevelPalette.beginner.accentBg,
+    entries: curriculumEntries.filter((entry) => entry.level === "Beginner"),
+  },
+  {
+    level: "Intermediate",
+    subtitle: "Camo -> Green -> Purple",
+    accent: skillLevelPalette.intermediate.accent,
+    accentBg: skillLevelPalette.intermediate.accentBg,
+    entries: curriculumEntries.filter((entry) => entry.level === "Intermediate"),
+  },
+  {
+    level: "Advanced",
+    subtitle: "Blue -> Brown -> Red",
+    accent: skillLevelPalette.advanced.accent,
+    accentBg: skillLevelPalette.advanced.accentBg,
+    entries: curriculumEntries.filter((entry) => entry.level === "Advanced"),
+  },
+];
+
 const handTechniqueGroups = [
   {
     level: "Beginner",
@@ -223,6 +249,75 @@ function SectionPill({ label }: { label: string }): React.ReactElement {
       {label}
     </span>
   );
+}
+
+function getOverviewCardStyle(entry: CurriculumEntry): {
+  cardBg: string;
+  headerBg: string;
+  borderColor: string;
+} {
+  switch (entry.beltName) {
+    case "White":
+      return {
+        cardBg: "#FCFBF8",
+        headerBg: "#F6F2EC",
+        borderColor: "rgba(212, 197, 176, 0.42)",
+      };
+    case "Orange":
+      return {
+        cardBg: "#FFF4E8",
+        headerBg: "#FFE8CC",
+        borderColor: "rgba(255, 140, 0, 0.18)",
+      };
+    case "Yellow":
+      return {
+        cardBg: "#FFF8DB",
+        headerBg: "#FFF0B5",
+        borderColor: "rgba(250, 204, 21, 0.2)",
+      };
+    case "Camo":
+      return {
+        cardBg: "#F3F6EF",
+        headerBg: "#E4ECD7",
+        borderColor: "rgba(107, 142, 35, 0.18)",
+      };
+    case "Green":
+      return {
+        cardBg: "#EEF9F1",
+        headerBg: "#D7F1DE",
+        borderColor: "rgba(34, 139, 34, 0.18)",
+      };
+    case "Purple":
+      return {
+        cardBg: "#F5EEFF",
+        headerBg: "#EBDDFC",
+        borderColor: "rgba(123, 31, 162, 0.16)",
+      };
+    case "Blue":
+      return {
+        cardBg: "#EEF4FF",
+        headerBg: "#DCE8FF",
+        borderColor: "rgba(37, 99, 235, 0.16)",
+      };
+    case "Brown":
+      return {
+        cardBg: "#F8F1E8",
+        headerBg: "#ECDDC8",
+        borderColor: "rgba(180, 119, 0, 0.18)",
+      };
+    case "Red":
+      return {
+        cardBg: "#FFF0F1",
+        headerBg: "#FFDCDD",
+        borderColor: "rgba(220, 38, 38, 0.16)",
+      };
+    default:
+      return {
+        cardBg: "#FFFFFF",
+        headerBg: "#F8F5F1",
+        borderColor: "rgba(212, 197, 176, 0.32)",
+      };
+  }
 }
 
 function VideoCard({
@@ -343,47 +438,86 @@ export default function ColorBeltPage(): React.ReactElement {
           Review your cycle summary card to quickly see the full set of requirements for that belt level.
         </p>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {curriculumEntries.map((entry) => (
-            <div
-              key={`${entry.level}-${entry.cycle}-${entry.beltName}`}
-              className="overflow-hidden rounded-[1.5rem] border border-brand-taupe/30"
-            >
-              <div className="border-b border-brand-taupe/20 bg-brand-cream/50 px-4 py-3">
-                <div className="flex items-center gap-3">
-                  <BeltDot entry={entry} size="h-5 w-5" />
-                  <div className="min-w-0">
-                    <div className="flex items-baseline gap-2">
-                      <h3 className="font-heading text-base text-brand-black">{entry.beltName}</h3>
-                      <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-brand-black/35">
-                        Cycle {entry.cycle}
-                      </p>
-                    </div>
-                    <p className="text-xs text-brand-black/45">{entry.level}</p>
-                  </div>
-                </div>
-              </div>
+        <div className="mt-8 rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
+          <div className="rounded-[calc(2rem-6px)] bg-white p-5 sm:p-6">
+            <div className="grid gap-3 lg:grid-cols-[220px_repeat(3,minmax(0,1fr))]">
+              <div aria-hidden="true" className="hidden lg:block" />
 
-              <div className="grid grid-cols-2 gap-x-4 gap-y-3 bg-white px-4 py-4 text-sm text-brand-black/70">
-                <div>
-                  <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-brand-black/40">Poomsae</p>
-                  <p className="mt-1 leading-snug">{entry.poomsae}</p>
+              {cycleHeaders.map((cycle) => (
+                <div
+                  key={cycle}
+                  className="rounded-2xl border border-brand-taupe/15 bg-brand-cream/35 px-5 py-3"
+                >
+                  <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/30">
+                    Column
+                  </p>
+                  <h3 className="mt-1 font-heading text-xl tracking-tight text-brand-black">{cycle}</h3>
                 </div>
-                <div>
-                  <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-brand-black/40">Weapon</p>
-                  <p className="mt-1 leading-snug">{entry.weapon}</p>
+              ))}
+
+              {overviewLevels.map((group) => (
+                <div key={group.level} className="contents">
+                  <div className="rounded-[1.5rem] bg-brand-cream p-5 lg:self-stretch">
+                    <div className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] ring-1 ${group.accentBg} ${group.accent}`}>
+                      Skill Level
+                    </div>
+                    <h3 className={`mt-4 font-heading text-2xl tracking-tight ${group.accent}`}>
+                      {group.level}
+                    </h3>
+                    <p className="mt-2 text-sm text-brand-black/45">{group.subtitle}</p>
+                  </div>
+
+                  {group.entries.map((entry) => (
+                    <div
+                      key={`${entry.level}-${entry.cycle}-${entry.beltName}`}
+                      className="overflow-hidden rounded-[1.5rem] border"
+                      style={{
+                        backgroundColor: getOverviewCardStyle(entry).cardBg,
+                        borderColor: getOverviewCardStyle(entry).borderColor,
+                      }}
+                    >
+                      <div
+                        className="border-b px-4 py-3"
+                        style={{
+                          backgroundColor: getOverviewCardStyle(entry).headerBg,
+                          borderColor: getOverviewCardStyle(entry).borderColor,
+                        }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <BeltDot entry={entry} size="h-5 w-5" />
+                          <div className="min-w-0">
+                            <p className="font-heading text-base text-brand-black">{entry.beltName}</p>
+                            <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-brand-black/35">
+                              Cycle {entry.cycle}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-3 px-4 py-4 text-sm text-brand-black/80">
+                        <div>
+                          <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-brand-black/40">Poomsae</p>
+                          <p className="mt-1 leading-snug">{entry.poomsae}</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-brand-black/40">Weapon</p>
+                          <p className="mt-1 leading-snug">{entry.weapon}</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-brand-black/40">One-Step</p>
+                          <p className="mt-1 leading-snug">{entry.oneStep}</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-brand-black/40">Board</p>
+                          <p className="mt-1 leading-snug">{entry.board}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div>
-                  <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-brand-black/40">One-Step</p>
-                  <p className="mt-1 leading-snug">{entry.oneStep}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-brand-black/40">Board</p>
-                  <p className="mt-1 leading-snug">{entry.board}</p>
-                </div>
-              </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
