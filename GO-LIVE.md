@@ -1,0 +1,214 @@
+# Go-Live Checklist — Master Cho's Taekwondo
+
+Living document for migrating off Foxspin and launching `masterchostaekwondo.com` on Vercel.
+
+---
+
+## Goal
+
+- Own and control the website, domain, DNS, hosting, and connected services ourselves
+- Keep the domain, email, and Google verification intact
+- Avoid downtime during the switch
+- Target: ~$25/mo hosting (down from $600/mo)
+
+---
+
+## Current Setup Snapshot
+
+| Item | Value |
+|------|-------|
+| Domain | `masterchostaekwondo.com` |
+| www | `www.masterchostaekwondo.com` → redirects to apex |
+| Registrar | Wild West Domains, LLC |
+| Reseller | Foxspin LLC |
+| Created | March 8, 2023 |
+| Expires | March 8, 2027 |
+| Current host IP | `34.202.63.170` |
+
+**Nameservers:**
+- `dns219.c.register.com`
+- `dns176.d.register.com`
+- `dns136.a.register.com`
+- `dns229.b.register.com`
+
+**MX Records (Google — copy these exactly when setting up new DNS):**
+| Priority | Value |
+|----------|-------|
+| 1 | `aspmx.l.google.com` |
+| 5 | `alt1.aspmx.l.google.com` |
+| 5 | `alt2.aspmx.l.google.com` |
+| 10 | `alt3.aspmx.l.google.com` |
+| 10 | `alt4.aspmx.l.google.com` |
+
+**TXT Records (copy these exactly when setting up new DNS):**
+```
+google-site-verification=88zBDQ9BPN_83ITavC8-Yvu9QI-PVokGg3Vkcu_GxJ8
+```
+```
+google-site-verification=rvIpjicemCbIMNiNm8rXYxghLwzSTQrvjAiW_YqHaOY
+```
+
+**A / CNAME Records (current — will be replaced with Vercel records):**
+| Type | Name | Value |
+|------|------|-------|
+| A | `@` | `34.202.63.170` |
+| CNAME | `www` | `masterchostaekwondo.com` |
+
+**Domain Locks:**
+- `clientTransferProhibited`
+- `clientUpdateProhibited`
+- `clientRenewProhibited`
+- `clientDeleteProhibited`
+
+---
+
+## Phase 1 — Before Contacting Foxspin
+
+- [ ] Confirm the goal: full control of domain, DNS, hosting, and connected services
+- [ ] Decide long-term providers:
+  - [ ] Registrar (e.g., Cloudflare, Namecheap, Google Domains)
+  - [ ] DNS (e.g., Vercel DNS, Cloudflare)
+  - [ ] Hosting: **Vercel** (already deployed)
+  - [ ] Form handling (Resend or stubbed for now)
+  - [ ] Analytics / verification (Google Search Console, existing TXT records)
+  - [ ] Email DNS management (preserve Google MX)
+- [ ] Confirm replacement website is ready to launch
+- [ ] Save copies of all current content and assets:
+  - [ ] Page copy
+  - [ ] Images / logos
+  - [ ] Privacy policy text
+  - [ ] Downloadable files
+  - [ ] Business contact details
+  - [ ] Social links
+
+---
+
+## Phase 2 — Questions For Foxspin
+
+- [ ] Who controls the domain registration account? (our account or theirs?)
+- [ ] Who controls DNS? (Foxspin, Register.com, or other?)
+- [ ] Request full DNS record export (A, CNAME, MX, TXT, SRV, all records)
+- [ ] Will canceling service shut off hosting immediately?
+- [ ] Do they manage SSL certificates? (tied to their platform?)
+- [ ] Request export of any old platform data:
+  - [ ] Lead form submissions
+  - [ ] Contact / trial requests
+  - [ ] Student/member portal data
+  - [ ] Media files
+  - [ ] Privacy policy / legal text
+  - [ ] Analytics or tracking setup
+- [ ] Are any old platform features still active? (cart, checkout, student page, privacy policy)
+- [ ] If transferring domain away, request:
+  - [ ] Domain unlock
+  - [ ] EPP/auth code
+  - [ ] Confirmation transfer is permitted
+  - [ ] Confirmation no settings will block transfer
+
+---
+
+## Phase 3 — What Must Be Preserved
+
+- [ ] Google MX records — do not remove unless intentionally replacing email
+- [ ] Google TXT verification records — tied to Search Console / business verification
+- [ ] `www` → apex redirect behavior
+- [ ] Final business information on new site:
+  - [ ] Phone: 425-361-0688
+  - [ ] Address: 3221 184th St SW STE 100, Lynnwood, WA 98037
+  - [ ] Email: (confirm)
+  - [ ] Social links: (need actual Facebook/Instagram URLs)
+  - [ ] Pricing / offer copy: $49 / 2 weeks trial
+
+---
+
+## Phase 4 — Technical Transition
+
+### Provider Decisions
+- [ ] Keep current registrar or transfer? (recommend transfer to Cloudflare or Namecheap)
+- [ ] DNS managed by: (recommend Vercel DNS — simplest with Vercel hosting)
+
+### Vercel Domain Setup
+- [ ] Add `masterchostaekwondo.com` as custom domain in Vercel project
+- [ ] Add `www.masterchostaekwondo.com` as redirect domain in Vercel project
+- [ ] Verify SSL is provisioned for both hostnames
+
+### DNS Cutover
+- [ ] Recreate all required DNS records in new DNS provider BEFORE cutover:
+  - [ ] A / CNAME records pointing to Vercel
+  - [ ] `www` → apex redirect
+  - [ ] MX records (all 5 Google entries)
+  - [ ] TXT records (both google-site-verification)
+- [ ] Lower DNS TTLs before switching (if registrar/DNS provider allows)
+- [ ] Point nameservers or A records to Vercel
+- [ ] Wait for DNS propagation
+
+### Post-Cutover Testing
+- [ ] Homepage loads on `masterchostaekwondo.com`
+- [ ] `www.masterchostaekwondo.com` redirects to apex
+- [ ] HTTPS works on both hostnames
+- [ ] Desktop and mobile rendering
+- [ ] All internal links work
+- [ ] Forms submit (or show appropriate message if stubbed)
+- [ ] Redirects work (`/students/*` → `/members/*`)
+- [ ] Members area auth works (Clerk sign-in)
+- [ ] Review page loads
+- [ ] Contact page loads with phone `tel:` link
+- [ ] Schedule page loads
+- [ ] Program detail pages load
+- [ ] PDF download works (auth required)
+
+### Email & Services Verification
+- [ ] Send/receive test email to confirm Google MX still works
+- [ ] Google Search Console still shows verified
+- [ ] Google verification TXT records resolve correctly
+- [ ] Any social or business profile integrations still work
+
+---
+
+## Phase 5 — After The Switch
+
+- [ ] Wait until new website is stable (recommend 48-72 hours minimum)
+- [ ] Get written confirmation from Foxspin:
+  - [ ] Final cancellation date
+  - [ ] Whether hosting ends immediately
+  - [ ] Whether domain registration stays active
+  - [ ] Whether DNS remains active
+  - [ ] Whether anything else will be disabled
+- [ ] Transfer domain to new registrar (separate from DNS cutover — do after stable)
+- [ ] Save permanent record of transition:
+  - [ ] Registrar details
+  - [ ] DNS export
+  - [ ] Nameservers
+  - [ ] Domain expiration (March 8, 2027)
+  - [ ] Provider communications
+  - [ ] Cancellation confirmation
+  - [ ] Transfer/EPP code if issued
+
+---
+
+## New Site Pre-Launch Checklist
+
+Items that need to be done on the Vercel-hosted site before go-live:
+
+- [ ] Create OG image (1200x630 JPEG) → `public/images/og-image.jpg`
+- [ ] Replace social link placeholders with actual Facebook/Instagram URLs
+- [ ] Replace Spark Member app download `#` placeholders with real App Store / Google Play URLs
+- [ ] Switch Clerk from Development → Production mode
+- [ ] Pin Clerk CSP origins to exact production domains (replace wildcards)
+- [ ] Verify Clerk production keys in Vercel environment variables
+- [ ] Run final Lighthouse audit
+- [ ] Run full test suite (`pnpm vitest run`)
+- [ ] Test on real devices (iOS Safari, Android Chrome)
+
+---
+
+## Priority Order
+
+1. Get control of the domain
+2. Get a full DNS export from Foxspin
+3. Preserve Google mail and verification records
+4. Complete new site pre-launch items
+5. Set up domain on Vercel
+6. Update DNS to point to new site
+7. Confirm site and email both work
+8. Cancel Foxspin only after everything is stable
+9. Transfer domain registrar (after stable)
