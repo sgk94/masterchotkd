@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 const SITE_NAME = "Master Cho's Taekwondo";
-const SITE_DESCRIPTION = "Lynnwood's premier Taekwondo academy. Classes for all ages — Tiny Tigers through adult Black Belt. Making a difference, one belt at a time. Start with a 2-week trial for $49.";
+const SITE_DESCRIPTION = "Lynnwood's premier Taekwondo academy. Classes for all ages — Tiny Tigers through adult Black Belt. Start a 2-week trial for $49.";
 
 // Prefer production domain if set, otherwise use Vercel's auto-provided URL, then fall back
 function getSiteUrl(): string {
@@ -12,7 +12,7 @@ function getSiteUrl(): string {
 }
 
 export function createMetadata(overrides: Partial<Metadata> = {}): Metadata {
-  const rawTitle = overrides.title ? `${overrides.title} | ${SITE_NAME}` : `${SITE_NAME} — Martial Arts Academy in Lynnwood, WA`;
+  const rawTitle = overrides.title ? `${overrides.title} | ${SITE_NAME}` : `${SITE_NAME} — Martial Arts Academy in Lynnwood`;
   const description = (overrides.description as string) ?? SITE_DESCRIPTION;
   const siteUrl = getSiteUrl();
   return {
