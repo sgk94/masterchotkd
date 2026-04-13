@@ -1,5 +1,7 @@
 "use client";
 
+import { skillLevelPalette } from "@/lib/static-data";
+
 type FormCard = {
   belt: string;
   beltDot: string;
@@ -26,8 +28,8 @@ const levels: LevelRow[] = [
   {
     level: "Beginner",
     subtitle: "White -> Orange -> Yellow",
-    accent: "text-amber-700",
-    accentBg: "bg-amber-500/10 ring-amber-500/20",
+    accent: skillLevelPalette.beginner.accent,
+    accentBg: skillLevelPalette.beginner.accentBg,
     cards: [
       {
         belt: "White",
@@ -53,8 +55,8 @@ const levels: LevelRow[] = [
   {
     level: "Intermediate",
     subtitle: "Camo -> Green -> Purple",
-    accent: "text-emerald-700",
-    accentBg: "bg-emerald-500/10 ring-emerald-500/20",
+    accent: skillLevelPalette.intermediate.accent,
+    accentBg: skillLevelPalette.intermediate.accentBg,
     cards: [
       {
         belt: "Camo",
@@ -79,8 +81,8 @@ const levels: LevelRow[] = [
   {
     level: "Advanced",
     subtitle: "Blue -> Brown -> Red",
-    accent: "text-blue-700",
-    accentBg: "bg-blue-500/10 ring-blue-500/20",
+    accent: skillLevelPalette.advanced.accent,
+    accentBg: skillLevelPalette.advanced.accentBg,
     cards: [
       {
         belt: "Blue",

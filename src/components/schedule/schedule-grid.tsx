@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { scheduleRows } from "@/lib/static-data";
+import { scheduleClassPalette, scheduleRows } from "@/lib/static-data";
 
 const DAYS = [
   { key: 1, label: "Mon", full: "Monday" },
@@ -12,17 +12,16 @@ const DAYS = [
   { key: 6, label: "Sat", full: "Saturday" },
 ];
 
-/* Refined palette — muted, sophisticated tints */
-const colorMap: Record<string, { bg: string; accent: string; text: string }> = {
-  "#f5f5f5":  { bg: "bg-brand-sand/30",       accent: "border-l-brand-taupe",     text: "text-brand-black/70" },
-  "#F9E547":  { bg: "bg-amber-50",             accent: "border-l-amber-400",       text: "text-amber-900" },
-  "#EF9A9A":  { bg: "bg-rose-50",              accent: "border-l-rose-400",        text: "text-rose-900" },
-  "#81C784":  { bg: "bg-emerald-50",           accent: "border-l-emerald-400",     text: "text-emerald-900" },
-  "#64B5F6":  { bg: "bg-sky-50",               accent: "border-l-sky-400",         text: "text-sky-900" },
-  "#CE93D8":  { bg: "bg-violet-50",            accent: "border-l-violet-400",      text: "text-violet-900" },
-  "#ffffff":  { bg: "bg-white",                accent: "border-l-brand-black/20",  text: "text-brand-black" },
-  "#7B1FA2":  { bg: "bg-purple-50",            accent: "border-l-purple-600",      text: "text-purple-900" },
-  "#42A5F5":  { bg: "bg-blue-50",              accent: "border-l-blue-500",        text: "text-blue-900" },
+const colorMap: Record<string, { bg: string; accent: string; text: string; dot?: string }> = {
+  [scheduleClassPalette.morningClass.color]: scheduleClassPalette.morningClass,
+  [scheduleClassPalette.tinyTigers.color]: scheduleClassPalette.tinyTigers,
+  [scheduleClassPalette.beginner.color]: scheduleClassPalette.beginner,
+  [scheduleClassPalette.intermediate.color]: scheduleClassPalette.intermediate,
+  [scheduleClassPalette.advanced.color]: scheduleClassPalette.advanced,
+  [scheduleClassPalette.familyAllBelts.color]: scheduleClassPalette.familyAllBelts,
+  [scheduleClassPalette.adultTeens.color]: scheduleClassPalette.adultTeens,
+  [scheduleClassPalette.leadershipDemo.color]: scheduleClassPalette.leadershipDemo,
+  [scheduleClassPalette.competitionTeam.color]: scheduleClassPalette.competitionTeam,
 };
 
 const ease = "cubic-bezier(0.32, 0.72, 0, 1)";
@@ -101,7 +100,7 @@ export function ScheduleGrid(): React.ReactElement {
                         >
                           <span
                             className={`h-2 w-2 rounded-full`}
-                            style={{ backgroundColor: row.color === "#ffffff" ? "#1a1a2e" : row.color === "#f5f5f5" ? "#d4c5b0" : row.color }}
+                            style={{ backgroundColor: palette.dot ?? row.color }}
                           />
                           {row.className}
                         </span>

@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+const camoPattern = "url(/images/camo-pattern.jpg)";
+
 const cycles = [
   { cycle: "White", cycleColor: "#ffffff", textColor: "#1a1a2e", bgColor: "#f5f5f5", border: true, poomsae: "Half Basic", oneStep: "White 1", handTech: "1-6", board: "Hammer Fist" },
   { cycle: "White / Orange", cycleColor: "#FF8C00", textColor: "#FF8C00", secondaryColor: "#ffffff", bgColor: "#FFF3E0", border: true, poomsae: "Full Basic", oneStep: "White 1-2", handTech: "1-6", board: "Front Kick" },
@@ -19,6 +21,46 @@ const poomsaeVideos = [
   { belt: "Yellow / Camo", title: "Full Taegeuk 2", cycle: "Cycle 3", color: "#6B8E23", secondaryColor: "#FACC15", border: false },
   { belt: "Camo", title: "Half Taegeuk 3", cycle: "Cycle 1", color: "#6B8E23", border: false },
 ];
+
+const weaponVideos = [
+  { title: "Tiny Tigers Bahng Mang Ee", weapon: "Bahng Mang Ee" },
+  { title: "Tiny Tigers Jahng Bong", weapon: "Jahng Bong" },
+  { title: "Tiny Tigers Sahng Jeol Bong", weapon: "Sahng Jeol Bong" },
+];
+
+function getBeltCircleStyle(options: {
+  color: string;
+  secondaryColor?: string;
+  border?: boolean;
+  usesCamo?: boolean;
+}): React.CSSProperties {
+  const { color, secondaryColor, border, usesCamo } = options;
+
+  if (usesCamo && secondaryColor) {
+    return {
+      backgroundImage: `linear-gradient(135deg, ${secondaryColor} 0%, ${secondaryColor} 48%, transparent 52%, transparent 100%), ${camoPattern}`,
+      backgroundSize: "cover, cover",
+      backgroundPosition: "center, center",
+      border: border ? "2px solid #d4c5b0" : "none",
+    };
+  }
+
+  if (usesCamo) {
+    return {
+      backgroundImage: camoPattern,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      border: border ? "2px solid #d4c5b0" : "none",
+    };
+  }
+
+  return {
+    background: secondaryColor
+      ? `linear-gradient(135deg, ${secondaryColor} 0%, ${secondaryColor} 48%, ${color} 52%, ${color} 100%)`
+      : color,
+    border: border ? "2px solid #d4c5b0" : "none",
+  };
+}
 
 export default function TinyTigersCurriculumPage(): React.ReactElement {
   return (
@@ -41,6 +83,12 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
           Poomsae Videos
         </a>
         <a
+          href="#weapon-videos"
+          className="inline-flex shrink-0 items-center rounded-full border border-brand-taupe/30 bg-brand-cream px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-brand-black/60 transition-colors hover:text-brand-black"
+        >
+          Weapon Videos
+        </a>
+        <a
           href="#resources"
           className="inline-flex shrink-0 items-center rounded-full border border-brand-taupe/30 bg-brand-cream px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-brand-black/60 transition-colors hover:text-brand-black"
         >
@@ -59,12 +107,12 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
             <div className="flex items-center gap-3 border-b border-brand-taupe/30 px-4 py-3">
               <div
                 className="h-4 w-4 rounded-full"
-                style={{
-                  background: row.secondaryColor
-                    ? `linear-gradient(135deg, ${row.secondaryColor} 0%, ${row.secondaryColor} 48%, ${row.cycleColor} 52%, ${row.cycleColor} 100%)`
-                    : row.cycleColor,
-                  border: row.border ? "2px solid #d4c5b0" : "none",
-                }}
+                style={getBeltCircleStyle({
+                  color: row.cycleColor,
+                  secondaryColor: row.secondaryColor,
+                  border: row.border,
+                  usesCamo: row.cycle.includes("Camo"),
+                })}
               />
               <h3
                 className="font-heading text-base"
@@ -133,12 +181,12 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
                   <div className="flex items-center gap-3">
                     <div
                       className="h-7 w-7 rounded-full shadow-sm"
-                      style={{
-                        background: video.secondaryColor
-                          ? `linear-gradient(135deg, ${video.secondaryColor} 0%, ${video.secondaryColor} 48%, ${video.color} 52%, ${video.color} 100%)`
-                          : video.color,
-                        border: video.border ? "2px solid #d4c5b0" : "none",
-                      }}
+                      style={getBeltCircleStyle({
+                        color: video.color,
+                        secondaryColor: video.secondaryColor,
+                        border: video.border,
+                        usesCamo: video.belt.includes("Camo"),
+                      })}
                     />
                     <div className="min-w-0">
                       <div className="flex items-baseline gap-2">
@@ -149,6 +197,39 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
                       </div>
                       <p className="truncate text-sm font-medium text-brand-black/65">{video.title}</p>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="weapon-videos" className="mt-12 scroll-mt-28">
+        <span className="inline-block rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
+          Video Library
+        </span>
+        <h2 className="mt-5 font-heading text-2xl tracking-tight text-brand-black sm:text-3xl">
+          Tiny Tigers Weapon Videos
+        </h2>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-brand-black/55">
+          Practice Tiny Tigers weapon videos separately from the poomsae lessons.
+        </p>
+
+        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {weaponVideos.map((video) => (
+            <div
+              key={video.title}
+              className="overflow-hidden rounded-[1.5rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15"
+            >
+              <div className="rounded-[calc(1.5rem-6px)] bg-white">
+                <div className="flex aspect-video items-center justify-center bg-brand-sand text-sm text-brand-black/40">
+                  Video: {video.title}
+                </div>
+                <div className="p-4">
+                  <div className="min-w-0">
+                    <p className="font-heading text-base text-brand-black">{video.weapon}</p>
+                    <p className="truncate text-sm font-medium text-brand-black/65">{video.title}</p>
                   </div>
                 </div>
               </div>

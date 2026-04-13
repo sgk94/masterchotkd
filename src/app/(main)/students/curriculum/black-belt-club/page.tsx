@@ -13,6 +13,22 @@ const beltLevels = [
   { belt: "Black Belt", color: "#1a1a2e", border: false, requirements: ["All Taegeuk forms (Il through Pal Jang)", "Advanced sparring and self-defense", "Board breaking (hand and foot techniques)", "Teaching assistance", "Written and physical examination"] },
 ];
 
+function getBeltDotStyle(level: { belt: string; color: string; border: boolean }): React.CSSProperties {
+  if (level.belt === "Camo Belt") {
+    return {
+      backgroundImage: "url(/images/camo-pattern.jpg)",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      border: level.border ? "2px solid #d4c5b0" : "none",
+    };
+  }
+
+  return {
+    backgroundColor: level.color,
+    border: level.border ? "2px solid #d4c5b0" : "none",
+  };
+}
+
 export default function BlackBeltClubCurriculumPage(): React.ReactElement {
   return (
     <div>
@@ -24,7 +40,7 @@ export default function BlackBeltClubCurriculumPage(): React.ReactElement {
         {beltLevels.map((level) => (
           <div key={level.belt} className="rounded-card bg-brand-cream p-6">
             <div className="flex items-center gap-3">
-              <div className="h-6 w-6 rounded-full" style={{ backgroundColor: level.color, border: level.border ? "2px solid #d4c5b0" : "none" }} />
+              <div className="h-6 w-6 rounded-full" style={getBeltDotStyle(level)} />
               <h2 className="font-heading text-xl text-brand-black">{level.belt}</h2>
             </div>
             <ul className="mt-3 ml-9 list-disc space-y-1 text-sm text-brand-black/70">

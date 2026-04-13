@@ -7,6 +7,79 @@ export const staticPrograms = [
   { id: "4", name: "Competition Team", slug: "competition-team", description: "For dedicated athletes who want to compete at local, regional, and national tournaments. Focused training on sparring, forms, and breaking techniques.", ageRange: "Tournament athletes", imageUrl: "/images/Competition-Team.jpg", order: 4 },
 ];
 
+export const scheduleClassPalette = {
+  morningClass: {
+    color: "#E9E1D6",
+    bg: "bg-stone-100",
+    accent: "border-l-stone-300",
+    text: "text-stone-800",
+    dot: "#C9B8A4",
+  },
+  tinyTigers: {
+    color: "#E9BFE9",
+    bg: "bg-fuchsia-100",
+    accent: "border-l-fuchsia-300",
+    text: "text-fuchsia-900",
+  },
+  beginner: {
+    color: "#F4EA72",
+    bg: "bg-yellow-100",
+    accent: "border-l-yellow-400",
+    text: "text-yellow-900",
+  },
+  intermediate: {
+    color: "#8DDB8B",
+    bg: "bg-emerald-100",
+    accent: "border-l-emerald-400",
+    text: "text-emerald-900",
+  },
+  advanced: {
+    color: "#E77976",
+    bg: "bg-rose-100",
+    accent: "border-l-rose-400",
+    text: "text-rose-900",
+  },
+  familyAllBelts: {
+    color: "#B886EE",
+    bg: "bg-violet-100",
+    accent: "border-l-violet-400",
+    text: "text-violet-900",
+  },
+  adultTeens: {
+    color: "#D9D9D9",
+    bg: "bg-zinc-100",
+    accent: "border-l-zinc-300",
+    text: "text-zinc-800",
+  },
+  leadershipDemo: {
+    color: "#6F3CB8",
+    bg: "bg-purple-100",
+    accent: "border-l-purple-600",
+    text: "text-purple-900",
+  },
+  competitionTeam: {
+    color: "#57A5EB",
+    bg: "bg-sky-100",
+    accent: "border-l-sky-500",
+    text: "text-sky-900",
+  },
+} as const;
+
+export const skillLevelPalette = {
+  beginner: {
+    accent: "text-yellow-800",
+    accentBg: "bg-yellow-400/15 ring-yellow-500/25",
+  },
+  intermediate: {
+    accent: "text-emerald-700",
+    accentBg: "bg-emerald-500/12 ring-emerald-500/25",
+  },
+  advanced: {
+    accent: "text-rose-700",
+    accentBg: "bg-rose-500/12 ring-rose-500/25",
+  },
+} as const;
+
 // Schedule effective 01/01/2026
 // Days: 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
 export type ScheduleRow = {
@@ -19,48 +92,48 @@ export type ScheduleRow = {
 export const scheduleRows: ScheduleRow[] = [
   {
     className: "Morning Class",
-    color: "#f5f5f5",
+    color: scheduleClassPalette.morningClass.color,
     slots: { 1: "Private Lessons", 2: "Private Lessons", 3: "Private Lessons", 4: "Private Lessons", 5: "Private Lessons" },
   },
   {
     className: "Tiny Tigers 3-6",
-    color: "#F9E547", // yellow
+    color: scheduleClassPalette.tinyTigers.color,
     slots: { 1: "3:30-4:10", 2: "4:40-5:20", 3: "3:30-4:10", 4: "4:40-5:20", 5: "4:50-5:30" },
   },
   {
     className: "White-Yellow (Beginner)",
-    color: "#EF9A9A", // red/pink
+    color: scheduleClassPalette.beginner.color,
     slots: { 1: "4:10-4:50", 2: "6:00-6:40", 3: "4:10-4:50", 4: "6:00-6:40", 5: "4:10-4:50" },
   },
   {
     className: "Camo-Purple (Intermediate)",
-    color: "#81C784", // green
+    color: scheduleClassPalette.intermediate.color,
     slots: { 1: "5:30-6:10", 2: "4:00-4:40", 3: "5:30-6:10", 4: "4:00-4:40", 5: "3:30-4:10" },
   },
   {
     className: "Blue-Black (Advanced)",
-    color: "#64B5F6", // blue
+    color: scheduleClassPalette.advanced.color,
     slots: { 1: "4:50-5:30", 2: "5:20-6:00", 3: "4:50-5:30", 4: "5:20-6:00", 5: "3:30-4:10" },
   },
   {
     className: "Family / All Belts",
-    color: "#CE93D8", // purple/pink
+    color: scheduleClassPalette.familyAllBelts.color,
     slots: { 1: "6:10-6:50", 2: "7:30-8:15", 3: "6:10-6:50", 4: "7:30-8:15", 5: "5:30-6:15" },
   },
   {
     className: "Adult & Teens",
-    color: "#ffffff",
+    color: scheduleClassPalette.adultTeens.color,
     slots: { 1: "6:50-7:30", 3: "6:50-7:30", 5: "5:30-6:15" },
   },
   {
     className: "Leadership / Demo Team*",
-    color: "#7B1FA2", // dark purple
+    color: scheduleClassPalette.leadershipDemo.color,
     slots: { 2: "6:40-7:30", 4: "6:40-7:30", 6: "9:00 AM~" },
     note: "*Must be a part of said team to participate",
   },
   {
     className: "Competition Team*",
-    color: "#42A5F5", // blue
+    color: scheduleClassPalette.competitionTeam.color,
     slots: { 1: "7:30-8:30", 3: "7:30-8:30", 5: "6:30-8:00", 6: "10:30~" },
     note: "*Must be a part of said team to participate",
   },
