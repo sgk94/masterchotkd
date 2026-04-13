@@ -101,7 +101,7 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
                 <h1 className="mt-4 font-heading text-3xl tracking-tight text-white sm:text-4xl">
                   Tiny Tiger Curriculum
                 </h1>
-                <p className="mt-2 text-sm font-medium text-brand-gold">Ages 3-6</p>
+                <p className="mt-2 text-sm font-medium text-brand-gold">Ages 4-6</p>
                 <p className="mt-3 max-w-xl text-base leading-relaxed text-white/50">
                   Complete belt progression from White through Camo — poomsae, one-steps, hand techniques, board breaking, and weapons for every level.
                 </p>

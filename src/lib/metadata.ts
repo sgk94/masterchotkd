@@ -10,7 +10,15 @@ export function createMetadata(overrides: Partial<Metadata> = {}): Metadata {
   return {
     title, description,
     metadataBase: new URL(SITE_URL),
-    openGraph: { title, description, siteName: SITE_NAME, type: "website", locale: "en_US", ...(overrides.openGraph as Record<string, unknown>) },
+    openGraph: {
+      title,
+      description,
+      siteName: SITE_NAME,
+      type: "website",
+      locale: "en_US",
+      images: [{ url: "/images/og-image.jpg", width: 1200, height: 630, alt: SITE_NAME }],
+      ...(overrides.openGraph as Record<string, unknown>),
+    },
     twitter: { card: "summary_large_image", title, description },
     ...overrides,
   };

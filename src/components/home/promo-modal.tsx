@@ -16,6 +16,15 @@ export function PromoModal(): React.ReactElement {
     }
   }, []);
 
+  useEffect(() => {
+    if (!show) return;
+    function handleKeyDown(e: KeyboardEvent): void {
+      if (e.key === "Escape") handleClose();
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [show]);
+
   function handleClose(): void {
     setShow(false);
     sessionStorage.setItem(STORAGE_KEY, "true");
@@ -27,6 +36,9 @@ export function PromoModal(): React.ReactElement {
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
       onClick={handleClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Special offer"
       style={{
         animation: "fade-up 0.4s ease-out",
       }}
@@ -43,7 +55,9 @@ export function PromoModal(): React.ReactElement {
           className="absolute right-4 top-5 flex h-8 w-8 items-center justify-center rounded-full text-brand-black/40 transition-colors hover:bg-brand-cream hover:text-brand-black"
           aria-label="Close"
         >
-          ✕
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <line x1="1" y1="1" x2="13" y2="13" /><line x1="13" y1="1" x2="1" y2="13" />
+          </svg>
         </button>
 
         <div className="px-8 pb-8 pt-7 text-center">

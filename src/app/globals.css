@@ -22,6 +22,12 @@ html {
   overflow-x: hidden;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   overflow-x: hidden;
   font-family: var(--font-family-body);
@@ -53,6 +59,12 @@ p {
 
 .animate-fade-up {
   animation: fade-up 0.6s ease-out both;
+}
+
+/* Hero entrance animations */
+@keyframes hero-video-in {
+  from { opacity: 0; }
+  to { opacity: 0.75; }
 }
 
 /* Staggered children */

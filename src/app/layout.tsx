@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import { dmSerifDisplay, inter } from "@/lib/fonts";
+import { heading, body } from "@/lib/fonts";
 import { createMetadata } from "@/lib/metadata";
 import "./globals.css";
 
@@ -8,7 +8,7 @@ export const metadata: Metadata = createMetadata();
 
 export default function RootLayout({ children }: { children: React.ReactNode }): React.ReactElement {
   return (
-    <html lang="en" className={`${dmSerifDisplay.variable} ${inter.variable}`}>
+    <html lang="en" className={`${heading.variable} ${body.variable}`}>
       <body className="grain font-body antialiased">
         <ClerkProvider>
           <script

@@ -46,19 +46,23 @@ export function useFormSubmit<T>({
       return;
     }
 
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(result.data),
-    });
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(result.data),
+      });
 
-    if (response.ok) {
-      setSuccess(true);
-    } else {
-      const body = (await response.json().catch(() => ({}))) as {
-        error?: string;
-      };
-      setErrors({ form: body.error ?? "Something went wrong." });
+      if (response.ok) {
+        setSuccess(true);
+      } else {
+        const body = (await response.json().catch(() => ({}))) as {
+          error?: string;
+        };
+        setErrors({ form: body.error ?? "Something went wrong." });
+      }
+    } catch {
+      setErrors({ form: "Unable to connect. Please try again or call us at 425-361-0688." });
     }
     setSubmitting(false);
   }

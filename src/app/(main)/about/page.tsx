@@ -39,7 +39,15 @@ export default function AboutPage(): React.ReactElement {
           <p className="mt-4 text-lg leading-relaxed text-brand-black/70">Taekwondo is an ancient sport, originating in Korea thousands of years ago. It emphasizes balance in all things, and particularly encourages personal growth.</p>
           <div className="mt-8"><Button variant="primary" href="/special-offer">Start Your Journey</Button></div>
         </div>
-        <div className="h-80 rounded-card bg-brand-sand lg:h-auto" />
+        <div className="relative overflow-hidden rounded-card lg:h-auto">
+          <Image
+            src="/images/GMC.jpg"
+            alt="Grand Master Cho at the dojang"
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover object-top"
+          />
+        </div>
       </div>
 
       {/* Instructors — alternating left/right layout */}

@@ -1,4 +1,4 @@
-const values = [
+export const coreValues = [
   {
     number: "01",
     title: "Loyalty & Respect",
@@ -32,7 +32,7 @@ export function ValuesSection(): React.ReactElement {
           </p>
         </div>
         <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-card bg-brand-taupe/30 sm:grid-cols-3">
-          {values.map((value) => (
+          {coreValues.map((value) => (
             <div key={value.title} className="bg-brand-cream p-8 sm:p-10">
               <span className="font-heading text-3xl text-brand-gold/40">{value.number}</span>
               <h3 className="mt-3 font-heading text-lg text-brand-black">{value.title}</h3>
