@@ -12,7 +12,7 @@ const mobileNavLinks = [
   { label: "Programs", href: "/programs" },
   { label: "Schedule", href: "/schedule" },
   { label: "Reviews", href: "/reviews" },
-  { label: "Members", href: "/students" },
+  { label: "Members", href: "/members" },
   { label: "Contact", href: "/contact" },
 ];
 

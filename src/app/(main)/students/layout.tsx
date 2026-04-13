@@ -4,10 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const studentNavLinks = [
-  { label: "Overview", href: "/students" },
-  { label: "Curriculum", href: "/students/curriculum" },
-  { label: "Forms", href: "/students/forms" },
-  { label: "Resources", href: "/students/resources" },
+  { label: "Announcements", href: "/members" },
+  { label: "Current Cycle", href: "/members/current-cycle" },
+  { label: "Tiny Tigers", href: "/members/curriculum/tiny-tigers" },
+  { label: "Color Belt", href: "/members/curriculum/color-belt" },
+  { label: "Resources", href: "/members/resources" },
 ];
 
 export default function StudentsLayout({ children }: { children: React.ReactNode }): React.ReactElement {
@@ -18,8 +19,8 @@ export default function StudentsLayout({ children }: { children: React.ReactNode
       <div className="mb-8 flex flex-wrap gap-6 border-b border-brand-taupe">
         {studentNavLinks.map((link) => {
           const isActive =
-            link.href === "/students"
-              ? pathname === "/students"
+            link.href === "/members"
+              ? pathname === "/members"
               : pathname.startsWith(link.href);
 
           return (

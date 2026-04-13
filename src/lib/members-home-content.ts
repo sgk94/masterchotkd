@@ -107,17 +107,17 @@ export const membersHomeContent: MembersHomeContent = {
     {
       title: "Curriculum",
       description: "Belt requirements and testing criteria for each rank.",
-      href: "/students/curriculum",
+      href: "/members/curriculum",
     },
     {
       title: "Poomsae Forms",
       description: "Video library of all forms organized by belt level.",
-      href: "/students/forms",
+      href: "/members/forms",
     },
     {
       title: "Resources",
       description: "Additional training materials and documents.",
-      href: "/students/resources",
+      href: "/members/resources",
     },
   ],
 };

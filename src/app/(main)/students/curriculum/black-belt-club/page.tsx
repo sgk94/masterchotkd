@@ -32,7 +32,7 @@ function getBeltDotStyle(level: { belt: string; color: string; border: boolean }
 export default function BlackBeltClubCurriculumPage(): React.ReactElement {
   return (
     <div>
-      <Link href="/students/curriculum" className="text-sm text-brand-red hover:underline">← Back to Curriculum</Link>
+      <Link href="/members/curriculum" className="text-sm text-brand-red hover:underline">← Back to Curriculum</Link>
       <h1 className="mt-4 font-heading text-3xl text-brand-black">Black Belt Club Curriculum</h1>
       <p className="mt-2 text-sm font-medium text-brand-gold">All ages</p>
       <p className="mt-3 text-brand-black/60">Full belt progression from White Belt through Black Belt.</p>

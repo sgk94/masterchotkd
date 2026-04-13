@@ -123,7 +123,7 @@ function ExpandableVideoCard({
 export default function TinyTigersCurriculumPage(): React.ReactElement {
   return (
     <div>
-      <Link href="/students/curriculum" className="text-sm text-brand-red hover:underline">← Back to Curriculum</Link>
+      <Link href="/members/curriculum" className="text-sm text-brand-red hover:underline">← Back to Curriculum</Link>
       <h1 className="mt-4 font-heading text-3xl text-brand-black">Tiny Tiger Curriculum</h1>
       <p className="mt-2 text-sm font-medium text-brand-gold">Ages 3-6</p>
 

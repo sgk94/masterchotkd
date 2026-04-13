@@ -407,7 +407,7 @@ function ExpandableVideoCard({
 export default function ColorBeltPage(): React.ReactElement {
   return (
     <div>
-      <Link href="/students/curriculum" className="text-sm text-brand-red hover:underline">
+      <Link href="/members/curriculum" className="text-sm text-brand-red hover:underline">
         ← Back to Curriculum
       </Link>
 
