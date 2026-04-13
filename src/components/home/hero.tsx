@@ -14,7 +14,7 @@ export function Hero(): React.ReactElement {
   }, []);
 
   return (
-    <section className="relative -mt-16 flex min-h-[100dvh] items-center overflow-hidden bg-[#0a0a2e]">
+    <section className="relative -mt-16 flex min-h-[100dvh] items-center overflow-hidden bg-brand-navy">
       {/* Video — positioned right, wider so it underlaps the title */}
       <div
         className="absolute inset-y-0 right-0 hidden w-[75%] lg:block"
@@ -33,9 +33,9 @@ export function Hero(): React.ReactElement {
           <source src="/videos/hero.mp4" type="video/mp4" />
         </video>
         {/* Vignette — fades video into the background on all edges */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a2e] via-[#0a0a2e]/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a2e] via-transparent to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a2e] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-navy via-brand-navy/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-navy via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-transparent" />
       </div>
 
       {/* Text content */}

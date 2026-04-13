@@ -5,6 +5,7 @@ export type MembersHomeAnnouncement = {
   label: string;
   title: string;
   body: string;
+  featured?: boolean;
 };
 
 export type MembersHomeQuickLink = {
@@ -56,12 +57,14 @@ export function getMembersHomeContent(): MembersHomeContent {
           id: "upcoming-cycle-weapon-focus",
           label: `Upcoming ${currentCycle.cycle}`,
           title: "Upcoming Weapon Focus",
+          featured: true,
           body: `${currentCycle.cycle} begins on ${formatCycleDate(currentCycle.startDate)}. The weapon focus will be ${currentCycle.weapon} (${currentCycle.shortWeapon}).`,
         }
       : {
           id: "current-cycle-weapon-focus",
           label: currentCycle.cycle,
           title: "Current Weapon Focus",
+          featured: true,
           body: currentCycle.nextChangeDate
             ? `The current testing cycle is ${currentCycle.cycle}, and the weapon focus is ${currentCycle.weapon} (${currentCycle.shortWeapon}). The next cycle change is ${formatCycleDate(currentCycle.nextChangeDate)}.`
             : `The current testing cycle is ${currentCycle.cycle}, and the weapon focus is ${currentCycle.weapon} (${currentCycle.shortWeapon}).`,
