@@ -1,12 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 
 const STORAGE_KEY = "masterchos-promo-dismissed";
 
 export function PromoModal(): React.ReactElement {
   const [show, setShow] = useState(false);
+
+  const handleClose = useCallback((): void => {
+    setShow(false);
+    sessionStorage.setItem(STORAGE_KEY, "true");
+  }, []);
 
   useEffect(() => {
     const dismissed = sessionStorage.getItem(STORAGE_KEY);
@@ -23,12 +28,7 @@ export function PromoModal(): React.ReactElement {
     }
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [show]);
-
-  function handleClose(): void {
-    setShow(false);
-    sessionStorage.setItem(STORAGE_KEY, "true");
-  }
+  }, [show, handleClose]);
 
   if (!show) return <></>;
 
