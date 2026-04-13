@@ -37,7 +37,7 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 - Curriculum pages (Tiny Tigers, Black Belt Club, Color Belt, Weekly Training)
 - Contact/trial/booking API routes (stubbed — return 503 until DB connected)
 - SEO (sitemap, robots, JSON-LD, OG image config)
-- CI/CD (GitHub Actions: lint → test → build → Lighthouse, build artifact shared)
+- CI/CD (GitHub Actions: lint → test → build → Lighthouse)
 - Promo modal (BOGO deal, session-scoped, keyboard accessible)
 - Trial offer: $49 / 2 weeks (no uniform included)
 - Real program + instructor images (JPEG, 2560px wide)
@@ -71,7 +71,7 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 - **Hosting:** Vercel (connected to GitHub, auto-deploys)
 - **Package manager:** pnpm 10.18
 - **Testing:** Vitest + happy-dom, React Testing Library, Playwright
-- **CI/CD:** GitHub Actions (lint → test → build → Lighthouse with shared build artifact)
+- **CI/CD:** GitHub Actions (lint → test → build → Lighthouse)
 
 ## Design System
 
