@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
-import { cycleSchedule2026, cycleScheduleRevalidateSeconds, formatCycleDate, getCurrentCycleWindow } from "@/lib/current-cycle";
+import { cycleSchedule2026, formatCycleDate, getCurrentCycleWindow } from "@/lib/current-cycle";
 import {
   colorBeltWeaponShortcuts,
   cycleNameToNumber,
@@ -12,7 +12,7 @@ import {
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({ title: "Our Current Cycle Materials" });
-export const revalidate = cycleScheduleRevalidateSeconds;
+export const revalidate = 3600;
 
 const sectionLinks = [
   { href: "#overview", label: "Overview" },

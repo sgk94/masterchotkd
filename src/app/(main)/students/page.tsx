@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { getMembersHomeContent } from "@/lib/members-home-content";
-import { cycleScheduleRevalidateSeconds } from "@/lib/current-cycle";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({ title: "Members Announcements" });
-export const revalidate = cycleScheduleRevalidateSeconds;
+export const revalidate = 3600;
 
 export default function StudentsPage(): React.ReactElement {
   const membersHomeContent = getMembersHomeContent();
