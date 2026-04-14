@@ -73,6 +73,41 @@ const handTechniqueGroups = [
   { level: "Advanced", accent: skillLevelPalette.advanced.accent, accentBg: skillLevelPalette.advanced.accentBg, ranges: ["Cycle 1: 37-42", "Cycle 2: 43-48", "Cycle 3: 49-52"] },
 ];
 
+const colorBeltResourceGroups = [
+  {
+    title: "Color Belt Packet",
+    description: "Printable handbook for color belt students and families.",
+    cards: [
+      {
+        title: "Color Belt Handbook",
+        description: "Core handbook with printable reference material for color belts.",
+        href: "/student-resources/color-belt-handbook?download=1",
+      },
+    ],
+  },
+  {
+    title: "Color Belt Stripe Requirements",
+    description: "Required take-home sheets for color belt stripes and testing prep.",
+    cards: [
+      {
+        title: "Testing Essay Topics",
+        description: "Essay topic handout for color belt testing requirements.",
+        href: "/student-resources/testing-essay-topics?download=1",
+      },
+      {
+        title: "Reading List",
+        description: "Reading tracker sheet for color belt stripe requirements.",
+        href: "/student-resources/reading-list?download=1",
+      },
+      {
+        title: "Monthly Chore Sheet",
+        description: "Home responsibility tracker for color belt stripe work.",
+        href: "/student-resources/monthly-chore-sheet?download=1",
+      },
+    ],
+  },
+] as const;
+
 function BeltDot({ entry, size = "h-7 w-7" }: { entry: CurriculumEntry; size?: string }): React.ReactElement {
   return <div className={`${size} shrink-0 rounded-full shadow-sm ${entry.beltDotClass} ${entry.beltDotBorder ?? ""}`} style={entry.beltDotStyle} />;
 }
@@ -90,6 +125,35 @@ function getOverviewCardStyle(entry: CurriculumEntry): { cardBg: string; headerB
     Red: { cardBg: "#FFF0F1", headerBg: "#FFDCDD", borderColor: "rgba(220,38,38,0.16)" },
   };
   return map[entry.beltName] ?? { cardBg: "#FFFFFF", headerBg: "#F8F5F1", borderColor: "rgba(212,197,176,0.32)" };
+}
+
+function ResourceCard({
+  title,
+  description,
+  href,
+}: {
+  title: string;
+  description: string;
+  href: string;
+}): React.ReactElement {
+  return (
+    <a
+      href={href}
+      className="group flex h-full flex-col rounded-xl bg-white/[0.06] px-6 py-5 ring-1 ring-white/[0.08] transition-all duration-300 hover:bg-white/[0.10] hover:-translate-y-0.5"
+    >
+      <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-brand-gold/80">PDF Download</p>
+      <p className="mt-3 font-heading text-lg text-white">{title}</p>
+      <p className="mt-1.5 text-sm leading-relaxed text-white/40">{description}</p>
+      <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand-gold transition-transform duration-300 group-hover:translate-x-0.5">
+        Download PDF
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+          <path d="M12 4v11" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="m7 11 5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M5 20h14" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
+    </a>
+  );
 }
 
 
@@ -336,18 +400,22 @@ export default function ColorBeltPage(): React.ReactElement {
             <div className="rounded-2xl bg-brand-navy px-8 py-10 sm:px-10">
               <span className="inline-flex rounded-full border border-brand-gold/20 bg-brand-gold/5 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-gold">Resources</span>
               <h2 className="mt-4 font-heading text-2xl tracking-tight text-white sm:text-3xl">Color Belt Resources</h2>
-              <p className="mt-2 text-sm leading-relaxed text-white/40">Extra color belt resources can be added here as they become available.</p>
+              <p className="mt-2 text-sm leading-relaxed text-white/40">Printable materials and stripe-requirement downloads for color belt students.</p>
 
-              <div className="mt-8">
-                <div className="inline-flex items-center gap-4 rounded-xl bg-white/[0.06] px-6 py-5 ring-1 ring-white/[0.08]">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-gold/10">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-brand-gold" aria-hidden="true" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14" /><path d="M5 12h14" /></svg>
+              <div className="mt-8 space-y-8">
+                {colorBeltResourceGroups.map((group) => (
+                  <div key={group.title}>
+                    <div>
+                      <h3 className="font-heading text-xl text-white">{group.title}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-white/40">{group.description}</p>
+                    </div>
+                    <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+                      {group.cards.map((card) => (
+                        <ResourceCard key={card.title} {...card} />
+                      ))}
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-heading text-base text-white">More Resources</p>
-                    <p className="mt-0.5 text-sm text-white/35">Handouts, downloads, and other member materials coming soon.</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </section>
