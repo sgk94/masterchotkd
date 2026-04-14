@@ -1,4 +1,5 @@
 import { createMetadata } from "@/lib/metadata";
+import { BUSINESS_ADDRESS_LINES, BUSINESS_PHONE_DISPLAY, BUSINESS_PHONE_TEL } from "@/lib/location";
 import { ContactForm } from "@/components/forms/contact-form";
 import { PageContainer } from "@/components/ui/page-container";
 
@@ -24,10 +25,10 @@ export default function ContactPage(): React.ReactElement {
                 Phone
               </h3>
               <a
-                href="tel:+14253610688"
+                href={`tel:${BUSINESS_PHONE_TEL}`}
                 className="mt-1 inline-block text-brand-blue transition-colors hover:text-brand-red"
               >
-                425-361-0688
+                {BUSINESS_PHONE_DISPLAY}
               </a>
             </div>
             <div>
@@ -35,9 +36,9 @@ export default function ContactPage(): React.ReactElement {
                 Location
               </h3>
               <p className="mt-1 text-brand-black/60">
-                3221 184th St SW STE 100
+                {BUSINESS_ADDRESS_LINES[0]}
                 <br />
-                Lynnwood, WA 98037
+                {BUSINESS_ADDRESS_LINES[1]}
               </p>
             </div>
             <div>

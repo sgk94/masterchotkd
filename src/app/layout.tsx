@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { heading, body } from "@/lib/fonts";
+import { BUSINESS_LOCATION, BUSINESS_PHONE_STRUCTURED } from "@/lib/location";
 import { createMetadata } from "@/lib/metadata";
 import "./globals.css";
 
@@ -21,19 +22,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
                 description:
                   "Premier Taekwondo academy in Lynnwood, WA offering classes for all ages — from Tiny Tigers to adult Black Belt programs.",
                 url: "https://masterchostaekwondo.com",
-                telephone: "+1-425-361-0688",
+                telephone: BUSINESS_PHONE_STRUCTURED,
                 address: {
                   "@type": "PostalAddress",
-                  streetAddress: "3221 184th St SW STE 100",
-                  addressLocality: "Lynnwood",
-                  addressRegion: "WA",
-                  postalCode: "98037",
-                  addressCountry: "US",
-                },
-                geo: {
-                  "@type": "GeoCoordinates",
-                  latitude: 47.8284,
-                  longitude: -122.3142,
+                  ...BUSINESS_LOCATION,
                 },
                 openingHoursSpecification: [
                   {

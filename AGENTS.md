@@ -17,7 +17,7 @@ Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), rep
 
 ## Business Context
 - **Business:** Master Cho's Black Belt Academy, Lynnwood, WA
-- **Location:** 3221 184th St SW STE 100, Lynnwood, WA 98037
+- **Location:** 5031 168th ST SW STE 100, Lynnwood, WA 98037
 - **Students:** 50-150 active members
 - **Current stack:** Foxspin website + SparkMembership/Pitbull payments
 - **Pain points:** $600/mo total, can't make quick changes

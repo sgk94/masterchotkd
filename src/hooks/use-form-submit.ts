@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { BUSINESS_PHONE_DISPLAY } from "@/lib/location";
 import type { ZodSchema } from "zod";
 
 type UseFormSubmitOptions<T> = {
@@ -62,7 +63,7 @@ export function useFormSubmit<T>({
         setErrors({ form: body.error ?? "Something went wrong." });
       }
     } catch {
-      setErrors({ form: "Unable to connect. Please try again or call us at 425-361-0688." });
+      setErrors({ form: `Unable to connect. Please try again or call us at ${BUSINESS_PHONE_DISPLAY}.` });
     }
     setSubmitting(false);
   }
