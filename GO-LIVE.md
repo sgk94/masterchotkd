@@ -112,8 +112,8 @@ google-site-verification=rvIpjicemCbIMNiNm8rXYxghLwzSTQrvjAiW_YqHaOY
 - [ ] Google TXT verification records — tied to Search Console / business verification
 - [ ] `www` → apex redirect behavior
 - [ ] Final business information on new site:
-  - [ ] Phone: 425-361-0688
-  - [ ] Address: 3221 184th St SW STE 100, Lynnwood, WA 98037
+  - [ ] Phone: 425-742-4282
+  - [ ] Address: 5031 168th ST SW STE 100, Lynnwood, WA 98037
   - [ ] Email: (confirm)
   - [ ] Social links: (need actual Facebook/Instagram URLs)
   - [ ] Pricing / offer copy: $49 / 2 weeks trial

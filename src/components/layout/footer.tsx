@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BUSINESS_ADDRESS_LINES, BUSINESS_PHONE_DISPLAY, BUSINESS_PHONE_TEL } from "@/lib/location";
 import { NAV_LINKS } from "@/types";
 
 export function Footer(): React.ReactElement {
@@ -19,14 +20,20 @@ export function Footer(): React.ReactElement {
         <div className="text-center">
           <h4 className="mb-4 text-sm font-semibold text-brand-gold">Contact</h4>
           <ul className="flex flex-col gap-2">
-            <li><a href="tel:+14253610688" className="text-sm text-white/70 hover:text-white transition-colors">425-361-0688</a></li>
+            <li><a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-sm text-white/70 hover:text-white transition-colors">{BUSINESS_PHONE_DISPLAY}</a></li>
             <li><a href="https://www.facebook.com/masterchostaekwondo/" target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 hover:text-white transition-colors">Facebook</a></li>
             <li><a href="https://www.instagram.com/masterchostaekwondo/" target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 hover:text-white transition-colors">Instagram</a></li>
           </ul>
         </div>
         <div className="text-center">
           <h4 className="mb-4 text-sm font-semibold text-brand-gold">Our Location</h4>
-          <address className="text-sm not-italic text-white/70 leading-relaxed">Master Cho&apos;s Taekwondo<br />3221 184th St SW STE 100<br />Lynnwood, WA 98037</address>
+          <address className="text-sm not-italic text-white/70 leading-relaxed">
+            Master Cho&apos;s Taekwondo
+            <br />
+            {BUSINESS_ADDRESS_LINES[0]}
+            <br />
+            {BUSINESS_ADDRESS_LINES[1]}
+          </address>
         </div>
       </div>
       <div className="border-t border-white/10 px-6 py-4 text-center text-xs text-white/40">&copy; {new Date().getFullYear()} Master Cho&apos;s Taekwondo. All rights reserved.</div>

@@ -1276,7 +1276,7 @@ export function Footer(): React.ReactElement {
           <h4 className="mb-4 text-sm font-semibold text-brand-gold">Our Location</h4>
           <address className="text-sm not-italic text-white/70 leading-relaxed">
             Master Cho&apos;s Taekwondo<br />
-            3221 184th St SW STE 100<br />
+            5031 168th ST SW STE 100<br />
             Lynnwood, WA 98037
           </address>
         </div>
@@ -2349,7 +2349,7 @@ export default function ContactPage(): React.ReactElement {
           <h1 className="font-heading text-4xl text-brand-black sm:text-5xl">Contact Us</h1>
           <p className="mt-3 text-lg text-brand-black/60">Have questions? We&apos;d love to hear from you.</p>
           <div className="mt-10 space-y-6">
-            <div><h3 className="font-heading text-lg text-brand-black">Location</h3><p className="mt-1 text-brand-black/60">3221 184th St SW STE 100<br />Lynnwood, WA 98037</p></div>
+            <div><h3 className="font-heading text-lg text-brand-black">Location</h3><p className="mt-1 text-brand-black/60">5031 168th ST SW STE 100<br />Lynnwood, WA 98037</p></div>
             <div><h3 className="font-heading text-lg text-brand-black">Follow Us</h3><div className="mt-1 flex gap-4"><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:text-brand-red transition-colors">Facebook</a><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:text-brand-red transition-colors">Instagram</a></div></div>
           </div>
         </div>
