@@ -3,7 +3,7 @@ import path from "node:path";
 import { auth } from "@clerk/nextjs/server";
 
 export async function serveProtectedPdf(
-  request: Request,
+  request: Request | undefined,
   fileName: string,
 ): Promise<Response> {
   const { userId } = await auth();
@@ -13,7 +13,9 @@ export async function serveProtectedPdf(
 
   try {
     const filePath = path.join(process.cwd(), "student-resources", fileName);
-    const download = new URL(request.url).searchParams.get("download") === "1";
+    const download = request
+      ? new URL(request.url).searchParams.get("download") === "1"
+      : false;
     const file = await readFile(filePath);
 
     return new Response(file, {
