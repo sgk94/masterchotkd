@@ -8,6 +8,7 @@ const studentNavLinks = [
   { label: "Current Cycle", href: "/members/current-cycle" },
   { label: "Tiny Tigers", href: "/members/curriculum/tiny-tigers" },
   { label: "Color Belt", href: "/members/curriculum/color-belt" },
+  { label: "Red/Black Belt", href: "/members/curriculum/red-black-belt" },
   { label: "Resources", href: "/members/resources" },
 ];
 

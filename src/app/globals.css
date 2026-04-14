@@ -17,6 +17,36 @@
   --radius-button: 8px;
 }
 
+@layer utilities {
+  /* Tailwind v4 is not emitting these newer brand tokens reliably in dev,
+     so we define the few missing utilities explicitly for shared page chrome. */
+  .bg-brand-navy {
+    background-color: #0a0a2e;
+  }
+
+  .bg-brand-page-bg {
+    background-color: #f2f2f6;
+  }
+
+  .bg-brand-page-bg\/60 {
+    background-color: color-mix(in oklab, #f2f2f6 60%, transparent);
+  }
+
+  .bg-brand-page-bg\/80 {
+    background-color: color-mix(in oklab, #f2f2f6 80%, transparent);
+  }
+
+  .from-brand-navy {
+    --tw-gradient-from: #0a0a2e;
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+
+  .via-brand-navy\/40 {
+    --tw-gradient-via: color-mix(in oklab, #0a0a2e 40%, transparent);
+    --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+  }
+}
+
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
