@@ -36,6 +36,7 @@ const rightLinks: NavItem[] = [
       { label: "Current Cycle", href: "/members/current-cycle", description: "Current cycle materials" },
       { label: "Tiny Tigers", href: "/members/curriculum/tiny-tigers", description: "Ages 4-6 resources" },
       { label: "Color Belt", href: "/members/curriculum/color-belt", description: "Color belt curriculum" },
+      { label: "Red/Black Belt", href: "/members/curriculum/red-black-belt", description: "Black belt preparation" },
       { label: "Resources", href: "/members/resources", description: "Training materials" },
     ],
   },
@@ -62,6 +63,10 @@ const memberNavItems: Record<string, { icon: React.ReactElement; animation: stri
   "Color Belt": {
     icon: <svg {...iconProps}><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" /></svg>,
     animation: "group-hover:animate-[icon-flip-open_0.6s_ease-in-out]",
+  },
+  "Red/Black Belt": {
+    icon: <svg {...iconProps}><path d="M12 3l7 4v5c0 4.2-2.8 8-7 9-4.2-1-7-4.8-7-9V7l7-4Z" /><path d="M9 12l2 2 4-4" /></svg>,
+    animation: "group-hover:animate-[icon-bounce-layers_0.6s_ease-in-out]",
   },
   "Resources": {
     icon: <svg {...iconProps}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /></svg>,
@@ -263,7 +268,7 @@ export function Navbar(): React.ReactElement {
                       <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.2em] text-white/30">
                         {activeItem.label}
                       </p>
-                      <div className="grid grid-cols-5 gap-2">
+                      <div className="grid grid-cols-6 gap-2">
                         {activeItem.children.map((child) => {
                           const item = memberNavItems[child.label];
                           const icon = item?.icon ?? <svg {...iconProps}><circle cx="12" cy="12" r="10" /></svg>;
