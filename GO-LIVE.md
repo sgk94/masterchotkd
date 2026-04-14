@@ -131,6 +131,14 @@ google-site-verification=rvIpjicemCbIMNiNm8rXYxghLwzSTQrvjAiW_YqHaOY
 - [ ] Add `www.masterchostaekwondo.com` as redirect domain in Vercel project
 - [ ] Verify SSL is provisioned for both hostnames
 
+### Resend / Contact Form Cutover
+- [ ] Verify `masterchostaekwondo.com` as a sending domain in Resend (SPF + DKIM)
+- [ ] Wait for Resend to show the domain as "Verified"
+- [ ] Only then flip `RESEND_FROM_EMAIL` in Vercel env vars from `onboarding@resend.dev` → `noreply@masterchostaekwondo.com`
+- [ ] Confirm `NOTIFY_EMAIL` in Vercel env vars is set (contact form fails on boot if missing)
+- [ ] Send a test submission through the live form; confirm Master Cho receives it and "Reply" goes back to the prospect
+- [ ] Confirm Upstash env vars (`UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`) are set so rate limiting is active — otherwise the form runs without rate limits
+
 ### DNS Cutover
 - [ ] Recreate all required DNS records in new DNS provider BEFORE cutover:
   - [ ] A / CNAME records pointing to Vercel

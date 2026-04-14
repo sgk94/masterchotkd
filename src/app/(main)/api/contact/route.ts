@@ -1,10 +1,85 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
+import { contactSchema } from "@/schemas/contact";
+import { sendEmail } from "@/lib/email";
+import { sanitize } from "@/lib/sanitize";
+import { getServerEnv } from "@/lib/server-env";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { getClientIp } from "@/lib/api-security";
 
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+export const maxDuration = 10;
 
-export async function POST(): Promise<NextResponse> {
-  return NextResponse.json(
-    { error: "Service unavailable" },
-    { status: 503 }
-  );
+const MAX_BODY_BYTES = 10_000;
+
+function stripControl(input: string): string {
+  return input.replace(/[\r\n\t\x00-\x1F\x7F]/g, " ");
+}
+
+export async function POST(request: Request): Promise<NextResponse> {
+  const contentLength = Number(request.headers.get("content-length") ?? 0);
+  if (contentLength > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Payload too large" }, { status: 413 });
+  }
+
+  const ip = await getClientIp();
+  const { success: withinLimit } = await checkRateLimit(`contact:${ip}`);
+  if (!withinLimit) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again shortly." },
+      { status: 429 },
+    );
+  }
+
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+  }
+
+  const result = contactSchema.safeParse(body);
+  if (!result.success) {
+    const { fieldErrors } = z.flattenError(result.error);
+    return NextResponse.json(
+      { error: "Invalid form data", fieldErrors },
+      { status: 400 },
+    );
+  }
+
+  const { name, email, phone, message } = result.data;
+  const env = getServerEnv();
+
+  const safeName = stripControl(sanitize(name));
+  const safeEmail = stripControl(sanitize(email));
+  const safePhone = phone ? stripControl(sanitize(phone)) : "";
+  const safeMessage = sanitize(message);
+
+  try {
+    await sendEmail({
+      to: env.NOTIFY_EMAIL,
+      replyTo: email,
+      subject: `New contact form submission from ${safeName}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${safeName}</p>
+        <p><strong>Email:</strong> ${safeEmail}</p>
+        ${safePhone ? `<p><strong>Phone:</strong> ${safePhone}</p>` : ""}
+        <p><strong>Message:</strong></p>
+        <p>${safeMessage.replace(/\n/g, "<br>")}</p>
+      `,
+    });
+
+    return NextResponse.json({ success: true }, { status: 201 });
+  } catch (error) {
+    console.error("Contact form error", {
+      name: error instanceof Error ? error.name : "Unknown",
+      message: error instanceof Error ? error.message : String(error),
+    });
+    return NextResponse.json(
+      { error: "Unable to send message. Please try again or call 425-361-0688." },
+      { status: 500 },
+    );
+  }
 }

@@ -1,15 +1,30 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
-export const ratelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(5, "1 m"),
-  analytics: true,
-});
+let _ratelimit: Ratelimit | null = null;
+
+export function isRateLimitConfigured(): boolean {
+  return Boolean(
+    process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN,
+  );
+}
+
+function getRatelimit(): Ratelimit {
+  if (!_ratelimit) {
+    _ratelimit = new Ratelimit({
+      redis: Redis.fromEnv(),
+      limiter: Ratelimit.slidingWindow(5, "1 m"),
+      analytics: true,
+      prefix: "mctkd:ratelimit",
+    });
+  }
+  return _ratelimit;
+}
 
 export async function checkRateLimit(
   identifier: string,
 ): Promise<{ success: boolean }> {
-  const result = await ratelimit.limit(identifier);
+  if (!isRateLimitConfigured()) return { success: true };
+  const result = await getRatelimit().limit(identifier);
   return { success: result.success };
 }
