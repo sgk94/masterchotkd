@@ -4,12 +4,12 @@
 Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), replacing their Foxspin-hosted website ($300/mo) and reducing dependency on Foxspin management ($300/mo). Target: ~$25/mo hosting.
 
 ## Current Status
-- **Phase 1 MVP: Built** — 27 pages, 4 API routes (3 stubbed + 1 PDF download), CI/CD, deployed to Vercel
+- **Phase 1 MVP: Built** — 27 pages, 2 API routes (`/api/contact` live via Resend + 1 PDF download), CI/CD, deployed to Vercel
 - **Security/performance hardening done** — CSP tightened, framer-motion removed, program pages converted to Server Components, error boundaries added
 - **Images optimized** — real dojang + instructor photos, resized to 2560px JPEG
 - **Auth: Clerk enabled** — sign-in/sign-up pages, Facebook social login, route protection via `proxy.ts`
-- **Static data mode** — DB, Resend, Upstash not connected yet
-- **71 tests passing** (14 test files via Vitest; 12 E2E specs written for Playwright)
+- **Contact form live** — Resend wired, rate-limited via Upstash when configured, body size + control-char guards in place
+- **DB + trial/booking flows** — deleted until Phase 2 (schemas, forms, routes removed)
 - **Deployed:** Vercel (auto-deploys from `main` branch on `sgk94/masterchotkd`)
 - **GitHub:** github.com/sgk94/masterchotkd
 
@@ -35,7 +35,8 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 - Static schedule display (read-only table, effective 01/01/2026)
 - Members area protected by Clerk auth (sign-in/sign-up with Facebook social login)
 - Curriculum pages (Tiny Tigers, Black Belt Club, Color Belt, Weekly Training)
-- Contact/trial/booking API routes (stubbed — return 503 until DB connected)
+- `/api/contact` live (Resend notification with `Reply-To: <prospect>`, Upstash rate-limited when configured, 10KB body cap, control-char stripping, Zod `fieldErrors`-only response)
+- Trial/booking flows removed — `/special-offer` uses a plain CTA link to SparkPages
 - SEO (sitemap, robots, JSON-LD, OG image config)
 - CI/CD (GitHub Actions: lint → test → build → Lighthouse, build artifact shared)
 - Promo modal (BOGO deal, session-scoped, keyboard accessible)
@@ -175,10 +176,9 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `/members/resources` — Training materials
 
 ### API Routes
-- `POST /api/booking` — stubbed (503)
-- `POST /api/contact` — stubbed (503)
-- `POST /api/trial` — stubbed (503)
+- `POST /api/contact` — live. Resend email to `NOTIFY_EMAIL` with `Reply-To: <submitter>`. Returns 201 on success; 400 on JSON/Zod failure (only `fieldErrors` leaked); 413 when `content-length > 10_000`; 429 when Upstash rate-limit exceeded; 500 on Resend failure. Runtime: Node, `maxDuration = 10`.
 - `GET /student-resources/tiny-tiger-handbook` — PDF download (Clerk auth required)
+- `GET /student-resources/red-black-training-packet` — PDF download (Clerk auth required)
 
 ### Other Routes
 - `/not-found` — Custom 404
@@ -195,20 +195,20 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `/members` → rewrites to `/students` (internal)
 - `/members/*` → rewrites to `/students/*` (internal)
 
-### Components (25)
+### Components
 **Home:** hero, marquee, programs-grid, trial-banner, values-section, testimonials, gallery, bottom-cta, promo-modal
 **Layout:** navbar (with mega-menu + Clerk auth), mobile-menu, footer
 **UI:** button, reveal, bezel-card, page-container, eyebrow-badge
-**Forms:** form-field, contact-form, trial-form, booking-form
+**Forms:** form-field, contact-form
 **Schedule:** schedule-grid, schedule-client
 **Members:** floating-section-nav, shared
 
 ### Hooks (1)
 - `use-form-submit` — shared form submission logic (schema validation, fetch with try/catch, network error handling)
 
-### Schemas (4)
-- `fields.ts` — shared Zod field builders (nameField, emailField, phoneField)
-- `contact.ts`, `trial.ts`, `booking.ts` — form schemas using shared fields
+### Schemas
+- `fields.ts` — shared Zod field builders (nameField, emailField with strict regex + toLowerCase, phoneField with min-digit enforcement)
+- `contact.ts` — contact form schema
 
 ### Lib (13 modules)
 db, server-env (lazy via `getServerEnv()`), client-env, fonts, metadata, email, rate-limit, sanitize, static-data, api-security, members-home-content, current-cycle, current-cycle-materials
@@ -262,26 +262,23 @@ All in `public/images/` — JPEG format, 2560px wide:
 ## Static Resources
 - `student-resources/Tiny Tiger Handbook.pdf` — served via route handler at `/student-resources/tiny-tiger-handbook` (Clerk auth required)
 
-## Tests (71 total, 14 test files)
-**Unit (6):** contact, trial, booking schema validation (3 files)
-**Component (65):** navbar, hero, contact-form, button, programs-grid, gallery, schedule-grid, promo-modal, values-section, trial-banner, bottom-cta (11 files)
-**E2E (12 specs):** homepage, contact (Playwright, need running app to execute)
+## Tests
+**Unit:** contact schema, `/api/contact` route (validation + rate-limit + email failure paths), red-black packet route
+**Component:** navbar, hero, contact-form, button, programs-grid, gallery, schedule-grid, promo-modal, values-section, trial-banner, bottom-cta
+**E2E:** homepage, contact (Playwright, need running app to execute)
+Run `pnpm vitest run` for the current count — trial/booking suites were removed with those flows.
 
 ## To Get Fully Running
-1. Set up Neon DB → `DATABASE_URL` in `.env.local`
-2. `pnpm prisma migrate dev --name init && pnpm prisma db seed`
-3. Resend API key → `.env.local`
-4. Upstash Redis keys → `.env.local`
-5. Restore full API route implementations (in git history, search for "stub API routes")
-6. Replace `static-data` imports with DB queries
-7. Remove `@ts-nocheck` / `require()` workaround from `db.ts`
-8. Get logo redrawn as proper vector SVG (current one has embedded raster)
-9. Create OG image (1200x630 JPEG) at `public/images/og-image.jpg`
-10. Replace social link placeholders with actual Facebook/Instagram page URLs (footer, contact, members)
-11. Replace app download `#` placeholders with actual Spark Member app store URLs
-12. Tighten CSP (replace `unsafe-inline` with nonces)
-13. Pin Clerk CSP origins to exact production domains (replace wildcards)
-14. Switch Clerk from Development to Production mode
+1. Resend: API key + `RESEND_FROM_EMAIL` + `NOTIFY_EMAIL` in `.env.local` / Vercel env
+2. Upstash Redis keys in `.env.local` / Vercel env — contact form auto-enables rate limiting once present
+3. (Phase 2) Neon DB → `DATABASE_URL`; `pnpm prisma migrate dev --name init && pnpm prisma db seed`; restore trial/booking API routes + forms from git history; replace `static-data` imports with DB queries; remove `@ts-nocheck` / `require()` workaround from `db.ts`
+4. Get logo redrawn as proper vector SVG (current one has embedded raster)
+5. Create OG image (1200x630 JPEG) at `public/images/og-image.jpg`
+6. Replace social link placeholders with actual Facebook/Instagram page URLs (footer, contact, members)
+7. Replace app download `#` placeholders with actual Spark Member app store URLs
+8. Tighten CSP (replace `unsafe-inline` with nonces)
+9. Pin Clerk CSP origins to exact production domains (replace wildcards)
+10. Switch Clerk from Development to Production mode
 
 ## Repo
 - **GitHub:** github.com/sgk94/masterchotkd

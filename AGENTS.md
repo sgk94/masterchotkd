@@ -8,11 +8,10 @@
 Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), replacing their Foxspin-hosted website ($300/mo) and reducing dependency on Foxspin management ($300/mo). Target: ~$25/mo hosting.
 
 ## Current Status
-- **Phase 1 MVP: Built** — 21 pages, 3 API routes (stubbed), CI/CD, deployed to Vercel
-- **Design polish done** — scroll animations, premium typography, double-bezel cards, marquee, mega-menu navbar
-- **Images optimized** — real dojang + instructor photos, resized to 2560px JPEG
-- **Static data mode** — DB, Clerk, Resend, Upstash not connected yet
-- **68 tests passing** (14 test files via Vitest; 12 E2E specs written for Playwright)
+- **Phase 1 MVP: Built** — deployed to Vercel, Clerk auth live, `/api/contact` wired to Resend (rate-limited via Upstash when configured)
+- **Trial + booking flows removed** — schemas, forms, and routes deleted until Phase 2. `/special-offer` now links straight to SparkPages
+- **DB not connected** — Neon/Prisma unused; restore via git history in Phase 2
+- **See CLAUDE.md for authoritative status and file counts** — this file trails slightly
 - **Deployed:** Vercel (auto-deploys from `main` branch on `sgk94/masterchotkd`)
 - **GitHub:** github.com/sgk94/masterchotkd
 
@@ -145,9 +144,7 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 
 ### Other Routes
 - `/not-found` — Custom 404
-- `POST /api/booking` — stubbed (503, generic error message)
-- `POST /api/contact` — stubbed (503, generic error message)
-- `POST /api/trial` — stubbed (503, generic error message)
+- `POST /api/contact` — live: Resend notification to `NOTIFY_EMAIL` with `Reply-To` set to the submitter. Returns 400/413/429/500 on the expected failure modes. See CLAUDE.md for the response contract.
 - `/sitemap.xml` — dynamic
 - `/robots.txt` — blocks /students/, /api/
 
