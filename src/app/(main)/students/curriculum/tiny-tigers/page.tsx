@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
-import { VideoPlaceholder, SectionHeader, SubSectionHeader } from "@/components/members/shared";
+import { VideoPlaceholder, SectionHeader } from "@/components/members/shared";
 
 const camoPattern = "url(/images/camo-pattern.jpg)";
 
@@ -39,6 +39,36 @@ const sectionLinks = [
   { href: "#resources", label: "Resources" },
 ];
 
+const tinyTigerResourceGroups = [
+  {
+    title: "Tiny Tiger Packet",
+    description: "Printable handbook and packet for Tiny Tiger students and families.",
+    cards: [
+      {
+        title: "Tiny Tiger Handbook",
+        description: "Core Tiny Tiger packet and printable member reference.",
+        href: "/student-resources/tiny-tiger-handbook?download=1",
+      },
+    ],
+  },
+  {
+    title: "Tiny Tiger Stripe Requirements",
+    description: "Required take-home sheets for Tiny Tiger stripes.",
+    cards: [
+      {
+        title: "Respect Sheet",
+        description: "Printable respect practice sheet for Tiny Tigers.",
+        href: "/student-resources/respect-sheet?download=1",
+      },
+      {
+        title: "Star Chart",
+        description: "Progress tracker for Tiny Tiger home practice.",
+        href: "/student-resources/star-chart?download=1",
+      },
+    ],
+  },
+] as const;
+
 function getBeltCircleStyle(options: {
   color: string;
   secondaryColor?: string;
@@ -65,7 +95,36 @@ function getBeltCircleStyle(options: {
   };
 }
 
-/* VideoPlaceholder, SectionHeader, SubSectionHeader imported from @/components/members/shared */
+function ResourceCard({
+  title,
+  description,
+  href,
+}: {
+  title: string;
+  description: string;
+  href: string;
+}): React.ReactElement {
+  return (
+    <a
+      href={href}
+      className="group flex h-full flex-col rounded-xl bg-white/[0.06] px-6 py-5 ring-1 ring-white/[0.08] transition-all duration-300 hover:bg-white/[0.10] hover:-translate-y-0.5"
+    >
+      <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-brand-gold/80">PDF Download</p>
+      <p className="mt-3 font-heading text-lg text-white">{title}</p>
+      <p className="mt-1.5 text-sm leading-relaxed text-white/40">{description}</p>
+      <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand-gold transition-transform duration-300 group-hover:translate-x-0.5">
+        Download PDF
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+          <path d="M12 4v11" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="m7 11 5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M5 20h14" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
+    </a>
+  );
+}
+
+/* VideoPlaceholder and SectionHeader imported from @/components/members/shared */
 
 export default function TinyTigersCurriculumPage(): React.ReactElement {
   return (
@@ -342,30 +401,20 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
                 Printable materials and member references.
               </p>
 
-              <div className="mt-8">
-                <a
-                  href="/student-resources/tiny-tiger-handbook"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group inline-flex items-center gap-5 rounded-xl bg-white/[0.06] px-6 py-5 ring-1 ring-white/[0.08] transition-all duration-300 hover:bg-white/[0.10] hover:-translate-y-0.5"
-                >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-gold/10">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-brand-gold" aria-hidden="true">
-                      <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M14 2v5h5" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M9 13h6" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M9 17h6" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+              <div className="mt-8 space-y-8">
+                {tinyTigerResourceGroups.map((group) => (
+                  <div key={group.title}>
+                    <div>
+                      <h3 className="font-heading text-xl text-white">{group.title}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-white/40">{group.description}</p>
+                    </div>
+                    <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+                      {group.cards.map((card) => (
+                        <ResourceCard key={card.title} {...card} />
+                      ))}
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-heading text-lg text-white">Tiny Tigers Handbook</p>
-                    <p className="mt-0.5 text-sm text-white/40">Opens PDF in a new tab</p>
-                  </div>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="ml-auto text-white/30 transition-all duration-300 group-hover:text-brand-gold group-hover:translate-x-0.5" aria-hidden="true">
-                    <path d="M7 17L17 7" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </a>
+                ))}
               </div>
             </div>
           </section>
