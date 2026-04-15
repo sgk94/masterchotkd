@@ -28,6 +28,7 @@ const resourceCards = [
 const stripeRequirementSections = [
   {
     title: "Tiny Tiger Required Sheets",
+    eyebrow: "Tiny Tigers",
     description: "Take-home stripe requirement sheets for Tiny Tiger students.",
     cards: [
       {
@@ -48,6 +49,7 @@ const stripeRequirementSections = [
   },
   {
     title: "Color Belt Required Sheets",
+    eyebrow: "Color Belt",
     description: "Printable stripe requirement sheets for color belt students.",
     cards: [
       {
@@ -140,7 +142,7 @@ function ResourceCard({
       <p
         className={
           isDark
-            ? "mt-4 text-[9px] font-medium uppercase tracking-[0.18em] text-brand-gold/80"
+            ? "mt-4 text-[10px] font-medium uppercase tracking-[0.18em] text-brand-gold"
             : "mt-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-black/40"
         }
       >
@@ -152,7 +154,7 @@ function ResourceCard({
       <p
         className={
           isDark
-            ? "mt-2 text-xs leading-relaxed text-white/42"
+            ? "mt-2 text-xs leading-relaxed text-white/65"
             : "mt-2 text-sm leading-relaxed text-brand-black/58"
         }
       >
@@ -189,7 +191,7 @@ export default function ResourcesPage(): React.ReactElement {
             Member Library
           </span>
           <h1 className="mt-4 font-heading text-3xl tracking-tight text-white sm:text-4xl">All Resources</h1>
-          <p className="mt-3 text-sm leading-relaxed text-white/50 sm:text-base lg:whitespace-nowrap">
+          <p className="mt-3 text-sm leading-relaxed text-white/70 sm:text-base lg:whitespace-nowrap">
             Program packets, printable handbooks, and stripe sheets for Tiny Tigers, Color Belt, and Red/Black Belt students.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -234,7 +236,7 @@ export default function ResourcesPage(): React.ReactElement {
             Required Sheets
           </span>
           <h2 className="mt-4 font-heading text-2xl tracking-tight text-white sm:text-3xl">Stripe Requirements</h2>
-          <p className="mt-2 max-w-3xl text-sm leading-relaxed text-white/42">
+          <p className="mt-2 max-w-3xl text-sm leading-relaxed text-white/70">
             Stripe requirement downloads are grouped by program so families can quickly find the forms that apply to their student.
           </p>
         </div>
@@ -246,18 +248,10 @@ export default function ResourcesPage(): React.ReactElement {
               id={section.title === "Tiny Tiger Required Sheets" ? "tiny-tiger-required-sheets" : "color-belt-required-sheets"}
               className="rounded-2xl bg-white/[0.04] p-6 ring-1 ring-white/[0.06]"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-brand-gold/80">Stripe Requirements</p>
-                  <h3 className="mt-2 font-heading text-xl text-white">{section.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-white/40">{section.description}</p>
-                </div>
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-gold/10 text-brand-gold">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                    <path d="M12 5v14" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M5 12h14" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
+              <div>
+                <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-brand-gold/80">{section.eyebrow}</p>
+                <h3 className="mt-2 font-heading text-xl text-white">{section.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/65">{section.description}</p>
               </div>
 
               <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
