@@ -5,7 +5,7 @@
 Replace Master Cho's Foxspin-hosted website ($300/mo) with a custom Next.js application. Phase 1 delivers the public website with class scheduling/booking, cutting hosting costs from ~$600/mo to ~$25/mo.
 
 **Business:** Master Cho's Black Belt Academy, Lynnwood, WA
-**Location:** 3221 184th St SW STE 100, Lynnwood, WA 98037
+**Location:** 5031 168th ST SW STE 100, Lynnwood, WA 98037
 **Students:** 50-150 active members
 **Programs:** Tiny Tigers, Black Belt Club, Leadership Club, Competition Team
 

@@ -6,6 +6,7 @@ import { sanitize } from "@/lib/sanitize";
 import { getServerEnv } from "@/lib/server-env";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getClientIp } from "@/lib/api-security";
+import { BUSINESS_PHONE_DISPLAY } from "@/lib/location";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -78,7 +79,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       message: error instanceof Error ? error.message : String(error),
     });
     return NextResponse.json(
-      { error: "Unable to send message. Please try again or call 425-361-0688." },
+      { error: `Unable to send message. Please try again or call ${BUSINESS_PHONE_DISPLAY}.` },
       { status: 500 },
     );
   }
