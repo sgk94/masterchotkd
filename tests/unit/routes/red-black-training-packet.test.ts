@@ -15,7 +15,7 @@ describe("red-black training packet route", () => {
     authMock.mockResolvedValue({ userId: null });
     const { GET } = await import("@/app/student-resources/red-black-training-packet/route");
 
-    const response = await GET();
+    const response = await GET(new Request("http://localhost/student-resources/red-black-training-packet"));
 
     expect(response.status).toBe(401);
     await expect(response.text()).resolves.toBe("Unauthorized");
@@ -25,7 +25,7 @@ describe("red-black training packet route", () => {
     authMock.mockResolvedValue({ userId: "user_123" });
     const { GET } = await import("@/app/student-resources/red-black-training-packet/route");
 
-    const response = await GET();
+    const response = await GET(new Request("http://localhost/student-resources/red-black-training-packet"));
 
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toBe("application/pdf");
