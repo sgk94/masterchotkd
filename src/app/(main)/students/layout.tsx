@@ -9,6 +9,7 @@ const studentNavLinks = [
   { label: "Tiny Tigers", href: "/members/curriculum/tiny-tigers" },
   { label: "Color Belt", href: "/members/curriculum/color-belt" },
   { label: "Red/Black Belt", href: "/members/curriculum/red-black-belt" },
+  { label: "Black Belt Curriculum", href: "/members/curriculum/black-belt-club" },
   { label: "Resources", href: "/members/resources" },
 ];
 

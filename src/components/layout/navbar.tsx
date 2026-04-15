@@ -37,6 +37,7 @@ const rightLinks: NavItem[] = [
       { label: "Tiny Tigers", href: "/members/curriculum/tiny-tigers", description: "Ages 4-6 resources" },
       { label: "Color Belt", href: "/members/curriculum/color-belt", description: "Color belt curriculum" },
       { label: "Red/Black Belt", href: "/members/curriculum/red-black-belt", description: "Black belt preparation" },
+      { label: "Black Belt Curriculum", href: "/members/curriculum/black-belt-club", description: "Members-only black belt training information" },
       { label: "Resources", href: "/members/resources", description: "Training materials" },
     ],
   },
@@ -67,6 +68,10 @@ const memberNavItems: Record<string, { icon: React.ReactElement; animation: stri
   "Red/Black Belt": {
     icon: <svg {...iconProps}><path d="M12 3l7 4v5c0 4.2-2.8 8-7 9-4.2-1-7-4.8-7-9V7l7-4Z" /><path d="M9 12l2 2 4-4" /></svg>,
     animation: "group-hover:animate-[icon-bounce-layers_0.6s_ease-in-out]",
+  },
+  "Black Belt Curriculum": {
+    icon: <svg {...iconProps}><path d="M12 3v18" /><path d="M7 7.5h10" /><path d="M7 16.5h10" /><path d="M5 12h14" /></svg>,
+    animation: "group-hover:animate-[icon-slide-up_0.5s_ease-in-out]",
   },
   "Resources": {
     icon: <svg {...iconProps}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /></svg>,

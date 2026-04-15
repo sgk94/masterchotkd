@@ -23,6 +23,16 @@ export default function CurriculumPage(): React.ReactElement {
           <p className="mt-2 text-sm text-brand-black/60">Beginner → Intermediate → Advanced cycle breakdown</p>
           <span className="mt-4 inline-block text-sm font-medium text-brand-red">View Curriculum →</span>
         </Link>
+        <Link href="/members/curriculum/red-black-belt" className="group rounded-card bg-brand-cream p-8 transition-colors hover:bg-brand-sand">
+          <h2 className="font-heading text-2xl text-brand-black group-hover:text-brand-red transition-colors">Red/Black Belt</h2>
+          <p className="mt-2 text-sm text-brand-black/60">Black belt preparation requirements, testing, and resources</p>
+          <span className="mt-4 inline-block text-sm font-medium text-brand-red">View Curriculum →</span>
+        </Link>
+        <Link href="/members/curriculum/black-belt-club" className="group rounded-card bg-brand-cream p-8 transition-colors hover:bg-brand-sand">
+          <h2 className="font-heading text-2xl text-brand-black group-hover:text-brand-red transition-colors">Black Belt Curriculum</h2>
+          <p className="mt-2 text-sm text-brand-black/60">Members-only curriculum space for black belt students</p>
+          <span className="mt-4 inline-block text-sm font-medium text-brand-red">View Curriculum →</span>
+        </Link>
       </div>
     </div>
   );
