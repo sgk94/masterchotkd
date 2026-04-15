@@ -105,35 +105,38 @@ export default function BlackBeltClubCurriculumPage(): React.ReactElement {
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
-          {[...midtermRequirements, testingRequirement].map((requirement) => (
-            <article
-              key={requirement.title}
-              className={
-                requirement.title === "2nd Degree Testing"
-                  ? "rounded-2xl bg-brand-navy p-6 text-white shadow-sm ring-1 ring-brand-navy/20"
-                  : "rounded-2xl bg-white p-6 shadow-sm ring-1 ring-brand-taupe/10"
-              }
-            >
-              <p
+          {[...midtermRequirements, testingRequirement].map((requirement) => {
+            const isTestingCard = requirement.title === "2nd Degree Testing";
+
+            return (
+              <article
+                key={requirement.title}
                 className={
-                  requirement.title === "2nd Degree Testing"
-                    ? "text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-gold/80"
-                    : "text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-red/70"
+                  isTestingCard
+                    ? "rounded-2xl bg-brand-navy p-6 text-white shadow-sm ring-1 ring-brand-navy/20"
+                    : "rounded-2xl bg-white p-6 shadow-sm ring-1 ring-brand-taupe/10"
                 }
               >
-                {requirement.title}
-              </p>
-              <div
-                className={
-                  requirement.title === "2nd Degree Testing"
-                    ? "mt-4 space-y-3 text-sm text-white/80"
-                    : "mt-4 space-y-3 text-sm text-brand-black/70"
-                }
-              >
+                <p
+                  className={
+                    isTestingCard
+                      ? "text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-gold/80"
+                      : "text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-red/70"
+                  }
+                >
+                  {requirement.title}
+                </p>
+                <div
+                  className={
+                    isTestingCard
+                      ? "mt-4 space-y-3 text-sm text-white/80"
+                      : "mt-4 space-y-3 text-sm text-brand-black/70"
+                  }
+                >
                 <div>
                   <p
                     className={
-                      requirement.title === "2nd Degree Testing"
+                      isTestingCard
                         ? "text-[11px] font-semibold uppercase tracking-[0.14em] text-white/45"
                         : "text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-black/35"
                     }
@@ -142,7 +145,7 @@ export default function BlackBeltClubCurriculumPage(): React.ReactElement {
                   </p>
                   <p
                     className={
-                      requirement.title === "2nd Degree Testing"
+                      isTestingCard
                         ? "mt-1 font-medium text-white"
                         : "mt-1 font-medium text-brand-black"
                     }
@@ -155,7 +158,7 @@ export default function BlackBeltClubCurriculumPage(): React.ReactElement {
                   <div>
                     <p
                       className={
-                        requirement.title === "2nd Degree Testing"
+                        isTestingCard
                           ? "text-[11px] font-semibold uppercase tracking-[0.14em] text-white/45"
                           : "text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-black/35"
                       }
@@ -164,7 +167,7 @@ export default function BlackBeltClubCurriculumPage(): React.ReactElement {
                     </p>
                     <p
                       className={
-                        requirement.title === "2nd Degree Testing"
+                        isTestingCard
                           ? "mt-1 font-medium text-white"
                           : "mt-1 font-medium text-brand-black"
                       }
@@ -178,7 +181,7 @@ export default function BlackBeltClubCurriculumPage(): React.ReactElement {
                   <div>
                     <p
                       className={
-                        requirement.title === "2nd Degree Testing"
+                        isTestingCard
                           ? "text-[11px] font-semibold uppercase tracking-[0.14em] text-white/45"
                           : "text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-black/35"
                       }
@@ -187,7 +190,7 @@ export default function BlackBeltClubCurriculumPage(): React.ReactElement {
                     </p>
                     <p
                       className={
-                        requirement.title === "2nd Degree Testing"
+                        isTestingCard
                           ? "mt-1 font-medium text-white"
                           : "mt-1 font-medium text-brand-black"
                       }
@@ -201,7 +204,7 @@ export default function BlackBeltClubCurriculumPage(): React.ReactElement {
                   <div>
                     <p
                       className={
-                        requirement.title === "2nd Degree Testing"
+                        isTestingCard
                           ? "text-[11px] font-semibold uppercase tracking-[0.14em] text-white/45"
                           : "text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-black/35"
                       }
@@ -210,7 +213,7 @@ export default function BlackBeltClubCurriculumPage(): React.ReactElement {
                     </p>
                     <p
                       className={
-                        requirement.title === "2nd Degree Testing"
+                        isTestingCard
                           ? "mt-1 font-medium text-white"
                           : "mt-1 font-medium text-brand-black"
                       }
@@ -219,9 +222,10 @@ export default function BlackBeltClubCurriculumPage(): React.ReactElement {
                     </p>
                   </div>
                 ) : null}
-              </div>
-            </article>
-          ))}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
