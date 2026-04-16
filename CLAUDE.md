@@ -34,26 +34,7 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 ## Phasing
 
 ### Phase 1 (MVP) — COMPLETE
-- Public website + members area (Clerk-gated, Facebook social login)
-- Static schedule display (effective 01/01/2026)
-- Curriculum pages: Tiny Tigers, Black Belt Club, Color Belt, Red/Black Belt, Weekly Training
-- `/api/contact` live — validateOrigin/CSRF, Resend with `Reply-To: <prospect>`, Upstash rate-limit when configured, 10KB body cap, control-char + HTML escape, Zod `fieldErrors`-only response, 5s Resend timeout, fail-fast env check via `src/instrumentation.ts`
-- 8 protected PDF route handlers (`/student-resources/*`) with path-traversal guard, RFC 5987 filename, Clerk auth
-- Trial/booking flows removed — `/special-offer` uses plain CTA link to SparkPages
-- SEO (sitemap, robots, JSON-LD with `</script>` escape, OG image at `public/images/og-image.jpg`)
-- CI/CD (GitHub Actions: lint → test → build → Lighthouse mobile preset, error at 0.9)
-- Trial offer: $49 / 2 weeks (no uniform included)
-- Real program + instructor images (JPEG, 2560px wide)
-- Hero video (`public/videos/hero.mp4`) with `preload="none"`
-- Security headers: CSP (with `object-src 'none'`, `upgrade-insecure-requests`), HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
-- CSP includes Clerk wildcards, Cloudflare CAPTCHA, Facebook domains
-- Shared form hook (`useFormSubmit`) with network error handling + shared Zod field builders
-- Mega-menu navbar (Programs image cards, Members gated list); single nav source in `src/lib/nav.ts`
-- Animated gold neon border on trial banner
-- Route groups: `(auth)` for sign-in/sign-up, `(main)` for public + protected pages
-- URL rewriting: `/students/*` → `/members/*` (public-facing URLs use "members")
-- Error boundaries (`global-error.tsx`, `(main)/error.tsx`) — both log via `useEffect`
-- `/preview` page gated in production via `notFound()`
+See **Current Status** (above) and **Gotchas** / **API Routes** (below) for specifics. Trial offer: $49 / 2 weeks (no uniform). Schedule effective 01/01/2026. Security headers include CSP (`object-src 'none'`, `upgrade-insecure-requests`), HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy.
 
 ### Phase 2 — Student Portal (not started)
 ### Phase 3 — Admin Dashboard (not started)
@@ -113,7 +94,6 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 ### Key Design Decisions
 - Navbar: Nestig-style mega-menu — Programs dropdown shows link list + 4 image cards, Members dropdown shows gated list
 - Schedule: premium double-bezel table with dark header, muted color-coded pills, left accent borders
-- Members auth via Clerk (Facebook social login enabled)
 - Hero: Server Component with CSS `@keyframes` entrance animations, split layout — text left on navy bg, video (75% width, `preload="none"`) on right
 - Gallery: 4 dojang photos with lightbox (keyboard: Escape, arrows), ARIA roles
 - Trial banner: animated gold neon border (Server Component)
@@ -126,9 +106,8 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 
 ## Navigation Structure
 
-### Desktop Navbar (left → logo → right)
-**Left:** About, Programs (dropdown), Schedule, Reviews
-**Right:** Members (gated dropdown), Contact, Special Offer (CTA button), Sign In / User Button (Clerk)
+### Desktop Navbar
+Single source: `src/lib/nav.ts` (`PRIMARY_NAV` + `PROGRAM_NAV` + `MEMBER_NAV`). Layout: left nav → logo → right nav + Clerk auth button.
 
 **Programs Dropdown (image cards layout):**
 - Tiny Tigers → `/programs/tiny-tigers`
@@ -149,20 +128,16 @@ About, Programs, Schedule, Reviews, Members, Contact, Special Offer, Sign In
 ## Site Structure
 
 ### Public Pages (14 routes)
-- `/` — Home (hero with video, marquee, programs, problem/solution CTA, trial banner, values, testimonials, gallery)
-- `/about` — Story + philosophy + instructors (3 alternating photo sections, GMC hero image)
-- `/programs` — Overview (4 cards with real images)
-- `/programs/tiny-tigers` — Full detail: hero, schedule, curriculum cards, parent FAQ, CTA (Server Component)
-- `/programs/black-belt-club` — Full detail: hero, schedule grid, curriculum cards, FAQ, CTA (Server Component)
-- `/programs/leadership-club` — Full detail: hero, schedule, requirements, FAQ, CTA (Server Component)
-- `/programs/competition-team` — Full detail: hero, schedule, requirements, FAQ, CTA (Server Component)
-- `/schedule` — Weekly class table (premium redesign with double-bezel)
+- `/` — Home (hero video, marquee, programs, trial banner, values, testimonials, gallery)
+- `/about` — Story + instructors (alternating photo sections)
+- `/programs` — Overview (4 cards)
+- `/programs/{tiny-tigers|black-belt-club|leadership-club|competition-team}` — Detail pages (hero, schedule, curriculum/requirements, FAQ, CTA)
+- `/schedule` — Weekly class table
 - `/reviews` — Wall of Love
-- `/contact` — Form + location + phone (`tel:` link)
+- `/contact` — Form + location + phone
 - `/special-offer` — Trial ($49 / 2 weeks)
-- `/preview` — Design exploration (gated: `notFound()` in production, blocked by robots.txt)
-- `/sign-in` — Clerk sign-in (Facebook social login)
-- `/sign-up` — Clerk sign-up
+- `/preview` — Design exploration (gated: `notFound()` in prod, blocked by robots.txt)
+- `/sign-in`, `/sign-up` — Clerk
 
 ### Protected Pages (10 routes, Clerk auth required)
 Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewrites.
@@ -196,26 +171,12 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `/members` → rewrites to `/students` (internal)
 - `/members/*` → rewrites to `/students/*` (internal)
 
-### Components
-**Home:** hero, marquee, programs-grid, trial-banner, values-section, testimonials, gallery, bottom-cta
-**Layout:** navbar (with mega-menu + Clerk auth), mobile-menu, footer
-**UI:** button, reveal, bezel-card, page-container, eyebrow-badge (`pill` | `gold` variants)
-**Forms:** form-field, contact-form
-**Schedule:** schedule-grid (Server Component, CSS entrance), schedule-client
-**Members:** floating-section-nav (sticky, Server Component), shared, resource-card (light/dark + preview), members-tab-bar
-
-### Hooks (1)
-- `use-form-submit` — shared form submission logic (schema validation, fetch with try/catch, network error handling)
-
-### Schemas
-- `fields.ts` — shared Zod field builders (nameField, emailField with strict regex + toLowerCase, phoneField with min-digit enforcement)
-- `contact.ts` — contact form schema
-
-### Lib (15 modules)
-db, server-env (lazy via `getServerEnv()`), client-env, fonts, metadata, email (5s Resend timeout), rate-limit, sanitize (+ `escapeHtml`), static-data, api-security (`validateOrigin` + `getClientIp` — both wired), members-home-content, current-cycle, current-cycle-materials, location, nav (`PRIMARY_NAV` + `PROGRAM_NAV` + `MEMBER_NAV`)
-
-### Types (`src/types/index.ts`)
-Program, ScheduleSlot, Testimonial, DAYS_OF_WEEK (nav lives in `src/lib/nav.ts`)
+### Code layout
+- `src/components/` — grouped by `home/`, `layout/`, `ui/`, `forms/`, `schedule/`, `members/`. Key shared: `<BezelCard>`, `<PageContainer>`, `<Reveal>`, `<EyebrowBadge>` (`pill`|`gold`), `<ResourceCard>` (light/dark + preview).
+- `src/hooks/use-form-submit.ts` — shared form submission (schema validation, fetch, network-error handling).
+- `src/schemas/` — `fields.ts` (shared Zod builders: name/email/phone) + `contact.ts`.
+- `src/lib/` — `db`, `server-env` (lazy `getServerEnv()`), `client-env`, `fonts`, `metadata`, `email` (5s Resend timeout), `rate-limit`, `sanitize` (+ `escapeHtml`), `static-data`, `api-security` (`validateOrigin` + `getClientIp`), `members-home-content`, `current-cycle`, `current-cycle-materials`, `location`, `nav` (single nav source).
+- `src/types/index.ts` — Program, ScheduleSlot, Testimonial, DAYS_OF_WEEK.
 
 ## Auth (Clerk)
 - **Provider:** Clerk (ClerkProvider wraps root layout)
@@ -243,34 +204,21 @@ Program, ScheduleSlot, Testimonial, DAYS_OF_WEEK (nav lives in `src/lib/nav.ts`)
 - Button `outline` variant has `border-white/30 text-white` baked in — override with `!` prefix
 - `proxy.ts` replaces `middleware.ts` for Next.js 16; matcher excludes `_next/static`, `_next/image`, `favicon.ico`, `images`, `videos`, `fonts`
 - `server-env.ts` `getServerEnv()` is lazy; `src/instrumentation.ts` calls it once at prod boot to fail-fast on missing vars
+- CI `lighthouse` job uses placeholder `RESEND_API_KEY`/`RESEND_FROM_EMAIL`/`NOTIFY_EMAIL` so `pnpm start` boot validation passes; swap for real GitHub secrets at go-live (see `LAUNCH-RUNBOOK.md` Phase 2A)
+- `lighthouse` CI job consumes the `next-build.tgz` artifact from the `build` job (tar excluding `.next/cache`) instead of rebuilding
 - `email.ts` enforces 5s Resend timeout via `Promise.race` (Resend SDK v6 has no `signal` param)
 - `serveProtectedPdf` enforces `/^[A-Za-z0-9 ._-]+\.pdf$/` allowlist + `path.resolve` containment check
 - Footer copyright year is dynamic (`new Date().getFullYear()`)
 - `next/font` weights: Oswald 400/500/600/700; Barlow 400/500/600 (no font-light usage)
 - `<EyebrowBadge variant="gold">` for navy-bg eyebrows; `pill` for cream-bg eyebrows
 
-## Images
-All in `public/images/` — JPEG format, 2560px wide:
-**Programs:** `Tiny-Tigers.jpg`, `Black-Belt-Club.jpg`, `Competition-Team.jpg`, `Leadership_Demo-Team.jpg`
-**Gallery:** `Tiny-Tigers-2.jpg`, `Black-Belt-Club-2.jpg`, `Competition-Team-2.jpg`, `Leadership.jpg`
-**Instructors:** `GMC.jpg`, `MC.jpg`, `Instructor-Lasala.jpg`
-**Curriculum:** `Color Belt Curriculum.png`, `Weekly Curriculum.png`, `IDEA.png`
-**Other:** `camo-pattern.jpg` (belt swatch), `logo.svg` (259 KB, embedded raster)
-**Video:** `public/videos/hero.mp4` (5.9 MB)
+## Assets
+- `public/images/` — JPEG, 2560px wide (programs, gallery, instructors). PNG for curriculum diagrams. `logo.svg` is a 259 KB embedded raster placeholder (see Gotchas).
+- `public/videos/hero.mp4` — 5.9 MB, `preload="none"`.
+- `student-resources/` — 8 PDFs served via `serveProtectedPdf()` (see API Routes).
 
-## Static Resources
-8 PDFs in `student-resources/`, served via shared `serveProtectedPdf()` (Clerk auth + filename allowlist):
-- `Tiny Tiger Handbook.pdf`
-- `Color Belt Handbook.pdf`
-- `RedBlack Training Packet.pdf`
-- `Respect Sheet.pdf`, `Star Chart.pdf` (Tiny Tiger stripe sheets)
-- `Reading List.pdf`, `Monthly Chore Sheet.pdf`, `Testing Essay Topics.pdf` (Color Belt stripe sheets)
-
-## Tests (16 files, 69 tests passing)
-**Unit:** contact schema, `/api/contact` route (validation + rate-limit + 6 status branches), red-black packet route, `current-cycle` boundary tests (each transition + 2027 fallback documented)
-**Component:** navbar, hero, contact-form, button, programs-grid, gallery, schedule-grid, values-section, trial-banner, bottom-cta, red-black-belt-page, black-belt-club-page (all 7 midterms + 18 combos)
-**E2E:** homepage, contact (Playwright, need running app to execute)
-Run `pnpm vitest run` for the current count.
+## Tests
+Vitest (`pnpm vitest run`) + Playwright E2E (`tests/e2e/*`, needs running app). Coverage spans contact schema, `/api/contact` route branches, `current-cycle` boundaries (incl. 2027 fallback), component rendering (navbar, hero, programs-grid, schedule-grid, red-black + black-belt-club pages), protected PDF route.
 
 ## To Get Fully Running
 See `LAUNCH-RUNBOOK.md` for step-by-step hand-holding on every item below.

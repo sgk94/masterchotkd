@@ -50,6 +50,13 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
+      - name: Archive .next build
+        run: tar --exclude='.next/cache' -czf next-build.tgz .next
+      - uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: next-build.tgz
+          retention-days: 1
     env:
       NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
       CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
@@ -67,10 +74,17 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      - uses: actions/download-artifact@v4
+        with:
+          name: next-build
+      - name: Extract .next build
+        run: tar -xzf next-build.tgz
       - run: npx @lhci/cli@0.13.x autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
           NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
           CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          RESEND_API_KEY: re_ci_dummy
+          RESEND_FROM_EMAIL: ci@example.com
+          NOTIFY_EMAIL: ci@example.com

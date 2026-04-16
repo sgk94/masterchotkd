@@ -176,6 +176,16 @@ For each variable below: Vercel dashboard → **Settings → Environment Variabl
 
 For `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY`: also **edit the existing Dev values** to limit scope to **Preview + Development** only (uncheck Production).
 
+⚠️ **Also update CI placeholders.** `.github/workflows/ci.yml` (`lighthouse` job) currently hardcodes dummy values so `pnpm start` boot validation passes:
+
+```yaml
+RESEND_API_KEY: re_ci_dummy
+RESEND_FROM_EMAIL: ci@example.com
+NOTIFY_EMAIL: ci@example.com
+```
+
+At go-live, add these three as GitHub Actions secrets (**Settings → Secrets and variables → Actions**) using the same values you set in Vercel, then replace the hardcoded lines with `${{ secrets.RESEND_API_KEY }}` etc. Without this, the Lighthouse job keeps sending test data — harmless but noisy.
+
 End state:
 
 | Variable | Development | Preview | Production |
