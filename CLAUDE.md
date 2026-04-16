@@ -4,12 +4,15 @@
 Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), replacing their Foxspin-hosted website ($300/mo) and reducing dependency on Foxspin management ($300/mo). Target: ~$25/mo hosting.
 
 ## Current Status
-- **Phase 1 MVP: Built** — 27 pages, 2 API routes (`/api/contact` live via Resend + 1 PDF download), CI/CD, deployed to Vercel
-- **Security/performance hardening done** — CSP tightened, framer-motion removed, program pages converted to Server Components, error boundaries added
-- **Images optimized** — real dojang + instructor photos, resized to 2560px JPEG
-- **Auth: Clerk enabled** — sign-in/sign-up pages, Facebook social login, route protection via `proxy.ts`
-- **Contact form live** — Resend wired, rate-limited via Upstash when configured, body size + control-char guards in place
-- **DB + trial/booking flows** — deleted until Phase 2 (schemas, forms, routes removed)
+- **Phase 1 MVP: Built** — 24 pages, 9 API routes (`/api/contact` live + 8 protected PDF downloads), CI/CD, deployed to Vercel
+- **Pre-launch hardening done** — CSRF + IP-extraction + outbound-HTML-escape + Resend timeout on `/api/contact`; PDF path-traversal guard + RFC 5987 filename; proxy matcher tightened; error boundaries log
+- **Client bundle reduced** — programs-grid, schedule-grid, weekly-training, students/layout, curriculum index now Server Components; CSS `@keyframes` entrance animations replace IntersectionObserver hooks; `FloatingSectionNav` uses CSS `position: sticky` (no scroll handler)
+- **DRY consolidation** — `src/lib/nav.ts` is single nav source; `<ResourceCard>` extracted; `<EyebrowBadge variant="gold">` replaces 13 inline pills
+- **Images optimized** — real dojang + instructor photos, 2560px JPEG; OG image (1200×630) wired
+- **Auth: Clerk enabled** (Development mode, see To Get Fully Running) — Facebook social login, route protection via `proxy.ts`
+- **Contact form live** — Resend wired, Upstash rate-limit when configured, validateOrigin/CSRF check, 10KB body cap, control-char + HTML escape, 5s Resend timeout
+- **DB + trial/booking flows** — deleted until Phase 2 (schemas, forms, routes removed); Prisma schema trimmed to Program + ClassSchedule + Testimonial
+- **PromoModal removed** (was site-wide on every route for a single-fire BOGO modal)
 - **Deployed:** Vercel (auto-deploys from `main` branch on `sgk94/masterchotkd`)
 - **GitHub:** github.com/sgk94/masterchotkd
 
@@ -31,25 +34,25 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 ## Phasing
 
 ### Phase 1 (MVP) — COMPLETE
-- Public website with all pages
-- Static schedule display (read-only table, effective 01/01/2026)
-- Members area protected by Clerk auth (sign-in/sign-up with Facebook social login)
-- Curriculum pages (Tiny Tigers, Black Belt Club, Color Belt, Weekly Training)
-- `/api/contact` live (Resend notification with `Reply-To: <prospect>`, Upstash rate-limited when configured, 10KB body cap, control-char stripping, Zod `fieldErrors`-only response)
-- Trial/booking flows removed — `/special-offer` uses a plain CTA link to SparkPages
-- SEO (sitemap, robots, JSON-LD, OG image config)
-- CI/CD (GitHub Actions: lint → test → build → Lighthouse, build artifact shared)
+- Public website + members area (Clerk-gated, Facebook social login)
+- Static schedule display (effective 01/01/2026)
+- Curriculum pages: Tiny Tigers, Black Belt Club, Color Belt, Red/Black Belt, Weekly Training
+- `/api/contact` live — validateOrigin/CSRF, Resend with `Reply-To: <prospect>`, Upstash rate-limit when configured, 10KB body cap, control-char + HTML escape, Zod `fieldErrors`-only response, 5s Resend timeout, fail-fast env check via `src/instrumentation.ts`
+- 8 protected PDF route handlers (`/student-resources/*`) with path-traversal guard, RFC 5987 filename, Clerk auth
+- Trial/booking flows removed — `/special-offer` uses plain CTA link to SparkPages
+- SEO (sitemap, robots, JSON-LD with `</script>` escape, OG image at `public/images/og-image.jpg`)
+- CI/CD (GitHub Actions: lint → test → build → Lighthouse mobile preset, error at 0.9)
 - Trial offer: $49 / 2 weeks (no uniform included)
 - Real program + instructor images (JPEG, 2560px wide)
-- Hero video background (`public/videos/hero.mp4`) with `preload="none"`
+- Hero video (`public/videos/hero.mp4`) with `preload="none"`
 - Security headers: CSP (with `object-src 'none'`, `upgrade-insecure-requests`), HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
-- CSP includes Clerk, Cloudflare CAPTCHA, and Facebook domains
-- Shared form hook (`useFormSubmit`) with network error handling and Zod field builders
-- Mega-menu navbar with dropdowns for Programs (image cards) and Members (gated list)
+- CSP includes Clerk wildcards, Cloudflare CAPTCHA, Facebook domains
+- Shared form hook (`useFormSubmit`) with network error handling + shared Zod field builders
+- Mega-menu navbar (Programs image cards, Members gated list); single nav source in `src/lib/nav.ts`
 - Animated gold neon border on trial banner
 - Route groups: `(auth)` for sign-in/sign-up, `(main)` for public + protected pages
 - URL rewriting: `/students/*` → `/members/*` (public-facing URLs use "members")
-- Error boundaries (`global-error.tsx`, `(main)/error.tsx`) and loading states
+- Error boundaries (`global-error.tsx`, `(main)/error.tsx`) — both log via `useEffect`
 - `/preview` page gated in production via `notFound()`
 
 ### Phase 2 — Student Portal (not started)
@@ -134,11 +137,11 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 - Competition Team → `/programs/competition-team`
 
 **Members Dropdown (gated):**
-- Signed in: Announcements, Current Cycle, Tiny Tigers, Color Belt, Resources
+- Signed in: Announcements, Current Cycle, Tiny Tigers, Color Belt, Red/Black Belt, Black Belt Curriculum, Resources
 - Signed out: "Member Access Only" + Log In button
 
-### Members Sub-Navigation (tab bar inside members pages)
-Announcements → Current Cycle → Tiny Tigers → Color Belt → Resources
+### Members Sub-Navigation (tab bar inside members pages, via `<MembersTabBar>`)
+Announcements → Current Cycle → Tiny Tigers → Color Belt → Red/Black Belt → Black Belt Curriculum → Resources
 
 ### Mobile Menu
 About, Programs, Schedule, Reviews, Members, Contact, Special Offer, Sign In
@@ -161,22 +164,22 @@ About, Programs, Schedule, Reviews, Members, Contact, Special Offer, Sign In
 - `/sign-in` — Clerk sign-in (Facebook social login)
 - `/sign-up` — Clerk sign-up
 
-### Protected Pages (9 routes, Clerk auth required)
+### Protected Pages (10 routes, Clerk auth required)
 Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewrites.
 - `/members` — Hub with announcements, socials, quick links
-- `/members/current-cycle` — Current training cycle
-- `/members/curriculum` — Choose program (Tiny Tigers, Color Belt, + more)
-- `/members/curriculum/tiny-tigers` — Belt cards (White → Camo)
-- `/members/curriculum/black-belt-club` — Belt cards (White → Black)
+- `/members/current-cycle` — Current training cycle (logic + 2027 fallback in `src/lib/current-cycle.ts`, boundary-tested)
+- `/members/curriculum` — Choose program (Server Component, link cards)
+- `/members/curriculum/tiny-tigers` — Belt cards + ResourceCard PDFs
+- `/members/curriculum/black-belt-club` — FloatingSectionNav, midterm + 2nd-degree requirements, 18 combos
 - `/members/curriculum/color-belt` — Beginner/Intermediate/Advanced cycle breakdown (card-based)
-- `/members/curriculum/weekly-training` — 5-week training structure timeline
+- `/members/curriculum/red-black-belt` — Black belt prep (FAQ, requirements, written test, resources, packet PDF)
+- `/members/curriculum/weekly-training` — 5-week training structure timeline (Server Component)
 - `/members/forms` — Poomsae videos
-- `/members/resources` — Training materials
+- `/members/resources` — Training materials grid (light + dark `<ResourceCard>` variants, preview images)
 
 ### API Routes
-- `POST /api/contact` — live. Resend email to `NOTIFY_EMAIL` with `Reply-To: <submitter>`. Returns 201 on success; 400 on JSON/Zod failure (only `fieldErrors` leaked); 413 when `content-length > 10_000`; 429 when Upstash rate-limit exceeded; 500 on Resend failure. Runtime: Node, `maxDuration = 10`.
-- `GET /student-resources/tiny-tiger-handbook` — PDF download (Clerk auth required)
-- `GET /student-resources/red-black-training-packet` — PDF download (Clerk auth required)
+- `POST /api/contact` — live. Resend email to `NOTIFY_EMAIL` with `Reply-To: <submitter>`. Status codes: 201 success; 400 on JSON/Zod failure (only `fieldErrors` leaked); 403 when Origin doesn't match `NEXT_PUBLIC_SITE_URL` (CSRF); 413 when `content-length > 10_000`; 429 when Upstash rate-limit exceeded; 500 on Resend failure or 5s timeout. Runtime: Node, `maxDuration = 10`.
+- `GET /student-resources/{color-belt-handbook | monthly-chore-sheet | reading-list | red-black-training-packet | respect-sheet | star-chart | testing-essay-topics | tiny-tiger-handbook}` — 8 PDF download routes via shared `serveProtectedPdf()` helper (Clerk auth, allowlist regex on filename, RFC 5987 Content-Disposition).
 
 ### Other Routes
 - `/not-found` — Custom 404
@@ -196,10 +199,10 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 ### Components
 **Home:** hero, marquee, programs-grid, trial-banner, values-section, testimonials, gallery, bottom-cta
 **Layout:** navbar (with mega-menu + Clerk auth), mobile-menu, footer
-**UI:** button, reveal, bezel-card, page-container, eyebrow-badge
+**UI:** button, reveal, bezel-card, page-container, eyebrow-badge (`pill` | `gold` variants)
 **Forms:** form-field, contact-form
-**Schedule:** schedule-grid, schedule-client
-**Members:** floating-section-nav, shared
+**Schedule:** schedule-grid (Server Component, CSS entrance), schedule-client
+**Members:** floating-section-nav (sticky, Server Component), shared, resource-card (light/dark + preview), members-tab-bar
 
 ### Hooks (1)
 - `use-form-submit` — shared form submission logic (schema validation, fetch with try/catch, network error handling)
@@ -208,8 +211,8 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `fields.ts` — shared Zod field builders (nameField, emailField with strict regex + toLowerCase, phoneField with min-digit enforcement)
 - `contact.ts` — contact form schema
 
-### Lib (13 modules)
-db, server-env (lazy via `getServerEnv()`), client-env, fonts, metadata, email, rate-limit, sanitize, static-data, api-security, members-home-content, current-cycle, current-cycle-materials
+### Lib (15 modules)
+db, server-env (lazy via `getServerEnv()`), client-env, fonts, metadata, email (5s Resend timeout), rate-limit, sanitize (+ `escapeHtml`), static-data, api-security (`validateOrigin` + `getClientIp` — both wired), members-home-content, current-cycle, current-cycle-materials, location, nav (`PRIMARY_NAV` + `PROGRAM_NAV` + `MEMBER_NAV`)
 
 ### Types (`src/types/index.ts`)
 Program, ScheduleSlot, Testimonial, DAYS_OF_WEEK (nav lives in `src/lib/nav.ts`)
@@ -226,27 +229,25 @@ Program, ScheduleSlot, Testimonial, DAYS_OF_WEEK (nav lives in `src/lib/nav.ts`)
 
 ## Gotchas
 - `db.ts` uses `require("@prisma/client")` — Prisma 7 import breaks CI type check otherwise
-- `prisma/seed.ts` and `prisma.config.ts` excluded from tsconfig
-- API routes are stubbed (return 503) — full implementations in git history, restore when DB connected
-- Zod v4 uses `.issues` not `.errors` on ZodError
-- Lighthouse gate set to `warn` at 0.85 (not `error` at 0.9) for preview phase
+- `prisma/seed.ts` and `prisma.config.ts` excluded from tsconfig (seed still references trimmed `endTime`/`instructor`/`capacity` fields kept on `ClassSchedule` for Phase 2)
+- Zod v4 uses `.issues` not `.errors` on ZodError; `flattenError(err).fieldErrors` only — never leak `formErrors`
+- Lighthouse gate is `error` at 0.9 with mobile preset on home, tiny-tigers, schedule (CI fails if regressed)
 - pnpm 10 declared in `packageManager` — CI must not specify `version: 9`
 - Hero uses CSS entrance animations (`@keyframes fade-up`, `hero-video-in`) — no JS needed
-- `logo.svg` is 259 KB because it contains embedded raster (base64 PNG) — SVGO can't optimize it, needs vector redraw
+- `logo.svg` is 259 KB (embedded raster) — SVGO can't optimize; **waiting on Canva-exported logo** (do not auto-trace; user rejected that path)
 - Programs grid order is hardcoded in `gridOrder` array — must match bento layout positions
-- `api-security.ts` has `validateOrigin()` and `getClientIp()` ready for when API routes are re-enabled
 - CSP allows `unsafe-inline` + `unsafe-eval` for scripts (required by Next.js) — tighten with nonces later
-- CSP includes Clerk wildcard domains — tighten for production (pin to exact Clerk instance origins)
+- CSP includes Clerk wildcard domains — pin to `clerk.<domain>` + `accounts.<domain>` at Clerk Production cutover (see `LAUNCH-RUNBOOK.md`)
 - Navbar mega-menu uses 200ms leave timeout to prevent flicker — `onMouseLeave` only on outer container
 - Trial banner `border-spin` animation defined in `globals.css` — uses `transform: rotate()` not `rotate` shorthand
 - Button `outline` variant has `border-white/30 text-white` baked in — override with `!` prefix
-- `proxy.ts` replaces `middleware.ts` for Next.js 16
-- `server-env.ts` exports `getServerEnv()` (lazy) — won't crash on import if env vars missing
-- `email.ts` uses `getServerEnv()` — Resend client created on first call
-- Social links in footer/contact/members are TODO placeholders pointing to root domains
-- App download links in members-home-content are `#` placeholders
-- `og-image.jpg` referenced in metadata but does not exist yet — needs to be created (1200x630)
+- `proxy.ts` replaces `middleware.ts` for Next.js 16; matcher excludes `_next/static`, `_next/image`, `favicon.ico`, `images`, `videos`, `fonts`
+- `server-env.ts` `getServerEnv()` is lazy; `src/instrumentation.ts` calls it once at prod boot to fail-fast on missing vars
+- `email.ts` enforces 5s Resend timeout via `Promise.race` (Resend SDK v6 has no `signal` param)
+- `serveProtectedPdf` enforces `/^[A-Za-z0-9 ._-]+\.pdf$/` allowlist + `path.resolve` containment check
 - Footer copyright year is dynamic (`new Date().getFullYear()`)
+- `next/font` weights: Oswald 400/500/600/700; Barlow 400/500/600 (no font-light usage)
+- `<EyebrowBadge variant="gold">` for navy-bg eyebrows; `pill` for cream-bg eyebrows
 
 ## Images
 All in `public/images/` — JPEG format, 2560px wide:
@@ -258,25 +259,29 @@ All in `public/images/` — JPEG format, 2560px wide:
 **Video:** `public/videos/hero.mp4` (5.9 MB)
 
 ## Static Resources
-- `student-resources/Tiny Tiger Handbook.pdf` — served via route handler at `/student-resources/tiny-tiger-handbook` (Clerk auth required)
+8 PDFs in `student-resources/`, served via shared `serveProtectedPdf()` (Clerk auth + filename allowlist):
+- `Tiny Tiger Handbook.pdf`
+- `Color Belt Handbook.pdf`
+- `RedBlack Training Packet.pdf`
+- `Respect Sheet.pdf`, `Star Chart.pdf` (Tiny Tiger stripe sheets)
+- `Reading List.pdf`, `Monthly Chore Sheet.pdf`, `Testing Essay Topics.pdf` (Color Belt stripe sheets)
 
-## Tests
-**Unit:** contact schema, `/api/contact` route (validation + rate-limit + email failure paths), red-black packet route
-**Component:** navbar, hero, contact-form, button, programs-grid, gallery, schedule-grid, values-section, trial-banner, bottom-cta
+## Tests (16 files, 69 tests passing)
+**Unit:** contact schema, `/api/contact` route (validation + rate-limit + 6 status branches), red-black packet route, `current-cycle` boundary tests (each transition + 2027 fallback documented)
+**Component:** navbar, hero, contact-form, button, programs-grid, gallery, schedule-grid, values-section, trial-banner, bottom-cta, red-black-belt-page, black-belt-club-page (all 7 midterms + 18 combos)
 **E2E:** homepage, contact (Playwright, need running app to execute)
-Run `pnpm vitest run` for the current count — trial/booking suites were removed with those flows.
+Run `pnpm vitest run` for the current count.
 
 ## To Get Fully Running
-1. Resend: API key + `RESEND_FROM_EMAIL` + `NOTIFY_EMAIL` in `.env.local` / Vercel env
+See `LAUNCH-RUNBOOK.md` for step-by-step hand-holding on every item below.
+
+1. Resend: API key + `RESEND_FROM_EMAIL` + `NOTIFY_EMAIL` in `.env.local` / Vercel env (instrumentation.ts will fail prod boot if missing)
 2. Upstash Redis keys in `.env.local` / Vercel env — contact form auto-enables rate limiting once present
-3. (Phase 2) Neon DB → `DATABASE_URL`; `pnpm prisma migrate dev --name init && pnpm prisma db seed`; restore trial/booking API routes + forms from git history; replace `static-data` imports with DB queries; remove `@ts-nocheck` / `require()` workaround from `db.ts`
-4. Get logo redrawn as proper vector SVG (current one has embedded raster)
-5. Create OG image (1200x630 JPEG) at `public/images/og-image.jpg`
-6. Replace social link placeholders with actual Facebook/Instagram page URLs (footer, contact, members)
-7. Replace app download `#` placeholders with actual Spark Member app store URLs
-8. Tighten CSP (replace `unsafe-inline` with nonces)
-9. Pin Clerk CSP origins to exact production domains (replace wildcards)
-10. Switch Clerk from Development to Production mode
+3. (Phase 2) Neon DB → `DATABASE_URL`; `pnpm prisma migrate dev --name init && pnpm prisma db seed`; restore trial/booking models + API routes + forms from git history; replace `static-data` imports with DB queries; remove `require()` workaround from `db.ts`
+4. **Logo:** waiting on Canva-exported file from owner (do not trace existing raster)
+5. Tighten CSP (replace `unsafe-inline` with nonces)
+6. Pin Clerk CSP origins to exact production domains (replace wildcards) — coupled with Clerk Production switch
+7. Switch Clerk from Development to Production mode (DNS CNAMEs + Production keys)
 
 ## Repo
 - **GitHub:** github.com/sgk94/masterchotkd
