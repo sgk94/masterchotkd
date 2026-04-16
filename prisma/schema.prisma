@@ -22,35 +22,19 @@ model Program {
 }
 
 model ClassSchedule {
-  id         String         @id @default(uuid())
+  id         String   @id @default(uuid())
   programId  String
-  program    Program        @relation(fields: [programId], references: [id])
+  program    Program  @relation(fields: [programId], references: [id])
   dayOfWeek  Int
   startTime  String
   endTime    String
   instructor String
   capacity   Int
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
-  bookings   ClassBooking[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@index([programId])
   @@map("class_schedules")
-}
-
-model ClassBooking {
-  id         String        @id @default(uuid())
-  scheduleId String
-  schedule   ClassSchedule @relation(fields: [scheduleId], references: [id])
-  name       String
-  email      String
-  phone      String
-  date       DateTime
-  createdAt  DateTime      @default(now())
-
-  @@unique([scheduleId, email, date])
-  @@index([scheduleId])
-  @@map("class_bookings")
 }
 
 model Testimonial {
@@ -64,33 +48,4 @@ model Testimonial {
 
   @@index([featured, order])
   @@map("testimonials")
-}
-
-model ContactSubmission {
-  id        String   @id @default(uuid())
-  name      String
-  email     String
-  phone     String   @default("")
-  message   String
-  createdAt DateTime @default(now())
-
-  @@map("contact_submissions")
-}
-
-model TrialRequest {
-  id        String            @id @default(uuid())
-  name      String
-  email     String
-  phone     String
-  status    TrialRequestStatus @default(PENDING)
-  createdAt DateTime          @default(now())
-
-  @@map("trial_requests")
-}
-
-enum TrialRequestStatus {
-  PENDING
-  CONTACTED
-  ENROLLED
-  DECLINED
 }

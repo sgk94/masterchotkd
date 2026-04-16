@@ -9,7 +9,7 @@ export const heading = Oswald({
 
 export const body = Barlow({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600"],
   variable: "--font-body",
   display: "swap",
 });

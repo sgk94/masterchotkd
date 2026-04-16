@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
-import { VideoPlaceholder, SectionHeader, SubSectionHeader, VideoCard } from "@/components/members/shared";
+import { SectionHeader, SubSectionHeader, VideoCard } from "@/components/members/shared";
 import { cycleSchedule2026, formatCycleDate, getCurrentCycleWindow } from "@/lib/current-cycle";
 import {
   colorBeltWeaponShortcuts,
