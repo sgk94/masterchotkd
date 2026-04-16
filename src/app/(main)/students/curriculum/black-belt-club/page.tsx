@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 
 const midtermRequirements = [
   {
@@ -80,9 +81,7 @@ export default function BlackBeltClubCurriculumPage(): React.ReactElement {
       </Link>
 
       <section className="rounded-[2rem] bg-brand-navy px-8 py-10 sm:px-10 sm:py-12">
-        <span className="inline-flex rounded-full border border-brand-gold/20 bg-brand-gold/5 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-gold">
-          Members Only
-        </span>
+        <EyebrowBadge variant="gold">Members Only</EyebrowBadge>
         <h1 className="mt-4 font-heading text-3xl tracking-tight text-white sm:text-4xl">
           Black Belt Curriculum
         </h1>
@@ -231,9 +230,7 @@ export default function BlackBeltClubCurriculumPage(): React.ReactElement {
 
       <section className="rounded-2xl border border-brand-taupe/20 bg-white p-8 ring-1 ring-brand-taupe/10">
         <div className="max-w-3xl">
-          <span className="inline-flex rounded-full border border-brand-gold/20 bg-brand-gold/5 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-gold">
-            Combos
-          </span>
+          <EyebrowBadge variant="gold">Combos</EyebrowBadge>
           <h2 className="mt-4 font-heading text-2xl text-brand-black sm:text-3xl">Black Belt Combo Reference</h2>
           <p className="mt-3 text-sm leading-relaxed text-brand-black/60 sm:text-base">
             These combos were added from the combos handout and are listed separately for quick reference during practice.

@@ -6,41 +6,20 @@ import { usePathname } from "next/navigation";
 import { Show, UserButton, SignInButton, ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { MobileMenu } from "./mobile-menu";
+import { MEMBER_NAV, PROGRAM_NAV } from "@/lib/nav";
 
 type SubItem = { label: string; href: string; description?: string; image?: string };
 type NavItem = { label: string; href: string; children?: SubItem[]; layout?: "cards" | "list" };
 
 const leftLinks: NavItem[] = [
   { label: "About", href: "/about" },
-  {
-    label: "Programs",
-    href: "/programs",
-    layout: "cards",
-    children: [
-      { label: "Tiny Tigers", href: "/programs/tiny-tigers", description: "Ages 4-6", image: "/images/Tiny-Tigers.jpg" },
-      { label: "Black Belt Club", href: "/programs/black-belt-club", description: "All ages", image: "/images/Black-Belt-Club.jpg" },
-      { label: "Leadership Club", href: "/programs/leadership-club", description: "Advanced students", image: "/images/Leadership_Demo-Team.jpg" },
-      { label: "Competition Team", href: "/programs/competition-team", description: "Tournament athletes", image: "/images/Competition-Team.jpg" },
-    ],
-  },
+  { label: "Programs", href: "/programs", layout: "cards", children: [...PROGRAM_NAV] },
   { label: "Schedule", href: "/schedule" },
   { label: "Reviews", href: "/reviews" },
 ];
 
 const rightLinks: NavItem[] = [
-  {
-    label: "Members",
-    href: "/members",
-    children: [
-      { label: "Announcements", href: "/members", description: "Monthly updates" },
-      { label: "Current Cycle", href: "/members/current-cycle", description: "Current cycle materials" },
-      { label: "Tiny Tigers", href: "/members/curriculum/tiny-tigers", description: "Ages 4-6 resources" },
-      { label: "Color Belt", href: "/members/curriculum/color-belt", description: "Color belt curriculum" },
-      { label: "Red/Black Belt", href: "/members/curriculum/red-black-belt", description: "Black belt preparation" },
-      { label: "Black Belt Curriculum", href: "/members/curriculum/black-belt-club", description: "Members-only black belt training information" },
-      { label: "Resources", href: "/members/resources", description: "Training materials" },
-    ],
-  },
+  { label: "Members", href: "/members", children: [...MEMBER_NAV] },
   { label: "Contact", href: "/contact" },
 ];
 

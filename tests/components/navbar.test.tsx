@@ -1,19 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Navbar } from "@/components/layout/navbar";
-import { NAV_LINKS } from "@/types";
-
-vi.mock("framer-motion", () => ({
-  motion: {
-    div: ({
-      children,
-      ...props
-    }: React.PropsWithChildren<Record<string, unknown>>) => (
-      <div {...props}>{children}</div>
-    ),
-  },
-  AnimatePresence: ({ children }: React.PropsWithChildren) => <>{children}</>,
-}));
+import { PRIMARY_NAV } from "@/lib/nav";
 
 vi.mock("next/link", () => ({
   default: ({
@@ -52,7 +40,7 @@ describe("Navbar", () => {
 
   it("renders all navigation links", () => {
     render(<Navbar />);
-    for (const link of NAV_LINKS.filter((l) => l.label !== "Home")) {
+    for (const link of PRIMARY_NAV) {
       expect(screen.getAllByText(link.label).length).toBeGreaterThanOrEqual(1);
     }
   });

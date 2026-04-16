@@ -1,8 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
-export default function Error({ reset }: { error: Error; reset: () => void }): React.ReactElement {
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}): React.ReactElement {
+  useEffect(() => {
+    console.error("App error boundary", error);
+  }, [error]);
+
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-6 text-center">
       <h1 className="font-heading text-4xl text-brand-black">Something went wrong</h1>

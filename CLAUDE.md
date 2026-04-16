@@ -39,7 +39,6 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 - Trial/booking flows removed — `/special-offer` uses a plain CTA link to SparkPages
 - SEO (sitemap, robots, JSON-LD, OG image config)
 - CI/CD (GitHub Actions: lint → test → build → Lighthouse, build artifact shared)
-- Promo modal (BOGO deal, session-scoped, keyboard accessible)
 - Trial offer: $49 / 2 weeks (no uniform included)
 - Real program + instructor images (JPEG, 2560px wide)
 - Hero video background (`public/videos/hero.mp4`) with `preload="none"`
@@ -112,7 +111,6 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 - Navbar: Nestig-style mega-menu — Programs dropdown shows link list + 4 image cards, Members dropdown shows gated list
 - Schedule: premium double-bezel table with dark header, muted color-coded pills, left accent borders
 - Members auth via Clerk (Facebook social login enabled)
-- Promo modal: BOGO deal, shows once per session, Escape key to close
 - Hero: Server Component with CSS `@keyframes` entrance animations, split layout — text left on navy bg, video (75% width, `preload="none"`) on right
 - Gallery: 4 dojang photos with lightbox (keyboard: Escape, arrows), ARIA roles
 - Trial banner: animated gold neon border (Server Component)
@@ -196,7 +194,7 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `/members/*` → rewrites to `/students/*` (internal)
 
 ### Components
-**Home:** hero, marquee, programs-grid, trial-banner, values-section, testimonials, gallery, bottom-cta, promo-modal
+**Home:** hero, marquee, programs-grid, trial-banner, values-section, testimonials, gallery, bottom-cta
 **Layout:** navbar (with mega-menu + Clerk auth), mobile-menu, footer
 **UI:** button, reveal, bezel-card, page-container, eyebrow-badge
 **Forms:** form-field, contact-form
@@ -214,7 +212,7 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 db, server-env (lazy via `getServerEnv()`), client-env, fonts, metadata, email, rate-limit, sanitize, static-data, api-security, members-home-content, current-cycle, current-cycle-materials
 
 ### Types (`src/types/index.ts`)
-NavLink, Program, ScheduleSlot, Testimonial, DAYS_OF_WEEK, NAV_LINKS
+Program, ScheduleSlot, Testimonial, DAYS_OF_WEEK (nav lives in `src/lib/nav.ts`)
 
 ## Auth (Clerk)
 - **Provider:** Clerk (ClerkProvider wraps root layout)
@@ -264,7 +262,7 @@ All in `public/images/` — JPEG format, 2560px wide:
 
 ## Tests
 **Unit:** contact schema, `/api/contact` route (validation + rate-limit + email failure paths), red-black packet route
-**Component:** navbar, hero, contact-form, button, programs-grid, gallery, schedule-grid, promo-modal, values-section, trial-banner, bottom-cta
+**Component:** navbar, hero, contact-form, button, programs-grid, gallery, schedule-grid, values-section, trial-banner, bottom-cta
 **E2E:** homepage, contact (Playwright, need running app to execute)
 Run `pnpm vitest run` for the current count — trial/booking suites were removed with those flows.
 

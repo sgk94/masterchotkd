@@ -15,6 +15,7 @@ vi.mock("@/lib/rate-limit", () => ({
 
 vi.mock("@/lib/api-security", () => ({
   getClientIp: getClientIpMock,
+  validateOrigin: vi.fn().mockResolvedValue(null),
 }));
 
 function makeRequest(

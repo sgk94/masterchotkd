@@ -1,6 +1,18 @@
 "use client";
 
-export default function GlobalError({ reset }: { error: Error; reset: () => void }): React.ReactElement {
+import { useEffect } from "react";
+
+export default function GlobalError({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}): React.ReactElement {
+  useEffect(() => {
+    console.error("Global error boundary", error);
+  }, [error]);
+
   return (
     <html lang="en">
       <body>

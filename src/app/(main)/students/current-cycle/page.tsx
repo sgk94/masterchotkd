@@ -11,6 +11,7 @@ import {
   type ColorBeltCycleEntry,
 } from "@/lib/current-cycle-materials";
 import { createMetadata } from "@/lib/metadata";
+import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 
 export const metadata = createMetadata({ title: "Our Current Cycle Materials" });
 export const revalidate = 3600;
@@ -130,9 +131,7 @@ export default function CurrentCyclePage(): React.ReactElement {
               <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-brand-gold/8 blur-3xl" />
 
               <div className="relative z-10">
-                <span className="inline-flex rounded-full border border-brand-gold/20 bg-brand-gold/5 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-gold">
-                  {cycleStatusLabel}
-                </span>
+                <EyebrowBadge variant="gold">{cycleStatusLabel}</EyebrowBadge>
                 <h1 className="mt-5 font-heading text-3xl tracking-tight text-white sm:text-4xl">
                   {currentCycle.cycle} Materials
                 </h1>
@@ -279,9 +278,7 @@ export default function CurrentCyclePage(): React.ReactElement {
           {/* SCHEDULE — dark section for contrast */}
           <section id="schedule" className="scroll-mt-28">
             <div className="rounded-2xl bg-brand-navy px-8 py-10 sm:px-10">
-              <span className="inline-flex rounded-full border border-brand-gold/20 bg-brand-gold/5 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-gold">
-                2026 Schedule
-              </span>
+              <EyebrowBadge variant="gold">2026 Schedule</EyebrowBadge>
               <h2 className="mt-4 font-heading text-2xl tracking-tight text-white sm:text-3xl">
                 Saved Cycle Dates
               </h2>

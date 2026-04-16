@@ -1,8 +1,3 @@
-export type NavLink = {
-  label: string;
-  href: string;
-};
-
 export type Program = {
   id: string;
   name: string;
@@ -42,12 +37,3 @@ export const DAYS_OF_WEEK = [
   "Saturday",
 ] as const;
 
-export const NAV_LINKS: NavLink[] = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Programs", href: "/programs" },
-  { label: "Schedule", href: "/schedule" },
-  { label: "Reviews", href: "/reviews" },
-  { label: "Members", href: "/members" },
-  { label: "Contact", href: "/contact" },
-];

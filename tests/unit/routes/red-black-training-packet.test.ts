@@ -29,6 +29,6 @@ describe("red-black training packet route", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toBe("application/pdf");
-    expect(response.headers.get("Content-Disposition")).toContain("RedBlack Training Packet.pdf");
+    expect(response.headers.get("Content-Disposition")).toContain("RedBlack%20Training%20Packet.pdf");
   });
 });

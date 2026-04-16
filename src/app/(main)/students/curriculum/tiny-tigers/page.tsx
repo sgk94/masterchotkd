@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
 import { VideoPlaceholder, SectionHeader } from "@/components/members/shared";
+import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
+import { ResourceCard } from "@/components/members/resource-card";
 
 const camoPattern = "url(/images/camo-pattern.jpg)";
 
@@ -93,35 +95,6 @@ function getBeltCircleStyle(options: {
       : color,
     border: border ? "2px solid #d4c5b0" : "none",
   };
-}
-
-function ResourceCard({
-  title,
-  description,
-  href,
-}: {
-  title: string;
-  description: string;
-  href: string;
-}): React.ReactElement {
-  return (
-    <a
-      href={href}
-      className="group flex h-full flex-col rounded-xl bg-white/[0.06] px-6 py-5 ring-1 ring-white/[0.08] transition-all duration-300 hover:bg-white/[0.10] hover:-translate-y-0.5"
-    >
-      <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-brand-gold/80">PDF Download</p>
-      <p className="mt-3 font-heading text-lg text-white">{title}</p>
-      <p className="mt-1.5 text-sm leading-relaxed text-white/40">{description}</p>
-      <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand-gold transition-transform duration-300 group-hover:translate-x-0.5">
-        Download PDF
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-          <path d="M12 4v11" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="m7 11 5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M5 20h14" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </span>
-    </a>
-  );
 }
 
 /* VideoPlaceholder and SectionHeader imported from @/components/members/shared */
@@ -391,9 +364,7 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
           {/* RESOURCES — dark section */}
           <section id="resources" className="scroll-mt-28">
             <div className="rounded-2xl bg-brand-navy px-8 py-10 sm:px-10">
-              <span className="inline-flex rounded-full border border-brand-gold/20 bg-brand-gold/5 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-gold">
-                Resources
-              </span>
+              <EyebrowBadge variant="gold">Resources</EyebrowBadge>
               <h2 className="mt-4 font-heading text-2xl tracking-tight text-white sm:text-3xl">
                 Tiny Tigers Resources
               </h2>

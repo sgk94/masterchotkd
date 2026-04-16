@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BUSINESS_ADDRESS_LINES, BUSINESS_PHONE_DISPLAY, BUSINESS_PHONE_TEL } from "@/lib/location";
-import { NAV_LINKS } from "@/types";
+import { PRIMARY_NAV } from "@/lib/nav";
 
 export function Footer(): React.ReactElement {
   return (
@@ -10,7 +10,7 @@ export function Footer(): React.ReactElement {
         <div className="text-center lg:max-w-[12rem]">
           <h4 className="mb-4 text-sm font-semibold text-brand-gold">Navigation</h4>
           <ul className="grid max-w-[11.5rem] grid-cols-2 gap-x-3 gap-y-3">
-            {NAV_LINKS.map((link) => (<li key={link.href}><Link href={link.href} className="text-sm text-white/70 hover:text-white transition-colors">{link.label}</Link></li>))}
+            {PRIMARY_NAV.map((link) => (<li key={link.href}><Link href={link.href} className="text-sm text-white/70 hover:text-white transition-colors">{link.label}</Link></li>))}
           </ul>
         </div>
         <div className="text-center">

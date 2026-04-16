@@ -3,17 +3,9 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { Show, UserButton, SignInButton, ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { PRIMARY_NAV } from "@/lib/nav";
 
 type MobileMenuProps = { open: boolean; onClose: () => void };
-
-const mobileNavLinks = [
-  { label: "About", href: "/about" },
-  { label: "Programs", href: "/programs" },
-  { label: "Schedule", href: "/schedule" },
-  { label: "Reviews", href: "/reviews" },
-  { label: "Members", href: "/members" },
-  { label: "Contact", href: "/contact" },
-];
 
 export function MobileMenu({ open, onClose }: MobileMenuProps): React.ReactElement {
   useEffect(() => {
@@ -51,7 +43,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps): React.ReactEleme
           </svg>
         </button>
         <div className="flex flex-col gap-6">
-          {mobileNavLinks.map((link) => (
+          {PRIMARY_NAV.map((link) => (
             <Link key={link.href} href={link.href} onClick={onClose} className="font-heading text-2xl text-white transition-colors hover:text-brand-gold">{link.label}</Link>
           ))}
         </div>

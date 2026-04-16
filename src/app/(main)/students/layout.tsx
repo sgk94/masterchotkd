@@ -2,16 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const studentNavLinks = [
-  { label: "Announcements", href: "/members" },
-  { label: "Current Cycle", href: "/members/current-cycle" },
-  { label: "Tiny Tigers", href: "/members/curriculum/tiny-tigers" },
-  { label: "Color Belt", href: "/members/curriculum/color-belt" },
-  { label: "Red/Black Belt", href: "/members/curriculum/red-black-belt" },
-  { label: "Black Belt Curriculum", href: "/members/curriculum/black-belt-club" },
-  { label: "Resources", href: "/members/resources" },
-];
+import { MEMBER_NAV } from "@/lib/nav";
 
 export default function StudentsLayout({ children }: { children: React.ReactNode }): React.ReactElement {
   const pathname = usePathname();
@@ -19,7 +10,7 @@ export default function StudentsLayout({ children }: { children: React.ReactNode
   return (
     <div className="mx-auto max-w-7xl px-6 py-16 lg:py-24">
       <nav className="mb-10 flex flex-wrap gap-2">
-        {studentNavLinks.map((link) => {
+        {MEMBER_NAV.map((link) => {
           const isActive =
             link.href === "/members"
               ? pathname === "/members"

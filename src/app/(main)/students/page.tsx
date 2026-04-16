@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getMembersHomeContent } from "@/lib/members-home-content";
 import { createMetadata } from "@/lib/metadata";
+import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 
 export const metadata = createMetadata({ title: "Members Announcements" });
 export const revalidate = 3600;
@@ -18,9 +19,7 @@ export default function StudentsPage(): React.ReactElement {
         <div className="pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-brand-gold/8 blur-3xl" />
         <div className="relative z-10 grid gap-8 lg:grid-cols-[1.3fr_0.7fr]">
           <div>
-            <span className="inline-flex rounded-full border border-brand-gold/20 bg-brand-gold/5 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-gold">
-              {hero.eyebrow}
-            </span>
+            <EyebrowBadge variant="gold">{hero.eyebrow}</EyebrowBadge>
             <h1 className="mt-5 font-heading text-4xl tracking-tight text-white sm:text-5xl">
               {hero.title}
             </h1>

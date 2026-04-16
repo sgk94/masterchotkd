@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { contactSchema } from "@/schemas/contact";
 import { sendEmail } from "@/lib/email";
-import { sanitize } from "@/lib/sanitize";
+import { escapeHtml, sanitize } from "@/lib/sanitize";
 import { getServerEnv } from "@/lib/server-env";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { getClientIp } from "@/lib/api-security";
+import { getClientIp, validateOrigin } from "@/lib/api-security";
 import { BUSINESS_PHONE_DISPLAY } from "@/lib/location";
 
 export const dynamic = "force-dynamic";
@@ -19,6 +19,9 @@ function stripControl(input: string): string {
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
+  const originError = await validateOrigin();
+  if (originError) return originError;
+
   const contentLength = Number(request.headers.get("content-length") ?? 0);
   if (contentLength > MAX_BODY_BYTES) {
     return NextResponse.json({ error: "Payload too large" }, { status: 413 });
@@ -52,23 +55,23 @@ export async function POST(request: Request): Promise<NextResponse> {
   const { name, email, phone, message } = result.data;
   const env = getServerEnv();
 
-  const safeName = stripControl(sanitize(name));
-  const safeEmail = stripControl(sanitize(email));
-  const safePhone = phone ? stripControl(sanitize(phone)) : "";
-  const safeMessage = sanitize(message);
+  const safeName = escapeHtml(stripControl(name));
+  const safeEmail = escapeHtml(stripControl(email));
+  const safePhone = phone ? escapeHtml(stripControl(phone)) : "";
+  const safeMessage = escapeHtml(sanitize(message)).replace(/\n/g, "<br>");
 
   try {
     await sendEmail({
       to: env.NOTIFY_EMAIL,
       replyTo: email,
-      subject: `New contact form submission from ${safeName}`,
+      subject: `New contact form submission from ${stripControl(name).slice(0, 200)}`,
       html: `
         <h2>New Contact Form Submission</h2>
         <p><strong>Name:</strong> ${safeName}</p>
         <p><strong>Email:</strong> ${safeEmail}</p>
         ${safePhone ? `<p><strong>Phone:</strong> ${safePhone}</p>` : ""}
         <p><strong>Message:</strong></p>
-        <p>${safeMessage.replace(/\n/g, "<br>")}</p>
+        <p>${safeMessage}</p>
       `,
     });
 
