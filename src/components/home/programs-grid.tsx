@@ -1,8 +1,5 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
 import { staticPrograms } from "@/lib/static-data";
 
 type ProgramLayout = {
@@ -61,35 +58,6 @@ const programs = gridOrder.map((slug) => {
 });
 
 export function ProgramsGrid(): React.ReactElement {
-  const gridRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const grid = gridRef.current;
-    if (!grid) return;
-
-    const cards = grid.querySelectorAll("[data-reveal]");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const el = entry.target as HTMLElement;
-            const delay = parseInt(el.dataset.reveal || "0", 10);
-            setTimeout(() => {
-              el.style.opacity = "1";
-              el.style.transform = "translateY(0) scale(1)";
-            }, delay);
-            observer.unobserve(el);
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
-    );
-
-    cards.forEach((card) => observer.observe(card));
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section className="mx-auto max-w-7xl px-4 pt-12 pb-24 sm:px-6 lg:pt-16 lg:pb-32">
       {/* Section header */}
@@ -106,20 +74,15 @@ export function ProgramsGrid(): React.ReactElement {
       </div>
 
       {/* Asymmetric bento grid */}
-      <div
-        ref={gridRef}
-        className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-12 sm:gap-4"
-      >
+      <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-12 sm:gap-4">
         {programs.map((program, i) => (
           /* Outer shell — double-bezel */
           <div
             key={program.slug}
-            data-reveal={i * 120}
-            className={`${program.span} sm:!order-none rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15 transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.32,0.72,0,1)] will-change-[transform,opacity]`}
+            className={`${program.span} sm:!order-none animate-fade-up rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15`}
             style={{
-              opacity: 0,
-              transform: "translateY(2rem) scale(0.97)",
               order: program.mobileOrder,
+              animationDelay: `${i * 120}ms`,
             }}
           >
             {/* Inner core */}

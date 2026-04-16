@@ -1,5 +1,16 @@
 import Link from "next/link";
 import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
+import { FloatingSectionNav } from "@/components/members/floating-section-nav";
+import { SectionHeader } from "@/components/members/shared";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata = createMetadata({ title: "Black Belt Curriculum" });
+
+const sectionLinks = [
+  { href: "#overview", label: "Overview" },
+  { href: "#requirements", label: "Requirements" },
+  { href: "#combos", label: "Combos" },
+];
 
 const midtermRequirements = [
   {
@@ -73,186 +84,174 @@ const combos = [
   { title: "Combo 18", description: "Right leg kick, cross, switch butterfly" },
 ] as const;
 
+type Requirement = {
+  title: string;
+  poomsae: string;
+  weapon?: string;
+  combo?: string;
+  notes?: string;
+};
+
+function RequirementCard({
+  requirement,
+  tone = "light",
+}: {
+  requirement: Requirement;
+  tone?: "light" | "dark";
+}): React.ReactElement {
+  const isDark = tone === "dark";
+  const fieldLabel = isDark
+    ? "text-[11px] font-semibold uppercase tracking-[0.14em] text-white/45"
+    : "text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-black/35";
+  const fieldValue = isDark ? "mt-1 font-medium text-white" : "mt-1 font-medium text-brand-black";
+
+  return (
+    <article
+      className={
+        isDark
+          ? "rounded-2xl bg-brand-navy p-6 text-white shadow-sm ring-1 ring-brand-navy/20"
+          : "rounded-2xl bg-white p-6 shadow-sm ring-1 ring-brand-taupe/10"
+      }
+    >
+      <p
+        className={
+          isDark
+            ? "text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-gold/80"
+            : "text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-red/70"
+        }
+      >
+        {requirement.title}
+      </p>
+      <div className={isDark ? "mt-4 space-y-3 text-sm text-white/80" : "mt-4 space-y-3 text-sm text-brand-black/70"}>
+        <div>
+          <p className={fieldLabel}>Poomsae</p>
+          <p className={fieldValue}>{requirement.poomsae}</p>
+        </div>
+        {requirement.weapon ? (
+          <div>
+            <p className={fieldLabel}>Weapon</p>
+            <p className={fieldValue}>{requirement.weapon}</p>
+          </div>
+        ) : null}
+        {requirement.combo ? (
+          <div>
+            <p className={fieldLabel}>Combo</p>
+            <p className={fieldValue}>{requirement.combo}</p>
+          </div>
+        ) : null}
+        {requirement.notes ? (
+          <div>
+            <p className={fieldLabel}>Notes</p>
+            <p className={fieldValue}>{requirement.notes}</p>
+          </div>
+        ) : null}
+      </div>
+    </article>
+  );
+}
+
 export default function BlackBeltClubCurriculumPage(): React.ReactElement {
   return (
-    <div className="space-y-8">
-      <Link href="/members/curriculum" className="inline-flex text-sm text-brand-red hover:underline">
-        ← Back to Curriculum
-      </Link>
+    <div>
+      {/* Mobile section jump links */}
+      <div className="flex gap-2 overflow-x-auto pb-1 lg:hidden">
+        {sectionLinks.map((link) => (
+          <a
+            key={link.href}
+            href={link.href}
+            className="inline-flex shrink-0 items-center rounded-full bg-brand-cream px-4 py-2 text-xs font-medium text-brand-black/50 transition-colors hover:bg-brand-sand hover:text-brand-black"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
 
-      <section className="rounded-[2rem] bg-brand-navy px-8 py-10 sm:px-10 sm:py-12">
-        <EyebrowBadge variant="gold">Members Only</EyebrowBadge>
-        <h1 className="mt-4 font-heading text-3xl tracking-tight text-white sm:text-4xl">
-          Black Belt Curriculum
-        </h1>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/60 sm:text-base">
-          This section is reserved for black belt students and now includes the current testing requirements from the
-          black belt curriculum handout.
-        </p>
-      </section>
+      <div className="mt-6 lg:mt-0 lg:grid lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-6 xl:grid-cols-[12rem_minmax(0,1fr)] xl:gap-8">
+        <FloatingSectionNav ariaLabel="Black belt curriculum sections" links={sectionLinks} />
 
-      <section className="rounded-2xl bg-brand-cream p-8 ring-1 ring-brand-taupe/10">
-        <div className="max-w-3xl">
-          <span className="inline-flex rounded-full border border-brand-red/10 bg-brand-red/[0.04] px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-red">
-            Requirements
-          </span>
-          <h2 className="mt-4 font-heading text-2xl text-brand-black sm:text-3xl">1st Degree Black Belt Requirements</h2>
-          <p className="mt-3 text-sm leading-relaxed text-brand-black/60 sm:text-base">
-            Each midterm builds on the material before it. Use this section as the current reference for poomsae,
-            weapon work, and combo requirements, with 2nd degree testing included below in the same format.
-          </p>
-        </div>
+        <div className="min-w-0 space-y-14">
+          {/* OVERVIEW */}
+          <section id="overview" className="scroll-mt-28">
+            <div className="relative overflow-hidden rounded-2xl bg-brand-navy px-8 py-10 sm:px-10 sm:py-12">
+              <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-brand-red/10 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-brand-gold/8 blur-3xl" />
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-2">
-          {[...midtermRequirements, testingRequirement].map((requirement) => {
-            const isTestingCard = requirement.title === "2nd Degree Testing";
-
-            return (
-              <article
-                key={requirement.title}
-                className={
-                  isTestingCard
-                    ? "rounded-2xl bg-brand-navy p-6 text-white shadow-sm ring-1 ring-brand-navy/20"
-                    : "rounded-2xl bg-white p-6 shadow-sm ring-1 ring-brand-taupe/10"
-                }
-              >
-                <p
-                  className={
-                    isTestingCard
-                      ? "text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-gold/80"
-                      : "text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-red/70"
-                  }
+              <div className="relative z-10">
+                <Link
+                  href="/members/curriculum"
+                  className="inline-flex items-center gap-1.5 text-xs text-white/40 transition-colors hover:text-white/70"
                 >
-                  {requirement.title}
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M15 18l-6-6 6-6" />
+                  </svg>
+                  Back to Curriculum
+                </Link>
+                <EyebrowBadge variant="gold" className="mt-5">Members Only</EyebrowBadge>
+                <h1 className="mt-4 font-heading text-3xl tracking-tight text-white sm:text-4xl">
+                  Black Belt Curriculum
+                </h1>
+                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/60 sm:text-base">
+                  This section is reserved for black belt students and now includes the current testing requirements
+                  from the black belt curriculum handout.
                 </p>
-                <div
-                  className={
-                    isTestingCard
-                      ? "mt-4 space-y-3 text-sm text-white/80"
-                      : "mt-4 space-y-3 text-sm text-brand-black/70"
-                  }
-                >
-                <div>
-                  <p
-                    className={
-                      isTestingCard
-                        ? "text-[11px] font-semibold uppercase tracking-[0.14em] text-white/45"
-                        : "text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-black/35"
-                    }
+              </div>
+            </div>
+          </section>
+
+          {/* REQUIREMENTS */}
+          <section id="requirements" className="scroll-mt-28 space-y-8">
+            <SectionHeader
+              label="Requirements"
+              title="1st Degree Black Belt Requirements"
+              description="Each midterm builds on the material before it. Use this section as the current reference for poomsae, weapon work, and combo requirements, with 2nd degree testing included below in the same format."
+            />
+
+            <div className="rounded-2xl bg-brand-cream p-8 ring-1 ring-brand-taupe/10">
+              <div className="grid gap-4 lg:grid-cols-2">
+                {midtermRequirements.map((requirement) => (
+                  <RequirementCard key={requirement.title} requirement={requirement} tone="light" />
+                ))}
+                <RequirementCard requirement={testingRequirement} tone="dark" />
+              </div>
+            </div>
+          </section>
+
+          {/* COMBOS */}
+          <section id="combos" className="scroll-mt-28 space-y-8">
+            <SectionHeader
+              label="Combos"
+              title="Black Belt Combo Reference"
+              description="These combos were added from the combos handout and are listed separately for quick reference during practice."
+            />
+
+            <div className="rounded-2xl border border-brand-taupe/20 bg-white p-8 ring-1 ring-brand-taupe/10">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {combos.map((combo) => (
+                  <article
+                    key={combo.title}
+                    className="rounded-2xl bg-brand-cream p-5 ring-1 ring-brand-taupe/10"
                   >
-                    Poomsae
-                  </p>
-                  <p
-                    className={
-                      isTestingCard
-                        ? "mt-1 font-medium text-white"
-                        : "mt-1 font-medium text-brand-black"
-                    }
-                  >
-                    {requirement.poomsae}
-                  </p>
-                </div>
-
-                {"weapon" in requirement ? (
-                  <div>
-                    <p
-                      className={
-                        isTestingCard
-                          ? "text-[11px] font-semibold uppercase tracking-[0.14em] text-white/45"
-                          : "text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-black/35"
-                      }
-                    >
-                      Weapon
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-red/70">
+                      {combo.title}
                     </p>
-                    <p
-                      className={
-                        isTestingCard
-                          ? "mt-1 font-medium text-white"
-                          : "mt-1 font-medium text-brand-black"
-                      }
-                    >
-                      {requirement.weapon}
-                    </p>
-                  </div>
-                ) : null}
-
-                {"combo" in requirement ? (
-                  <div>
-                    <p
-                      className={
-                        isTestingCard
-                          ? "text-[11px] font-semibold uppercase tracking-[0.14em] text-white/45"
-                          : "text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-black/35"
-                      }
-                    >
-                      Combo
-                    </p>
-                    <p
-                      className={
-                        isTestingCard
-                          ? "mt-1 font-medium text-white"
-                          : "mt-1 font-medium text-brand-black"
-                      }
-                    >
-                      {requirement.combo}
-                    </p>
-                  </div>
-                ) : null}
-
-                {"notes" in requirement ? (
-                  <div>
-                    <p
-                      className={
-                        isTestingCard
-                          ? "text-[11px] font-semibold uppercase tracking-[0.14em] text-white/45"
-                          : "text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-black/35"
-                      }
-                    >
-                      Notes
-                    </p>
-                    <p
-                      className={
-                        isTestingCard
-                          ? "mt-1 font-medium text-white"
-                          : "mt-1 font-medium text-brand-black"
-                      }
-                    >
-                      {requirement.notes}
-                    </p>
-                  </div>
-                ) : null}
-                </div>
-              </article>
-            );
-          })}
+                    <p className="mt-3 text-sm leading-relaxed text-brand-black/70">{combo.description}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
         </div>
-      </section>
-
-      <section className="rounded-2xl border border-brand-taupe/20 bg-white p-8 ring-1 ring-brand-taupe/10">
-        <div className="max-w-3xl">
-          <EyebrowBadge variant="gold">Combos</EyebrowBadge>
-          <h2 className="mt-4 font-heading text-2xl text-brand-black sm:text-3xl">Black Belt Combo Reference</h2>
-          <p className="mt-3 text-sm leading-relaxed text-brand-black/60 sm:text-base">
-            These combos were added from the combos handout and are listed separately for quick reference during practice.
-          </p>
-        </div>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {combos.map((combo) => (
-            <article
-              key={combo.title}
-              className="rounded-2xl bg-brand-cream p-5 ring-1 ring-brand-taupe/10"
-            >
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-red/70">
-                {combo.title}
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-brand-black/70">
-                {combo.description}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useRef } from "react";
 import { scheduleClassPalette, scheduleRows } from "@/lib/static-data";
 
 const DAYS = [
@@ -27,33 +24,8 @@ const colorMap: Record<string, { bg: string; accent: string; text: string; dot?:
 const ease = "cubic-bezier(0.32, 0.72, 0, 1)";
 
 export function ScheduleGrid(): React.ReactElement {
-  const tableRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = tableRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.style.opacity = "1";
-          el.style.transform = "translateY(0)";
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div
-      ref={tableRef}
-      className="transition-[opacity,transform] duration-[900ms] will-change-[transform,opacity]"
-      style={{ opacity: 0, transform: "translateY(2rem)", transitionTimingFunction: ease }}
-    >
+    <div className="animate-fade-up">
       {/* Double-bezel container */}
       <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
         <div className="overflow-hidden rounded-[calc(2rem-6px)] bg-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">

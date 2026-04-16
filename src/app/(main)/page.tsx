@@ -13,9 +13,7 @@ export default function HomePage(): React.ReactElement {
     <>
       <Hero />
       <Marquee />
-      <Reveal>
-        <ProgramsGrid />
-      </Reveal>
+      <ProgramsGrid />
       <BottomCta />
       <Reveal>
         <TrialBanner />

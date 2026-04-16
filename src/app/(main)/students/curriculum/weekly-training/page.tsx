@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useRef } from "react";
 import Link from "next/link";
 
 const ease = "cubic-bezier(0.32, 0.72, 0, 1)";
@@ -49,32 +46,6 @@ const weeks = [
 ];
 
 export default function WeeklyTrainingPage(): React.ReactElement {
-  const cardsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = cardsRef.current;
-    if (!el) return;
-    const cards = el.querySelectorAll("[data-reveal]");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const target = entry.target as HTMLElement;
-            const delay = parseInt(target.dataset.reveal || "0", 10);
-            setTimeout(() => {
-              target.style.opacity = "1";
-              target.style.transform = "translateY(0)";
-            }, delay);
-            observer.unobserve(target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
-    );
-    cards.forEach((c) => observer.observe(c));
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <div>
       {/* Back link */}
@@ -108,13 +79,12 @@ export default function WeeklyTrainingPage(): React.ReactElement {
       </div>
 
       {/* Timeline cards */}
-      <div ref={cardsRef} className="mt-14 flex flex-col gap-6">
+      <div className="mt-14 flex flex-col gap-6">
         {weeks.map((w, i) => (
           <div
             key={w.week}
-            data-reveal={i * 100}
-            className="transition-[opacity,transform] duration-[900ms] will-change-[transform,opacity]"
-            style={{ opacity: 0, transform: "translateY(1.5rem)", transitionTimingFunction: ease }}
+            className="animate-fade-up"
+            style={{ animationDelay: `${i * 100}ms` }}
           >
             <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
               <div className="rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] sm:p-8">
