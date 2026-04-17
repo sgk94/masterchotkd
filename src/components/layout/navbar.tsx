@@ -48,7 +48,7 @@ const memberNavItems: Record<string, { icon: React.ReactElement; animation: stri
     icon: <svg {...iconProps}><path d="M12 3l7 4v5c0 4.2-2.8 8-7 9-4.2-1-7-4.8-7-9V7l7-4Z" /><path d="M9 12l2 2 4-4" /></svg>,
     animation: "group-hover:animate-[icon-bounce-layers_0.6s_ease-in-out]",
   },
-  "Black Belt Curriculum": {
+  "Black Belt": {
     icon: <svg {...iconProps}><path d="M12 3v18" /><path d="M7 7.5h10" /><path d="M7 16.5h10" /><path d="M5 12h14" /></svg>,
     animation: "group-hover:animate-[icon-slide-up_0.5s_ease-in-out]",
   },
@@ -252,7 +252,7 @@ export function Navbar(): React.ReactElement {
                       <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.2em] text-white/30">
                         {activeItem.label}
                       </p>
-                      <div className="grid grid-cols-6 gap-2">
+                      <div className="grid grid-cols-7 gap-1">
                         {activeItem.children.map((child) => {
                           const item = memberNavItems[child.label];
                           const icon = item?.icon ?? <svg {...iconProps}><circle cx="12" cy="12" r="10" /></svg>;
@@ -261,14 +261,14 @@ export function Navbar(): React.ReactElement {
                             <Link
                               key={child.href}
                               href={child.href}
-                              className="group flex flex-col items-center gap-2.5 rounded-xl px-3 py-4 text-center transition-all duration-300 hover:bg-white/[0.06]"
+                              className="group flex flex-col items-center gap-2 rounded-xl px-1.5 py-3 text-center transition-all duration-300 hover:bg-white/[0.06]"
                               style={{ transitionTimingFunction: ease }}
                             >
-                              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.06] text-white/50 ring-1 ring-white/[0.08] transition-all duration-300 group-hover:bg-brand-gold/15 group-hover:text-brand-gold group-hover:ring-brand-gold/25 group-hover:scale-110 group-hover:-translate-y-0.5">
+                              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/[0.06] text-white/50 ring-1 ring-white/[0.08] transition-all duration-300 group-hover:bg-brand-gold/15 group-hover:text-brand-gold group-hover:ring-brand-gold/25 group-hover:scale-110 group-hover:-translate-y-0.5">
                                 <span className={`inline-block ${anim}`}>{icon}</span>
                               </div>
                               <div>
-                                <p className="text-sm font-medium text-white/70 transition-colors duration-300 group-hover:text-white">
+                                <p className="text-xs font-medium leading-tight text-white/70 transition-colors duration-300 group-hover:text-white">
                                   {child.label}
                                 </p>
                               </div>

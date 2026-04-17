@@ -44,6 +44,6 @@ export const MEMBER_NAV: MemberNavLink[] = [
   { label: "Tiny Tigers", href: "/members/curriculum/tiny-tigers", description: "Ages 4-6 resources" },
   { label: "Color Belt", href: "/members/curriculum/color-belt", description: "Color belt curriculum" },
   { label: "Red/Black Belt", href: "/members/curriculum/red-black-belt", description: "Black belt preparation" },
-  { label: "Black Belt Curriculum", href: "/members/curriculum/black-belt-club", description: "Members-only black belt training information" },
+  { label: "Black Belt", href: "/members/curriculum/black-belt-club", description: "Members-only black belt training information" },
   { label: "Resources", href: "/members/resources", description: "Training materials" },
 ];
