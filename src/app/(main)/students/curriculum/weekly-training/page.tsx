@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BezelCard } from "@/components/ui/bezel-card";
 
 const ease = "cubic-bezier(0.32, 0.72, 0, 1)";
 
@@ -86,8 +87,8 @@ export default function WeeklyTrainingPage(): React.ReactElement {
             className="animate-fade-up"
             style={{ animationDelay: `${i * 100}ms` }}
           >
-            <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-              <div className="rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] sm:p-8">
+            <BezelCard>
+              <div className="p-6 sm:p-8">
                 <div className="flex flex-col gap-5 sm:flex-row sm:gap-8">
                   {/* Week number */}
                   <div className="flex shrink-0 items-start gap-4 sm:w-40 sm:flex-col sm:gap-2">
@@ -118,15 +119,15 @@ export default function WeeklyTrainingPage(): React.ReactElement {
                   </div>
                 </div>
               </div>
-            </div>
+            </BezelCard>
           </div>
         ))}
       </div>
 
       {/* Notes section */}
       <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-          <div className="rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
+        <BezelCard>
+          <div className="p-6">
             <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/35">
               Note
             </p>
@@ -134,9 +135,9 @@ export default function WeeklyTrainingPage(): React.ReactElement {
               The instructors review the students&apos; progress on an ongoing basis in order to determine their eligibility for stripes.
             </p>
           </div>
-        </div>
-        <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-          <div className="rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
+        </BezelCard>
+        <BezelCard>
+          <div className="p-6">
             <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/35">
               Time to Advance
             </p>
@@ -144,7 +145,7 @@ export default function WeeklyTrainingPage(): React.ReactElement {
               Average 10–20 weeks based on student&apos;s attendance, proficiency, and technical understanding.
             </p>
           </div>
-        </div>
+        </BezelCard>
       </div>
     </div>
   );

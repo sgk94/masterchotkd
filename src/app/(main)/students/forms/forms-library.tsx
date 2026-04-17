@@ -1,6 +1,7 @@
 "use client";
 
 import { skillLevelPalette } from "@/lib/static-data";
+import { BezelCard } from "@/components/ui/bezel-card";
 
 type FormCard = {
   belt: string;
@@ -115,8 +116,8 @@ export function FormsLibrary(): React.ReactElement {
         each column by cycle.
       </p>
 
-      <div className="mt-8 rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-        <div className="rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] sm:p-8">
+      <BezelCard className="mt-8">
+        <div className="p-6 sm:p-8">
           <div className="grid gap-3 lg:grid-cols-[220px_repeat(3,minmax(0,1fr))]">
             <div aria-hidden="true" className="hidden lg:block" />
 
@@ -184,7 +185,7 @@ export function FormsLibrary(): React.ReactElement {
             ))}
           </div>
         </div>
-      </div>
+      </BezelCard>
     </div>
   );
 }

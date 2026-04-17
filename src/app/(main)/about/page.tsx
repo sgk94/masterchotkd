@@ -2,6 +2,7 @@ import Image from "next/image";
 import { createMetadata } from "@/lib/metadata";
 import { Button } from "@/components/ui/button";
 import { PageContainer } from "@/components/ui/page-container";
+import { BezelCard } from "@/components/ui/bezel-card";
 
 export const metadata = createMetadata({ title: "About", description: "Learn about Master Cho's Taekwondo — 25+ years in Lynnwood, WA." });
 
@@ -73,8 +74,8 @@ export default function AboutPage(): React.ReactElement {
               }`}
             >
               {/* Photo */}
-              <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15 lg:[direction:ltr]">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[calc(2rem-6px)]">
+              <BezelCard className="lg:[direction:ltr]">
+                <div className="relative aspect-[4/3]">
                   <Image
                     src={instructor.image}
                     alt={instructor.name}
@@ -83,7 +84,7 @@ export default function AboutPage(): React.ReactElement {
                     className="object-cover object-top"
                   />
                 </div>
-              </div>
+              </BezelCard>
 
               {/* Bio */}
               <div className="lg:[direction:ltr]">

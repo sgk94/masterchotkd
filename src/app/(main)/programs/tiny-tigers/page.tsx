@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
+import { BezelCard } from "@/components/ui/bezel-card";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
@@ -75,12 +76,12 @@ export default function TinyTigersPage(): React.ReactElement {
         <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {whatToExpect.map((item, i) => (
             <Reveal key={item.title} delay={(i + 1) * 100}>
-              <div className="h-full rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-                <div className="flex h-full flex-col rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
+              <BezelCard className="h-full">
+                <div className="flex h-full flex-col p-6">
                   <h3 className="font-heading text-lg text-brand-black">{item.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-brand-black/55">{item.description}</p>
                 </div>
-              </div>
+              </BezelCard>
             </Reveal>
           ))}
         </div>
@@ -98,18 +99,16 @@ export default function TinyTigersPage(): React.ReactElement {
           <p className="mt-2 text-sm text-brand-black/40">40-minute classes, Monday – Friday</p>
         </Reveal>
         <Reveal delay={100} className="mt-8">
-          <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-            <div className="overflow-hidden rounded-[calc(2rem-6px)] bg-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
-              <div className="grid grid-cols-2 gap-px bg-brand-taupe/10 sm:grid-cols-5">
-                {schedule.map((s) => (
-                  <div key={s.day} className="bg-white p-5 text-center">
-                    <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-brand-black/35">{s.day}</p>
-                    <p className="mt-2 font-heading text-lg text-brand-black">{s.time}</p>
-                  </div>
-                ))}
-              </div>
+          <BezelCard>
+            <div className="grid grid-cols-2 gap-px bg-brand-taupe/10 sm:grid-cols-5">
+              {schedule.map((s) => (
+                <div key={s.day} className="bg-white p-5 text-center">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-brand-black/35">{s.day}</p>
+                  <p className="mt-2 font-heading text-lg text-brand-black">{s.time}</p>
+                </div>
+              ))}
             </div>
-          </div>
+          </BezelCard>
         </Reveal>
       </div>
 
@@ -126,12 +125,12 @@ export default function TinyTigersPage(): React.ReactElement {
         <div className="mt-8 flex flex-col gap-4">
           {faq.map((item, i) => (
             <Reveal key={item.q} delay={(i + 1) * 80}>
-              <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-                <div className="rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
+              <BezelCard>
+                <div className="p-6">
                   <h3 className="font-heading text-base text-brand-black">{item.q}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-brand-black/55">{item.a}</p>
                 </div>
-              </div>
+              </BezelCard>
             </Reveal>
           ))}
         </div>

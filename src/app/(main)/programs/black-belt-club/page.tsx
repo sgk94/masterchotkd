@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
+import { BezelCard } from "@/components/ui/bezel-card";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
@@ -100,12 +101,12 @@ export default function BlackBeltClubPage(): React.ReactElement {
         <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {whatToExpect.map((item, i) => (
             <Reveal key={item.title} delay={(i + 1) * 100}>
-              <div className="h-full rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-                <div className="flex h-full flex-col rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
+              <BezelCard className="h-full">
+                <div className="flex h-full flex-col p-6">
                   <h3 className="font-heading text-lg text-brand-black">{item.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-brand-black/55">{item.description}</p>
                 </div>
-              </div>
+              </BezelCard>
             </Reveal>
           ))}
         </div>
@@ -123,32 +124,30 @@ export default function BlackBeltClubPage(): React.ReactElement {
           <p className="mt-2 text-sm text-brand-black/40">Classes open to new students, based on our current public schedule</p>
         </Reveal>
         <Reveal delay={100} className="mt-8">
-          <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-            <div className="overflow-hidden rounded-[calc(2rem-6px)] bg-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
-              {/* Header row */}
-              <div className="grid grid-cols-6 gap-px bg-brand-taupe/10">
-                <div className="bg-white p-4" />
-                {days.map((day) => (
-                  <div key={day} className="bg-white p-4 text-center">
-                    <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-brand-black/35">{day}</p>
-                  </div>
-                ))}
-              </div>
-              {/* Schedule rows */}
-              {scheduleRows.map((row) => (
-                <div key={row.label} className="grid grid-cols-6 gap-px bg-brand-taupe/10">
-                  <div className="flex items-center bg-white p-4">
-                    <p className="text-[11px] font-medium uppercase tracking-[0.1em] text-brand-black/50">{row.label}</p>
-                  </div>
-                  {days.map((day) => (
-                    <div key={day} className="bg-white p-4 text-center">
-                      <p className="font-heading text-sm text-brand-black">{row.times[day] ?? "—"}</p>
-                    </div>
-                  ))}
+          <BezelCard>
+            {/* Header row */}
+            <div className="grid grid-cols-6 gap-px bg-brand-taupe/10">
+              <div className="bg-white p-4" />
+              {days.map((day) => (
+                <div key={day} className="bg-white p-4 text-center">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-brand-black/35">{day}</p>
                 </div>
               ))}
             </div>
-          </div>
+            {/* Schedule rows */}
+            {scheduleRows.map((row) => (
+              <div key={row.label} className="grid grid-cols-6 gap-px bg-brand-taupe/10">
+                <div className="flex items-center bg-white p-4">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.1em] text-brand-black/50">{row.label}</p>
+                </div>
+                {days.map((day) => (
+                  <div key={day} className="bg-white p-4 text-center">
+                    <p className="font-heading text-sm text-brand-black">{row.times[day] ?? "—"}</p>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </BezelCard>
         </Reveal>
       </div>
 
@@ -165,12 +164,12 @@ export default function BlackBeltClubPage(): React.ReactElement {
         <div className="mt-8 flex flex-col gap-4">
           {faq.map((item, i) => (
             <Reveal key={item.q} delay={(i + 1) * 80}>
-              <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-                <div className="rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
+              <BezelCard>
+                <div className="p-6">
                   <h3 className="font-heading text-base text-brand-black">{item.q}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-brand-black/55">{item.a}</p>
                 </div>
-              </div>
+              </BezelCard>
             </Reveal>
           ))}
         </div>
