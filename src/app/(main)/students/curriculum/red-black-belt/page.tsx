@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
+import { BackLink } from "@/components/members/back-link";
+import { SectionChips } from "@/components/members/section-chips";
 import { SectionHeader } from "@/components/members/shared";
 import { createMetadata } from "@/lib/metadata";
 import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
@@ -233,17 +234,7 @@ function TestingStageCard({
 export default function RedBlackBeltPage(): React.ReactElement {
   return (
     <div>
-      <div className="flex gap-2 overflow-x-auto pb-1 lg:hidden">
-        {sectionLinks.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            className="inline-flex shrink-0 items-center rounded-full bg-brand-cream px-4 py-2 text-xs font-medium text-brand-black/50 transition-colors hover:bg-brand-sand hover:text-brand-black"
-          >
-            {link.label}
-          </a>
-        ))}
-      </div>
+      <SectionChips links={sectionLinks} />
 
       <div className="mt-6 lg:mt-0 lg:grid lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-6 xl:grid-cols-[12rem_minmax(0,1fr)] xl:gap-8">
         <FloatingSectionNav ariaLabel="Red and black belt page sections" links={sectionLinks} />
@@ -255,12 +246,7 @@ export default function RedBlackBeltPage(): React.ReactElement {
               <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-brand-gold/8 blur-3xl" />
 
               <div className="relative z-10">
-                <Link href="/members/curriculum" className="inline-flex items-center gap-1.5 text-xs text-white/40 transition-colors hover:text-white/70">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M19 12H5M12 19l-7-7 7-7" />
-                  </svg>
-                  Back to Curriculum
-                </Link>
+                <BackLink href="/members/curriculum" label="Back to Curriculum" />
 
                 <EyebrowBadge variant="gold" className="mt-5">Black Belt Preparation</EyebrowBadge>
                 <h1 className="mt-4 font-heading text-3xl tracking-tight text-white sm:text-4xl">Preparing for Black Belt</h1>

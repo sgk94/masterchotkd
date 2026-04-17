@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
+import { BezelCard } from "@/components/ui/bezel-card";
 import { coreValues } from "@/components/home/values-section";
 
 const challenges = [
@@ -105,15 +106,15 @@ export function BottomCta(): React.ReactElement {
           <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-3">
             {challenges.map((c, i) => (
               <Reveal key={c.title} delay={(i + 1) * 120}>
-                <div className="rounded-[2rem] bg-brand-sand/40 p-1.5 ring-1 ring-brand-taupe/15">
-                  <div className="rounded-[calc(2rem-6px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
+                <BezelCard>
+                  <div className="p-6">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-gold/10 text-brand-gold">
                       {c.icon}
                     </div>
                     <h3 className="mt-4 font-heading text-lg text-brand-black">{c.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-brand-black/50">{c.description}</p>
                   </div>
-                </div>
+                </BezelCard>
               </Reveal>
             ))}
           </div>
