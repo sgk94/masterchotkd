@@ -31,12 +31,8 @@ const contentSecurityPolicy = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
-  experimental: {
-    optimizePackageImports: ["@clerk/nextjs"],
-  },
   images: {
     formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 31_536_000,
   },
   redirects: async () => [
     {
