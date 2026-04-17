@@ -6,11 +6,14 @@ const isProtectedRoute = createRouteMatcher([
   "/student-resources(.*)",
 ]);
 
-export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) {
-    await auth.protect();
-  }
-});
+export default clerkMiddleware(
+  async (auth, req) => {
+    if (isProtectedRoute(req)) {
+      await auth.protect();
+    }
+  },
+  { frontendApiProxy: { enabled: true } },
+);
 
 export const config = {
   matcher: [

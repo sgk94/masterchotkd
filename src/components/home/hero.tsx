@@ -18,10 +18,10 @@ export function Hero(): React.ReactElement {
           loop
           playsInline
           preload="none"
+          poster="/images/hero-poster.jpg"
           className="h-full w-full object-cover"
         >
-          {/* media query keeps mobile from fetching the 5.3 MB file */}
-          <source media="(min-width: 1024px)" src="/videos/hero.mp4" type="video/mp4" />
+          <source src="/videos/hero.mp4" type="video/mp4" />
         </video>
         {/* Vignette — fades video into the background on all edges */}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-navy via-brand-navy/40 to-transparent" />
