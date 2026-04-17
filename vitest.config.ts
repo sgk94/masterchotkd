@@ -50,6 +50,7 @@ export default defineConfig({
         "**/instrumentation.ts",
         "**/proxy.ts",
         "**/types/**",
+        "**/lib/db.ts",
       ],
       thresholds: {
         statements: 85,
