@@ -1,7 +1,6 @@
 # Master Cho's Taekwondo — AGENTS.md
 
 ## Agent Rules
-- Never modify `CLAUDE.md`. Treat it as read-only project context.
 - Put any new agent-specific notes, workflow updates, or working context in this file.
 
 ## Authoritative source
