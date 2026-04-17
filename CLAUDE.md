@@ -8,7 +8,7 @@ Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), rep
 - **Pre-launch hardening done** — CSRF + IP-extraction + outbound-HTML-escape + Resend timeout on `/api/contact`; PDF path-traversal guard + RFC 5987 filename; proxy matcher tightened; error boundaries log
 - **Client bundle reduced** — programs-grid, schedule-grid, weekly-training, students/layout, curriculum index now Server Components; CSS `@keyframes` entrance animations replace IntersectionObserver hooks; `FloatingSectionNav` uses CSS `position: sticky` (no scroll handler)
 - **DRY consolidation** — `src/lib/nav.ts` is single nav source; `<ResourceCard>` extracted; `<EyebrowBadge variant="gold">` replaces 13 inline pills
-- **Images optimized** — real dojang + instructor photos, 2560px JPEG; OG image (1200×630) wired
+- **Images optimized** — real dojang + instructor photos at 1600px JPEG @ q82 (resized from 2560px, ~8 MB disk savings); hero poster (79 KB, first-frame LCP); OG image (1200×630) wired
 - **Auth: Clerk enabled** (Development mode, see To Get Fully Running) — Facebook social login, route protection via `proxy.ts`
 - **Contact form live** — Resend wired, Upstash rate-limit when configured, validateOrigin/CSRF check, 10KB body cap, control-char + HTML escape, 5s Resend timeout
 - **DB + trial/booking flows** — deleted until Phase 2 (schemas, forms, routes removed); Prisma schema trimmed to Program + ClassSchedule + Testimonial
@@ -56,6 +56,7 @@ See **Current Status** (above) and **Gotchas** / **API Routes** (below) for spec
 - **Package manager:** pnpm 10.18
 - **Testing:** Vitest + happy-dom, React Testing Library, Playwright
 - **CI/CD:** GitHub Actions (lint → test → build → Lighthouse with shared build artifact)
+- **Next.js tuning:** `experimental.optimizePackageImports: ["@clerk/nextjs"]`; `images.minimumCacheTTL = 31_536_000` (1yr); `formats: ["image/avif", "image/webp"]`
 
 ## Design System
 
@@ -84,7 +85,7 @@ See **Current Status** (above) and **Gotchas** / **API Routes** (below) for spec
 - Page container via `<PageContainer>` (`src/components/ui/page-container.tsx`)
 - Scroll-reveal via `<Reveal>` (`src/components/ui/reveal.tsx`) — IntersectionObserver with auto `will-change` cleanup
 - Kinetic marquee (`src/components/home/marquee.tsx`) — Server Component
-- Grain texture overlay (CSS `::after` pseudo-element)
+- Grain texture overlay (CSS `::after`, gated to `@media (min-width: 768px)` — skip on mobile to save fixed-layer paint)
 - Premium easing: `cubic-bezier(0.32, 0.72, 0, 1)`
 - Mega-menu navbar: `rounded-[1.5rem]` container, expands with `grid-template-rows` animation
 - Active nav link: gold underline via `usePathname()`
@@ -94,7 +95,7 @@ See **Current Status** (above) and **Gotchas** / **API Routes** (below) for spec
 ### Key Design Decisions
 - Navbar: Nestig-style mega-menu — Programs dropdown shows link list + 4 image cards, Members dropdown shows gated list
 - Schedule: premium double-bezel table with dark header, muted color-coded pills, left accent borders
-- Hero: Server Component with CSS `@keyframes` entrance animations, split layout — text left on navy bg, video (75% width, `preload="none"`) on right
+- Hero: Server Component with CSS `@keyframes` entrance animations, split layout — text left on navy bg, video (75% width, `preload="none"`, `poster="/images/hero-poster.jpg"`, wrapper `hidden lg:block` prevents mobile fetch) on right
 - Gallery: 4 dojang photos with lightbox (keyboard: Escape, arrows), ARIA roles
 - Trial banner: animated gold neon border (Server Component)
 - Programs grid: asymmetric bento layout — Tiny Tigers (col-span-7 row-span-2), Competition+Leadership stacked right (col-span-5), Black Belt Club full width (col-span-12)
@@ -181,6 +182,7 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 ## Auth (Clerk)
 - **Provider:** Clerk (ClerkProvider wraps root layout)
 - **Route protection:** `src/proxy.ts` — protects `/members(.*)`, `/students(.*)`, and `/student-resources(.*)`
+- **Frontend API:** first-party proxy via `clerkMiddleware(..., { frontendApiProxy: { enabled: true } })` — FAPI served from `/__clerk/*` on the site's own origin (removes third-party DNS+TLS round trip)
 - **Social login:** Facebook (enabled), more can be added via Clerk dashboard
 - **Sign-in page:** `/sign-in` → `src/app/(auth)/sign-in/[[...sign-in]]/page.tsx`
 - **Sign-up page:** `/sign-up` → `src/app/(auth)/sign-up/[[...sign-up]]/page.tsx`
@@ -213,12 +215,12 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `<EyebrowBadge variant="gold">` for navy-bg eyebrows; `pill` for cream-bg eyebrows
 
 ## Assets
-- `public/images/` — JPEG, 2560px wide (programs, gallery, instructors). PNG for curriculum diagrams. `logo.svg` is a 259 KB embedded raster placeholder (see Gotchas).
+- `public/images/` — JPEG, 1600px wide @ q82 (programs, gallery, instructors); `hero-poster.jpg` (79 KB first-frame LCP); `og-image.jpg` (1200×630). `logo.svg` is a 259 KB embedded raster placeholder (see Gotchas). Size budget enforced by `tests/unit/image-budget.test.ts` (600 KB cap, recursive, covers jpg/png/webp/avif/gif/svg).
 - `public/videos/hero.mp4` — 5.9 MB, `preload="none"`.
 - `student-resources/` — 8 PDFs served via `serveProtectedPdf()` (see API Routes).
 
 ## Tests
-Vitest (`pnpm vitest run`) + Playwright E2E (`tests/e2e/*`, needs running app). Coverage spans contact schema, `/api/contact` route branches, `current-cycle` boundaries (incl. 2027 fallback), component rendering (navbar, hero, programs-grid, schedule-grid, red-black + black-belt-club pages), protected PDF route.
+Vitest (`pnpm vitest run`) + Playwright E2E (`tests/e2e/*`, needs running app). 95 tests / 19 files. Coverage spans contact schema, `/api/contact` route branches, `current-cycle` boundaries (incl. 2027 fallback), component rendering (navbar, hero + poster/`<source media>` assertions, programs-grid, schedule-grid, red-black + black-belt-club pages), protected PDF route, `next.config` flags, `globals.css` grain mobile gate, image size budget.
 
 ## To Get Fully Running
 See `LAUNCH-RUNBOOK.md` for step-by-step hand-holding on every item below.
