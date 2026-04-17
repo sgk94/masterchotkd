@@ -10,7 +10,6 @@
       ],
       "numberOfRuns": 3,
       "settings": {
-        "preset": "perf",
         "emulatedFormFactor": "mobile",
         "throttlingMethod": "simulate"
       }
