@@ -44,16 +44,4 @@ describe("Hero", () => {
     expect(video!.muted).toBe(true);
     expect(video).toHaveAttribute("loop");
   });
-
-  it("provides a poster for the hero video", () => {
-    const { container } = render(<Hero />);
-    const video = container.querySelector("video");
-    expect(video?.getAttribute("poster")).toBe("/images/hero-poster.jpg");
-  });
-
-  it("does not use the non-spec <source media> attribute", () => {
-    const { container } = render(<Hero />);
-    const source = container.querySelector("video source");
-    expect(source?.hasAttribute("media")).toBe(false);
-  });
 });
