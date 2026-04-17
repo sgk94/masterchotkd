@@ -182,7 +182,7 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 ## Auth (Clerk)
 - **Provider:** Clerk (ClerkProvider wraps root layout)
 - **Route protection:** `src/proxy.ts` — protects `/members(.*)`, `/students(.*)`, and `/student-resources(.*)`
-- **Frontend API:** first-party proxy via `clerkMiddleware(..., { frontendApiProxy: { enabled: true } })` — FAPI served from `/__clerk/*` on the site's own origin (removes third-party DNS+TLS round trip)
+- **Frontend API:** default third-party FAPI at `*.accounts.dev`. First-party proxy (`frontendApiProxy: { enabled: true }`) was temporarily disabled in #23 because dev-instance Clerk rejects `*.vercel.app` hosts with `host_invalid` on the handshake (mobile Safari blank-page). Re-enable after Clerk flips to Production mode with the custom domain (see `LAUNCH-RUNBOOK.md`).
 - **Social login:** Facebook (enabled), more can be added via Clerk dashboard
 - **Sign-in page:** `/sign-in` → `src/app/(auth)/sign-in/[[...sign-in]]/page.tsx`
 - **Sign-up page:** `/sign-up` → `src/app/(auth)/sign-up/[[...sign-up]]/page.tsx`
@@ -231,7 +231,7 @@ See `LAUNCH-RUNBOOK.md` for step-by-step hand-holding on every item below.
 4. **Logo:** waiting on Canva-exported file from owner (do not trace existing raster)
 5. Tighten CSP (replace `unsafe-inline` with nonces)
 6. Pin Clerk CSP origins to exact production domains (replace wildcards) — coupled with Clerk Production switch
-7. Switch Clerk from Development to Production mode (DNS CNAMEs + Production keys)
+7. Switch Clerk from Development to Production mode (DNS CNAMEs + Production keys); then re-enable `frontendApiProxy: { enabled: true }` in `src/proxy.ts` (see Auth section)
 
 ## Repo
 - **GitHub:** github.com/sgk94/masterchotkd
