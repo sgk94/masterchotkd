@@ -220,7 +220,7 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `student-resources/` — 8 PDFs served via `serveProtectedPdf()` (see API Routes).
 
 ## Tests
-Vitest (`pnpm vitest run`) + Playwright E2E (`tests/e2e/*`, needs running app). 95 tests / 19 files. Coverage spans contact schema, `/api/contact` route branches, `current-cycle` boundaries (incl. 2027 fallback), component rendering (navbar, hero + poster/`<source media>` assertions, programs-grid, schedule-grid, red-black + black-belt-club pages), protected PDF route, `next.config` flags, `globals.css` grain mobile gate, image size budget.
+Vitest (`pnpm vitest run`) + Playwright E2E (`tests/e2e/*`, needs running app). **215 tests / 49 files**. Coverage enforced at **85/75/85/85** (stmt/br/fn/lines) via `vitest.config.ts` `thresholds`. Current: 91 / 76 / 89 / 93. Excludes: `layout.tsx`, `loading.tsx`, `global-error.tsx`, `error.tsx`, `not-found.tsx`, `preview/**`, `sign-in/**`, `sign-up/**`, `robots.ts`, `sitemap.ts`, `instrumentation.ts`, `proxy.ts`, `types/**`, `lib/db.ts`. Covers: contact schema, `/api/contact` branches, `current-cycle` boundaries, all 8 PDF routes + `serveProtectedPdf` helper, lib units (`api-security`, `email` w/ 5s timeout, `rate-limit`, `metadata`, `sanitize`, `server-env`, `current-cycle-materials`), hook (`use-form-submit`), components (navbar, hero, programs-grid, schedule-grid, bezel-card, page-container, marquee, footer, testimonials, members-tab-bar, resource-card, members shared, mobile-menu), public + member pages (h1 smokes), `next.config`, grain mobile gate, image size budget.
 
 ## To Get Fully Running
 See `LAUNCH-RUNBOOK.md` for step-by-step hand-holding on every item below.
