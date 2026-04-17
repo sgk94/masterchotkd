@@ -16,10 +16,14 @@ describe("unused images removed", () => {
 
 describe("image size caps", () => {
   const MAX_BYTES = 600_000;
-  const EXEMPT = new Set(["camo-pattern.jpg", "og-image.jpg", "logo.svg", "hero-poster.jpg"]);
-  const files = readdirSync(IMAGES_DIR).filter(
-    (f) => /\.(jpe?g|png)$/i.test(f) && !EXEMPT.has(f),
-  );
+  const EXEMPT = new Set(["camo-pattern.jpg", "og-image.jpg", "logo.svg"]);
+  const files = readdirSync(IMAGES_DIR, { recursive: true })
+    .map((entry) => String(entry))
+    .filter((f) => /\.(jpe?g|png|webp|avif|gif|svg)$/i.test(f) && !EXEMPT.has(path.basename(f)));
+
+  it("finds at least one image to budget", () => {
+    expect(files.length).toBeGreaterThan(0);
+  });
 
   it.each(files)("%s is ≤ 600 KB", (name) => {
     const size = statSync(path.join(IMAGES_DIR, name)).size;
