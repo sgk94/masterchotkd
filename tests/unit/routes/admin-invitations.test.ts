@@ -210,3 +210,63 @@ describe("GET /api/admin/invitations", () => {
     });
   });
 });
+
+describe("DELETE /api/admin/invitations/[id]", () => {
+  it("returns 401 when signed out", async () => {
+    authMock.mockResolvedValue({ userId: null });
+    const { DELETE } = await import(
+      "@/app/(main)/api/admin/invitations/[id]/route"
+    );
+    const res = await DELETE(new Request("http://localhost/x"), {
+      params: Promise.resolve({ id: "inv_1" }),
+    });
+    expect(res.status).toBe(401);
+  });
+
+  it("returns 403 when not admin", async () => {
+    asMember();
+    const { DELETE } = await import(
+      "@/app/(main)/api/admin/invitations/[id]/route"
+    );
+    const res = await DELETE(new Request("http://localhost/x"), {
+      params: Promise.resolve({ id: "inv_1" }),
+    });
+    expect(res.status).toBe(403);
+  });
+
+  it("returns 400 when id missing or malformed", async () => {
+    asAdmin();
+    const { DELETE } = await import(
+      "@/app/(main)/api/admin/invitations/[id]/route"
+    );
+    const res = await DELETE(new Request("http://localhost/x"), {
+      params: Promise.resolve({ id: "" }),
+    });
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 200 and calls revokeInvitation", async () => {
+    asAdmin();
+    revokeInvitationMock.mockResolvedValue({ id: "inv_1", status: "revoked" });
+    const { DELETE } = await import(
+      "@/app/(main)/api/admin/invitations/[id]/route"
+    );
+    const res = await DELETE(new Request("http://localhost/x"), {
+      params: Promise.resolve({ id: "inv_1" }),
+    });
+    expect(res.status).toBe(200);
+    expect(revokeInvitationMock).toHaveBeenCalledWith("inv_1");
+  });
+
+  it("returns 502 when Clerk revoke throws", async () => {
+    asAdmin();
+    revokeInvitationMock.mockRejectedValue(new Error("clerk down"));
+    const { DELETE } = await import(
+      "@/app/(main)/api/admin/invitations/[id]/route"
+    );
+    const res = await DELETE(new Request("http://localhost/x"), {
+      params: Promise.resolve({ id: "inv_1" }),
+    });
+    expect(res.status).toBe(502);
+  });
+});
