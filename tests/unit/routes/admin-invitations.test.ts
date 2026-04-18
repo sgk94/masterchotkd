@@ -151,8 +151,17 @@ describe("POST /api/admin/invitations", () => {
     expect(createInvitationMock).toHaveBeenCalledWith({
       emailAddress: "parent@example.com",
       redirectUrl: "https://masterchostaekwondo.com/sign-up",
-      notify: true,
     });
+  });
+
+  it("returns 413 when body exceeds 2KB", async () => {
+    asAdmin();
+    const { POST } = await import(
+      "@/app/(main)/api/admin/invitations/route"
+    );
+    const big = { email: `${"a".repeat(2500)}@example.com` };
+    const res = await POST(jsonRequest(big));
+    expect(res.status).toBe(413);
   });
 
   it("returns 502 when Clerk createInvitation throws", async () => {
@@ -167,6 +176,20 @@ describe("POST /api/admin/invitations", () => {
 });
 
 describe("DELETE /api/admin/invitations/[id]", () => {
+  it("returns 403 when origin invalid", async () => {
+    asAdmin();
+    validateOriginMock.mockResolvedValue(
+      new Response("forbidden", { status: 403 }),
+    );
+    const { DELETE } = await import(
+      "@/app/(main)/api/admin/invitations/[id]/route"
+    );
+    const res = await DELETE(new Request("http://localhost/x"), {
+      params: Promise.resolve({ id: "inv_1" }),
+    });
+    expect(res.status).toBe(403);
+  });
+
   it("returns 401 when signed out", async () => {
     authMock.mockResolvedValue({ userId: null });
     const { DELETE } = await import(

@@ -1,4 +1,4 @@
-import { clerkClient } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/clerk-admin";
@@ -23,13 +23,11 @@ export async function POST(request: Request): Promise<NextResponse> {
   const adminError = await requireAdmin();
   if (adminError) return adminError;
 
-  const length = Number(request.headers.get("content-length") ?? 0);
-  if (length > MAX_BODY_BYTES) {
-    return NextResponse.json({ error: "Payload too large" }, { status: 413 });
-  }
-
+  const { userId } = await auth();
   const ip = await getClientIp();
-  const { success: ok } = await checkRateLimit(`invite:${ip}`);
+  const { success: ok } = await checkRateLimit(
+    `invite:${userId ?? "unknown"}:${ip}`,
+  );
   if (!ok) {
     return NextResponse.json(
       { error: "Too many requests. Please slow down." },
@@ -37,11 +35,19 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 
+  const raw = await request.text();
+  if (Buffer.byteLength(raw, "utf8") > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Payload too large" }, { status: 413 });
+  }
+
   let body: unknown;
   try {
-    body = await request.json();
+    body = JSON.parse(raw);
   } catch {
-    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid request body" },
+      { status: 400 },
+    );
   }
 
   const parsed = invitationCreateSchema.safeParse(body);
@@ -58,7 +64,6 @@ export async function POST(request: Request): Promise<NextResponse> {
     const invitation = await client.invitations.createInvitation({
       emailAddress: parsed.data.email,
       redirectUrl: `${siteUrl()}/sign-up`,
-      notify: true,
     });
     return NextResponse.json(
       {
@@ -81,4 +86,3 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 }
-

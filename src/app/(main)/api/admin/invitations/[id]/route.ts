@@ -1,6 +1,7 @@
 import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/clerk-admin";
+import { validateOrigin } from "@/lib/api-security";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -12,6 +13,9 @@ export async function DELETE(
   _request: Request,
   context: { params: Promise<{ id: string }> },
 ): Promise<NextResponse> {
+  const originError = await validateOrigin();
+  if (originError) return originError;
+
   const adminError = await requireAdmin();
   if (adminError) return adminError;
 
