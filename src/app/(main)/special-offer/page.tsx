@@ -69,34 +69,20 @@ export default function SpecialOfferPage(): React.ReactElement {
 
             {/* Benefits as numbered data strip — hairline dividers, not a card */}
             <ol className="mt-12 divide-y divide-brand-taupe/40 border-y border-brand-taupe/40">
-              {benefits.map((benefit, i) => {
-                const isLast = i === benefits.length - 1;
-                return (
-                  <li key={benefit} className="flex items-baseline gap-6 py-5">
-                    <span className="font-heading text-xs font-semibold tracking-[0.2em] text-brand-black/40">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span className="font-heading text-base uppercase tracking-wide text-brand-black">
-                      {benefit}
-                      {isLast && (
-                        <span
-                          aria-hidden="true"
-                          className="ml-1 text-brand-red"
-                        >
-                          *
-                        </span>
-                      )}
-                    </span>
-                  </li>
-                );
-              })}
+              {benefits.map((benefit, i) => (
+                <li
+                  key={benefit}
+                  className="flex items-baseline gap-6 py-5"
+                >
+                  <span className="font-heading text-xs font-semibold tracking-[0.2em] text-brand-black/40">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-heading text-base uppercase tracking-wide text-brand-black">
+                    {benefit}
+                  </span>
+                </li>
+              ))}
             </ol>
-            <p className="mt-3 text-xs text-brand-black/50">
-              <span aria-hidden="true" className="text-brand-red">
-                *
-              </span>{" "}
-              Uniform not included.
-            </p>
           </div>
 
           {/* RIGHT: price + CTA column with warm atmospheric glow */}
