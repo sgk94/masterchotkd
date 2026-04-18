@@ -7,8 +7,22 @@ export async function requireAdmin(): Promise<NextResponse | null> {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const client = await clerkClient();
-  const user = await client.users.getUser(userId);
+  let user;
+  try {
+    const client = await clerkClient();
+    user = await client.users.getUser(userId);
+  } catch (err) {
+    console.error("Clerk getUser failed in requireAdmin", {
+      userId,
+      name: err instanceof Error ? err.name : "Unknown",
+      message: err instanceof Error ? err.message : String(err),
+    });
+    return NextResponse.json(
+      { error: "Auth lookup failed. Try again." },
+      { status: 502 },
+    );
+  }
+
   const role = (user.publicMetadata as { role?: string })?.role;
   if (role !== "admin") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
