@@ -1,7 +1,7 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/clerk-admin";
+import { clerkErrorToResponse, requireAdmin } from "@/lib/clerk-admin";
 import { getClientIp, validateOrigin } from "@/lib/api-security";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { invitationCreateSchema } from "@/schemas/invitation";
@@ -80,9 +80,9 @@ export async function POST(request: Request): Promise<NextResponse> {
       name: err instanceof Error ? err.name : "Unknown",
       message: err instanceof Error ? err.message : String(err),
     });
-    return NextResponse.json(
-      { error: "Could not send invitation. Try again." },
-      { status: 502 },
-    );
+    return clerkErrorToResponse(err, {
+      status: 502,
+      message: "Could not send invitation. Try again.",
+    });
   }
 }

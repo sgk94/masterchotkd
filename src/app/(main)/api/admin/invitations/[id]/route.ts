@@ -1,6 +1,6 @@
 import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/clerk-admin";
+import { clerkErrorToResponse, requireAdmin } from "@/lib/clerk-admin";
 import { validateOrigin } from "@/lib/api-security";
 
 export const dynamic = "force-dynamic";
@@ -36,9 +36,9 @@ export async function DELETE(
       name: err instanceof Error ? err.name : "Unknown",
       message: err instanceof Error ? err.message : String(err),
     });
-    return NextResponse.json(
-      { error: "Could not revoke invitation." },
-      { status: 502 },
-    );
+    return clerkErrorToResponse(err, {
+      status: 502,
+      message: "Could not revoke invitation.",
+    });
   }
 }

@@ -164,7 +164,7 @@ describe("POST /api/admin/invitations", () => {
     expect(res.status).toBe(413);
   });
 
-  it("returns 502 when Clerk createInvitation throws", async () => {
+  it("returns 502 when Clerk createInvitation throws a generic error", async () => {
     asAdmin();
     createInvitationMock.mockRejectedValue(new Error("clerk down"));
     const { POST } = await import(
@@ -172,6 +172,37 @@ describe("POST /api/admin/invitations", () => {
     );
     const res = await POST(jsonRequest({ email: "x@y.com" }));
     expect(res.status).toBe(502);
+  });
+
+  it("returns 409 when Clerk reports duplicate invitation (by status 422)", async () => {
+    asAdmin();
+    createInvitationMock.mockRejectedValue({
+      status: 422,
+      errors: [
+        {
+          code: "duplicate_record",
+          message: "already exists",
+        },
+      ],
+    });
+    const { POST } = await import(
+      "@/app/(main)/api/admin/invitations/route"
+    );
+    const res = await POST(jsonRequest({ email: "x@y.com" }));
+    expect(res.status).toBe(409);
+  });
+
+  it("returns 409 when Clerk reports identifier already exists by code", async () => {
+    asAdmin();
+    createInvitationMock.mockRejectedValue({
+      status: 400,
+      errors: [{ code: "form_identifier_exists", message: "duplicate" }],
+    });
+    const { POST } = await import(
+      "@/app/(main)/api/admin/invitations/route"
+    );
+    const res = await POST(jsonRequest({ email: "x@y.com" }));
+    expect(res.status).toBe(409);
   });
 });
 
@@ -236,7 +267,7 @@ describe("DELETE /api/admin/invitations/[id]", () => {
     expect(revokeInvitationMock).toHaveBeenCalledWith("inv_1");
   });
 
-  it("returns 502 when Clerk revoke throws", async () => {
+  it("returns 502 when Clerk revoke throws a generic error", async () => {
     asAdmin();
     revokeInvitationMock.mockRejectedValue(new Error("clerk down"));
     const { DELETE } = await import(
@@ -246,5 +277,35 @@ describe("DELETE /api/admin/invitations/[id]", () => {
       params: Promise.resolve({ id: "inv_1" }),
     });
     expect(res.status).toBe(502);
+  });
+
+  it("returns 404 when Clerk reports invitation not found (by status)", async () => {
+    asAdmin();
+    revokeInvitationMock.mockRejectedValue({
+      status: 404,
+      errors: [{ code: "resource_not_found", message: "not found" }],
+    });
+    const { DELETE } = await import(
+      "@/app/(main)/api/admin/invitations/[id]/route"
+    );
+    const res = await DELETE(new Request("http://localhost/x"), {
+      params: Promise.resolve({ id: "inv_gone" }),
+    });
+    expect(res.status).toBe(404);
+  });
+
+  it("returns 404 when Clerk reports resource_not_found by code", async () => {
+    asAdmin();
+    revokeInvitationMock.mockRejectedValue({
+      status: 422,
+      errors: [{ code: "resource_not_found", message: "not found" }],
+    });
+    const { DELETE } = await import(
+      "@/app/(main)/api/admin/invitations/[id]/route"
+    );
+    const res = await DELETE(new Request("http://localhost/x"), {
+      params: Promise.resolve({ id: "inv_gone" }),
+    });
+    expect(res.status).toBe(404);
   });
 });
