@@ -157,6 +157,19 @@ p {
   70% { transform: translateY(1px); }
 }
 
+@keyframes offer-glow {
+  0%, 100% { box-shadow: 0 6px 20px -4px rgba(196, 30, 42, 0.25); }
+  50% { box-shadow: 0 12px 36px -4px rgba(196, 30, 42, 0.55); }
+}
+
+.animate-offer-glow {
+  animation: offer-glow 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: box-shadow;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-offer-glow { animation: none; }
+}
+
 /* Subtle grain overlay for premium feel */
 @media (min-width: 768px) {
   .grain::after {
