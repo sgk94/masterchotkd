@@ -10,7 +10,6 @@ const benefits = [
   "2 classes per week for 2 weeks",
   "No commitment required",
   "All ages welcome",
-  "Equipment provided",
   "Uniform included",
 ] as const;
 
@@ -19,7 +18,7 @@ const stripItems = [
   "2 CLASSES / WEEK",
   "NO COMMITMENT",
   "ALL AGES",
-  "EQUIPMENT PROVIDED",
+  "UNIFORM INCLUDED",
   "ZERO RISK",
 ] as const;
 
