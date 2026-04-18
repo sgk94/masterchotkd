@@ -40,8 +40,19 @@ export default function SpecialOfferPage(): React.ReactElement {
           </li>
         </ul>
         <div className="mt-8">
-          <Button variant="primary" href="https://sparkpages.io/cart/2/?i=_hUwb&c=&ocu=" target="_blank">
-            Buy Now — $49
+          <Button
+            variant="primary"
+            href="https://sparkpages.io/cart/2/?i=_hUwb&c=&ocu="
+            target="_blank"
+            className="group gap-3 px-10 py-4 font-heading text-lg font-semibold uppercase tracking-[0.08em]"
+          >
+            <span>Buy Now — $49</span>
+            <span
+              aria-hidden="true"
+              className="inline-block translate-x-0 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1"
+            >
+              →
+            </span>
           </Button>
         </div>
       </div>
