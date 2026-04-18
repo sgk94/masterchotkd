@@ -18,11 +18,18 @@ export function InviteForm(): React.ReactElement {
     setState("submitting");
     setErrorMsg(null);
 
-    const res = await fetch("/api/admin/invitations", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: email.trim() }),
-    });
+    let res: Response;
+    try {
+      res = await fetch("/api/admin/invitations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+    } catch {
+      setErrorMsg("Network error. Check your connection and try again.");
+      setState("error");
+      return;
+    }
 
     if (res.ok) {
       setState("success");

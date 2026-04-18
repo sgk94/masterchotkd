@@ -16,14 +16,19 @@ export function RevokeButton({
   async function onClick(): Promise<void> {
     if (!confirm(`Revoke invitation for ${email}?`)) return;
     setBusy(true);
-    const res = await fetch(`/api/admin/invitations/${id}`, {
-      method: "DELETE",
-    });
-    setBusy(false);
-    if (res.ok) {
-      router.refresh();
-    } else {
-      alert("Could not revoke. Try again.");
+    try {
+      const res = await fetch(`/api/admin/invitations/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        router.refresh();
+      } else {
+        alert("Could not revoke. Try again.");
+      }
+    } catch {
+      alert("Network error. Check your connection and try again.");
+    } finally {
+      setBusy(false);
     }
   }
 

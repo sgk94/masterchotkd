@@ -67,6 +67,20 @@ describe("InviteForm", () => {
     expect(await screen.findByText(/bad email/i)).toBeInTheDocument();
   });
 
+  it("surfaces network error when fetch rejects and unsticks the button", async () => {
+    fetchMock.mockRejectedValue(new TypeError("Failed to fetch"));
+    const user = userEvent.setup();
+    render(<InviteForm />);
+    await user.type(screen.getByLabelText(/email/i), "x@y.com");
+    await user.click(
+      screen.getByRole("button", { name: /send invitation/i }),
+    );
+    expect(await screen.findByText(/network error/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /send invitation/i }),
+    ).not.toBeDisabled();
+  });
+
   it("disables the button while submitting", async () => {
     let resolve!: (r: Response) => void;
     fetchMock.mockReturnValue(
