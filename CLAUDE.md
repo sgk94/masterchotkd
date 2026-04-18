@@ -151,10 +151,14 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `/members/curriculum/weekly-training` — 5-week training structure timeline (Server Component)
 - `/members/forms` — Poomsae videos
 - `/members/resources` — Training materials grid (light + dark `<ResourceCard>` variants, preview images)
+- `/admin/invitations` — Admin-only invitation manager (lists pending Clerk invitations, send + revoke). Guarded by `requireAdmin()` (`publicMetadata.role === "admin"`).
 
 ### API Routes
 - `POST /api/contact` — live. Resend email to `NOTIFY_EMAIL` with `Reply-To: <submitter>`. Status codes: 201 success; 400 on JSON/Zod failure (only `fieldErrors` leaked); 403 when Origin doesn't match `NEXT_PUBLIC_SITE_URL` (CSRF); 413 when `content-length > 10_000`; 429 when Upstash rate-limit exceeded; 500 on Resend failure or 5s timeout. Runtime: Node, `maxDuration = 10`.
 - `GET /student-resources/{color-belt-handbook | monthly-chore-sheet | reading-list | red-black-training-packet | respect-sheet | star-chart | testing-essay-topics | tiny-tiger-handbook}` — 8 PDF download routes via shared `serveProtectedPdf()` helper (Clerk auth, allowlist regex on filename, RFC 5987 Content-Disposition).
+- `POST /api/admin/invitations` — admin-only, creates a Clerk invitation and emails the recipient. Status codes: 201 success; 400 invalid email or JSON; 401 signed out; 403 not admin or bad origin; 413 body > 2KB; 429 rate-limited; 502 Clerk error. Body: `{ email: string }`.
+- `GET /api/admin/invitations` — admin-only, lists pending invitations. 200 with `{ invitations: [...] }`; 401/403 as above.
+- `DELETE /api/admin/invitations/[id]` — admin-only, revokes the invitation. 200 ok; 400 malformed id; 401/403 as above; 502 Clerk error.
 
 ### Other Routes
 - `/not-found` — Custom 404
@@ -180,7 +184,9 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 
 ## Auth (Clerk)
 - **Provider:** Clerk (ClerkProvider wraps root layout)
-- **Route protection:** `src/proxy.ts` — protects `/members(.*)`, `/students(.*)`, and `/student-resources(.*)`
+- **Route protection:** `src/proxy.ts` — protects `/members(.*)`, `/students(.*)`, `/student-resources(.*)`, `/admin(.*)`, and `/api/admin(.*)`
+- **Sign-up restriction:** Clerk Dashboard → User & Authentication → Restrictions → **Sign-up mode = Restricted**. Only emails with an active invitation (or on the dashboard allowlist) can complete sign-up. Admin role is set via `publicMetadata.role = "admin"` in the Clerk Dashboard or via `clerkClient.users.updateUserMetadata`.
+- **Admin guard:** `src/lib/clerk-admin.ts` — `requireAdmin()` returns 401/403 `NextResponse` for API routes; `isAdminUser()` returns boolean for Server Component layout guards.
 - **Frontend API:** default third-party FAPI at `*.accounts.dev`. First-party proxy (`frontendApiProxy: { enabled: true }`) was temporarily disabled in #23 because dev-instance Clerk rejects `*.vercel.app` hosts with `host_invalid` on the handshake (mobile Safari blank-page). Re-enable after Clerk flips to Production mode with the custom domain (see `LAUNCH-RUNBOOK.md`).
 - **Social login:** Facebook (enabled), more can be added via Clerk dashboard
 - **Sign-in page:** `/sign-in` → `src/app/(auth)/sign-in/[[...sign-in]]/page.tsx`
@@ -213,6 +219,9 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `next/font` weights: Oswald 400/500/600/700; Barlow 400/500/600 (no font-light usage)
 - `<EyebrowBadge variant="gold">` for navy-bg eyebrows; `pill` for cream-bg eyebrows
 - `globals.css` uses `overflow-x: clip` (NOT `hidden`) on `html` + `body` — `overflow-x: hidden` silently turns those elements into scroll containers and breaks `position: sticky` on all descendants (e.g., `<FloatingSectionNav>`)
+- Clerk v7: `clerkClient` is an **async** factory — use `const client = await clerkClient();` before `client.users.getUser(...)` or `client.invitations.*`. Calling `clerkClient().users...` chains on a Promise and fails at runtime.
+- Restricted sign-up mode is a Clerk Dashboard setting, not in code. Forgetting to flip it in production leaves `/sign-up` open. Verify before launch.
+- First admin must be granted manually: Clerk Dashboard → Users → select account → Metadata → Public → `{ "role": "admin" }`.
 
 ## Assets
 - `public/images/` — JPEG, 1600px wide @ q82 (programs, gallery, instructors); `hero-poster.jpg` (79 KB first-frame LCP); `og-image.jpg` (1200×630); `storefront.webp` (62 KB, used on About hero). `logo.svg` is a 259 KB embedded raster placeholder (see Gotchas). Size budget enforced by `tests/unit/image-budget.test.ts` (600 KB cap, recursive, covers jpg/png/webp/avif/gif/svg).

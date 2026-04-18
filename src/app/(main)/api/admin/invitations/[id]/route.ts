@@ -1,0 +1,44 @@
+import { clerkClient } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
+import { clerkErrorToResponse, requireAdmin } from "@/lib/clerk-admin";
+import { validateOrigin } from "@/lib/api-security";
+
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+export const maxDuration = 10;
+
+const ID_REGEX = /^[A-Za-z0-9_]{1,64}$/;
+
+export async function DELETE(
+  _request: Request,
+  context: { params: Promise<{ id: string }> },
+): Promise<NextResponse> {
+  const originError = await validateOrigin();
+  if (originError) return originError;
+
+  const adminError = await requireAdmin();
+  if (adminError) return adminError;
+
+  const { id } = await context.params;
+  if (!id || !ID_REGEX.test(id)) {
+    return NextResponse.json(
+      { error: "Invalid invitation id" },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const client = await clerkClient();
+    await client.invitations.revokeInvitation(id);
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("Clerk revokeInvitation failed", {
+      name: err instanceof Error ? err.name : "Unknown",
+      message: err instanceof Error ? err.message : String(err),
+    });
+    return clerkErrorToResponse(err, {
+      status: 502,
+      message: "Could not revoke invitation.",
+    });
+  }
+}

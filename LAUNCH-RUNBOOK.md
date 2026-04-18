@@ -137,6 +137,16 @@ All steps here are additive — they create new accounts/keys but don't change a
     - `pk_live_...` (Publishable Key)
     - `sk_live_...` (Secret Key) — treat like a password
 
+### 1C2 — Lock down sign-up (invitation-only)
+
+**Why:** Without this, any visitor can create a members account via `/sign-up`. The site is built to be invitation-only — a flipped Dashboard toggle is what actually enforces it.
+
+1. Clerk Dashboard → **User & Authentication → Restrictions** → set **Sign-up mode = Restricted**. (On the Production instance once it's the active one; also flip on the Dev instance so local/preview testing matches.)
+2. Promote the first admin: **Users** → select your account → **Metadata → Public** → paste `{ "role": "admin" }` → **Save**.
+3. While signed in as that admin, visit `/admin/invitations` — page should load (non-admins are redirected to `/`; signed-out users hit Clerk sign-in).
+4. Send a test invitation to a personal email, accept the link, confirm the new account lands in the Clerk Dashboard with the invited email.
+5. Try `/sign-up` with an un-invited email — Clerk should reject with "you are not allowed to sign up" (or similar).
+
 ### 1D — Vercel domain (without DNS pointing to it yet)
 
 **Why:** Vercel needs to know about your domain before it can issue SSL certs. Adding the domain *before* DNS cutover means SSL is ready when you flip DNS.
