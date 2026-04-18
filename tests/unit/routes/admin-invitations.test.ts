@@ -166,51 +166,6 @@ describe("POST /api/admin/invitations", () => {
   });
 });
 
-describe("GET /api/admin/invitations", () => {
-  it("returns 401 when signed out", async () => {
-    authMock.mockResolvedValue({ userId: null });
-    const { GET } = await import(
-      "@/app/(main)/api/admin/invitations/route"
-    );
-    const res = await GET();
-    expect(res.status).toBe(401);
-  });
-
-  it("returns 403 when not admin", async () => {
-    asMember();
-    const { GET } = await import(
-      "@/app/(main)/api/admin/invitations/route"
-    );
-    const res = await GET();
-    expect(res.status).toBe(403);
-  });
-
-  it("returns 200 with pending invitations for admin", async () => {
-    asAdmin();
-    getInvitationListMock.mockResolvedValue({
-      data: [
-        {
-          id: "inv_1",
-          emailAddress: "a@b.com",
-          status: "pending",
-          createdAt: 1,
-        },
-      ],
-    });
-    const { GET } = await import(
-      "@/app/(main)/api/admin/invitations/route"
-    );
-    const res = await GET();
-    expect(res.status).toBe(200);
-    const body = await res.json();
-    expect(body.invitations).toHaveLength(1);
-    expect(getInvitationListMock).toHaveBeenCalledWith({
-      status: "pending",
-      limit: 100,
-    });
-  });
-});
-
 describe("DELETE /api/admin/invitations/[id]", () => {
   it("returns 401 when signed out", async () => {
     authMock.mockResolvedValue({ userId: null });

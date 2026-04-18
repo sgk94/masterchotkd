@@ -82,21 +82,3 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 }
 
-export async function GET(): Promise<NextResponse> {
-  const adminError = await requireAdmin();
-  if (adminError) return adminError;
-
-  const client = await clerkClient();
-  const list = await client.invitations.getInvitationList({
-    status: "pending",
-    limit: 100,
-  });
-  return NextResponse.json({
-    invitations: list.data.map((i) => ({
-      id: i.id,
-      emailAddress: i.emailAddress,
-      status: i.status,
-      createdAt: i.createdAt,
-    })),
-  });
-}
