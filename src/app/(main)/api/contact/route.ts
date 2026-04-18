@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { contactSchema } from "@/schemas/contact";
+import { contactSchema, programOptions } from "@/schemas/contact";
 import { sendEmail } from "@/lib/email";
 import { escapeHtml, sanitize } from "@/lib/sanitize";
 import { getServerEnv } from "@/lib/server-env";
@@ -52,13 +52,17 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 
-  const { name, email, phone, message } = result.data;
+  const { name, email, phone, programs, message } = result.data;
   const env = getServerEnv();
 
   const safeName = escapeHtml(stripControl(name));
   const safeEmail = escapeHtml(stripControl(email));
   const safePhone = phone ? escapeHtml(stripControl(phone)) : "";
   const safeMessage = escapeHtml(sanitize(message)).replace(/\n/g, "<br>");
+  const programLabels = programs
+    .map((value) => programOptions.find((opt) => opt.value === value)?.label)
+    .filter((label) => Boolean(label))
+    .map((label) => escapeHtml(label as string));
 
   try {
     await sendEmail({
@@ -70,6 +74,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         <p><strong>Name:</strong> ${safeName}</p>
         <p><strong>Email:</strong> ${safeEmail}</p>
         ${safePhone ? `<p><strong>Phone:</strong> ${safePhone}</p>` : ""}
+        ${programLabels.length > 0 ? `<p><strong>Programs of interest:</strong> ${programLabels.join(", ")}</p>` : ""}
         <p><strong>Message:</strong></p>
         <p>${safeMessage}</p>
       `,

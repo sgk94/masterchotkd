@@ -1,7 +1,27 @@
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { BezelCard } from "@/components/ui/bezel-card";
-import { coreValues } from "@/components/home/values-section";
+
+const coreValues = [
+  {
+    number: "01",
+    title: "Loyalty & Respect",
+    description:
+      "Over 25 years teaching self-defense and confidence through the traditional art of Taekwondo.",
+  },
+  {
+    number: "02",
+    title: "Home, School & Family",
+    description:
+      "Our curriculum builds confident leaders, successful students, and responsible community members.",
+  },
+  {
+    number: "03",
+    title: "Discipline & Growth",
+    description:
+      "Emphasizing balance in all things — encouraging personal growth at every stage of the journey.",
+  },
+];
 
 const challenges = [
   {
@@ -89,7 +109,7 @@ export function BottomCta(): React.ReactElement {
       </section>
 
       {/* Section 2: Problem → Solution */}
-      <section className="px-6 py-24 lg:py-32">
+      <section className="px-6 pt-24 pb-16 lg:pt-32 lg:pb-20">
         <div className="mx-auto max-w-5xl">
           <Reveal>
             <div className="text-center">

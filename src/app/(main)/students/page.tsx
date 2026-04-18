@@ -73,31 +73,48 @@ export default function StudentsPage(): React.ReactElement {
           {announcementsEyebrow}
         </span>
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
-          {announcements.map((announcement) => (
-            <article
-              key={announcement.id}
-              className={`group rounded-2xl p-6 transition-all duration-300 hover:-translate-y-0.5 ${
-                announcement.featured
-                  ? "bg-brand-red/[0.04] ring-1 ring-brand-red/10"
-                  : "bg-brand-sand/40 ring-1 ring-brand-taupe/15"
-              }`}
-            >
-              <div className="flex items-start justify-between">
-                <span className={`inline-flex rounded-full px-3 py-1 text-[10px] font-medium uppercase tracking-[0.15em] ${
-                  announcement.featured
-                    ? "bg-brand-red/10 text-brand-red"
-                    : "bg-brand-black/5 text-brand-black/40"
-                }`}>
-                  {announcement.label}
-                </span>
-                {announcement.featured && (
-                  <span className="flex h-2 w-2 rounded-full bg-brand-red shadow-[0_0_6px_rgba(196,30,42,0.4)]" />
+          {announcements.map((announcement) => {
+            const cardClass = `group relative block rounded-2xl p-6 transition-all duration-300 hover:-translate-y-0.5 ${
+              announcement.featured
+                ? "bg-brand-red/[0.04] ring-1 ring-brand-red/10 hover:ring-brand-red/25"
+                : "bg-brand-sand/40 ring-1 ring-brand-taupe/15"
+            }`;
+            const cardInner = (
+              <>
+                <div className="flex items-start justify-between">
+                  <span className={`inline-flex rounded-full px-3 py-1 text-[10px] font-medium uppercase tracking-[0.15em] ${
+                    announcement.featured
+                      ? "bg-brand-red/10 text-brand-red"
+                      : "bg-brand-black/5 text-brand-black/40"
+                  }`}>
+                    {announcement.label}
+                  </span>
+                  {announcement.featured && (
+                    <span className="flex h-2 w-2 rounded-full bg-brand-red shadow-[0_0_6px_rgba(196,30,42,0.4)]" />
+                  )}
+                </div>
+                <h2 className="mt-4 font-heading text-2xl text-brand-black">{announcement.title}</h2>
+                <p className="mt-3 text-sm leading-relaxed text-brand-black/55">{announcement.body}</p>
+                {announcement.href && (
+                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-medium uppercase tracking-[0.14em] text-brand-red transition-all duration-300 group-hover:gap-2">
+                    View current cycle
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </span>
                 )}
-              </div>
-              <h2 className="mt-4 font-heading text-2xl text-brand-black">{announcement.title}</h2>
-              <p className="mt-3 text-sm leading-relaxed text-brand-black/55">{announcement.body}</p>
-            </article>
-          ))}
+              </>
+            );
+            return announcement.href ? (
+              <Link key={announcement.id} href={announcement.href} className={cardClass}>
+                {cardInner}
+              </Link>
+            ) : (
+              <article key={announcement.id} className={cardClass}>
+                {cardInner}
+              </article>
+            );
+          })}
         </div>
       </section>
 
@@ -119,8 +136,7 @@ export default function StudentsPage(): React.ReactElement {
                 className="inline-flex items-center gap-2 text-sm font-medium text-brand-red transition-colors hover:text-brand-red/70"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M18.7 11.1c0-3-2.5-4.5-2.6-4.5 1.4-2 3.6-2.3 3.6-2.3-1.5.1-2.6.9-3.3 1.5-.7-.6-1.9-1.2-3.4-1.2-2.6 0-4.7 2.1-4.7 4.7 0 2.8 1.8 5.7 4 7.6.6.5 1.4 1.1 2.3 1.1.9 0 1.3-.6 2.4-.6 1.1 0 1.4.6 2.4.6.9 0 1.6-.5 2.2-1.1.7-.7 1.3-1.8 1.3-1.8-3-.1-4.2-2.6-4.2-4z" />
-                  <path d="M14.4 5.3c.6-.7 1-1.7 1-2.7 0-.1 0-.3 0-.4-1 0-2.1.7-2.8 1.5-.6.7-1.1 1.6-1.1 2.6 0 .2 0 .3 0 .4 1.1 0 2.2-.6 2.9-1.4z" />
+                  <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
                 </svg>
                 {memberApp.iosLabel}
               </a>
@@ -128,8 +144,13 @@ export default function StudentsPage(): React.ReactElement {
                 href={memberApp.androidUrl}
                 className="inline-flex items-center gap-2 text-sm font-medium text-brand-red transition-colors hover:text-brand-red/70"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M3.6 7.2c-.5 0-.8.3-.8.8v6c0 .5.3.8.8.8s.8-.3.8-.8V8c0-.5-.4-.8-.8-.8zm16.8 0c-.5 0-.8.3-.8.8v6c0 .5.3.8.8.8s.8-.3.8-.8V8c0-.5-.4-.8-.8-.8zM6 16.4c0 .7.5 1.2 1.2 1.2h.8v3.2c0 .5.3.8.8.8s.8-.3.8-.8v-3.2h1.2v3.2c0 .5.3.8.8.8s.8-.3.8-.8v-3.2h.8c.7 0 1.2-.5 1.2-1.2V7.6H6v8.8zm8.4-12.8L15.6 1c.1-.1.1-.2 0-.3-.1-.1-.2-.1-.3 0L14 3.4C13.4 3.1 12.7 3 12 3s-1.4.2-2 .4L8.7.7c-.1-.1-.2-.1-.3 0-.1.1-.1.2 0 .3l1.2 2.6C7.7 4.6 6.4 6.4 6.4 7.2h11.2c0-.8-1.3-2.6-3.2-3.6zM9.6 5.8c-.3 0-.4-.2-.4-.4s.2-.4.4-.4.4.2.4.4-.2.4-.4.4zm4.8 0c-.3 0-.4-.2-.4-.4s.2-.4.4-.4.4.2.4.4-.2.4-.4.4z" />
+                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M6.6 4.5a.5.5 0 0 1 .87-.5l1.42 2.46A6.7 6.7 0 0 1 12 6c1.1 0 2.13.16 3.11.46l1.42-2.46a.5.5 0 0 1 .87.5L16 6.92c1.84 1.13 3 2.95 3 5.08H5c0-2.13 1.16-3.95 3-5.08L6.6 4.5zM9.5 10.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5zm5.75-.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zM5 13h14v6.5a1.5 1.5 0 0 1-1.5 1.5H17v2a1 1 0 1 1-2 0v-2h-2v2a1 1 0 1 1-2 0v-2H9v2a1 1 0 1 1-2 0v-2h-.5A1.5 1.5 0 0 1 5 19.5V13z"
+                  />
                 </svg>
                 {memberApp.androidLabel}
               </a>

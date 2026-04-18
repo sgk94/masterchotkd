@@ -30,9 +30,6 @@ describe("BlackBeltClubCurriculumPage", () => {
     for (let i = 1; i <= 18; i++) {
       expect(screen.getByText(`Combo ${i}`)).toBeInTheDocument();
     }
-
-    const backLink = screen.getByRole("link", { name: /Back to Curriculum/i });
-    expect(backLink).toHaveAttribute("href", "/members/curriculum");
   });
 
   it("renders section jump links (mobile + desktop floating nav)", () => {

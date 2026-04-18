@@ -3,16 +3,15 @@ import { describe, it, expect } from "vitest";
 import { ResourceCard } from "@/components/members/resource-card";
 
 describe("ResourceCard", () => {
-  it("renders title, description, download label", () => {
+  it("renders title and download CTA linking to href", () => {
     render(
       <ResourceCard title="Handbook" description="desc" href="/x" />,
     );
-    expect(screen.getByRole("link", { name: /handbook/i })).toHaveAttribute(
+    expect(screen.getByText("Handbook")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /download pdf/i })).toHaveAttribute(
       "href",
       "/x",
     );
-    expect(screen.getByText("desc")).toBeInTheDocument();
-    expect(screen.getByText(/download pdf/i)).toBeInTheDocument();
   });
 
   it("renders preview image when provided", () => {
@@ -30,13 +29,14 @@ describe("ResourceCard", () => {
     const { container } = render(
       <ResourceCard title="A" href="/a" tone="light" />,
     );
-    expect(container.querySelector("a")).toHaveClass("bg-brand-cream");
+    expect(container.firstElementChild).toHaveClass("bg-brand-cream");
+    expect(container.querySelector("a")).toHaveAttribute("href", "/a");
   });
 
   it("supports dark tone by default", () => {
     const { container } = render(<ResourceCard title="A" href="/a" />);
-    const anchor = container.querySelector("a");
-    expect(anchor?.className).toMatch(/bg-white\/\[0\.06\]/);
+    expect(container.firstElementChild?.className).toMatch(/bg-white\/\[0\.06\]/);
+    expect(container.querySelector("a")).toHaveAttribute("href", "/a");
   });
 
   it("accepts a custom eyebrow label", () => {

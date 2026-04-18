@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 
 export function TrialBanner(): React.ReactElement {
   return (
-    <section className="mx-auto max-w-7xl px-6">
+    <section className="mx-auto max-w-7xl px-6 py-16 lg:py-20">
       {/* Outer wrapper — acts as the border frame */}
       <div className="relative overflow-hidden rounded-2xl p-[4px]">
         {/* Spinning conic gradient — the visible gold border line */}

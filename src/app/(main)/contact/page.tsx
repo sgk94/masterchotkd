@@ -45,21 +45,29 @@ export default function ContactPage(): React.ReactElement {
               <h3 className="font-heading text-lg text-brand-black">
                 Follow Us
               </h3>
-              <div className="mt-1 flex gap-4">
+              <div className="mt-2 flex gap-4">
                 <a
                   href="https://www.facebook.com/masterchostaekwondo/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-brand-blue transition-colors hover:text-brand-red"
+                  className="inline-flex items-center gap-2 text-brand-blue transition-colors hover:text-brand-red"
                 >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M13.5 21v-8.1h2.7l.4-3.2h-3.1V7.7c0-.9.2-1.6 1.5-1.6h1.7V3.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.2v2.4H8v3.2h2.3V21h3.2Z" />
+                  </svg>
                   Facebook
                 </a>
                 <a
                   href="https://www.instagram.com/masterchostaekwondo/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-brand-blue transition-colors hover:text-brand-red"
+                  className="inline-flex items-center gap-2 text-brand-blue transition-colors hover:text-brand-red"
                 >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                  </svg>
                   Instagram
                 </a>
               </div>

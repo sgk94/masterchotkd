@@ -6,6 +6,7 @@ export type MembersHomeAnnouncement = {
   title: string;
   body: string;
   featured?: boolean;
+  href?: string;
 };
 
 export type MembersHomeQuickLink = {
@@ -58,6 +59,7 @@ export function getMembersHomeContent(): MembersHomeContent {
           label: `Upcoming ${currentCycle.cycle}`,
           title: "Upcoming Weapon Focus",
           featured: true,
+          href: "/members/current-cycle",
           body: `${currentCycle.cycle} begins on ${formatCycleDate(currentCycle.startDate)}. The weapon focus will be ${currentCycle.weapon} (${currentCycle.shortWeapon}).`,
         }
       : {
@@ -65,6 +67,7 @@ export function getMembersHomeContent(): MembersHomeContent {
           label: currentCycle.cycle,
           title: "Current Weapon Focus",
           featured: true,
+          href: "/members/current-cycle",
           body: currentCycle.nextChangeDate
             ? `The current testing cycle is ${currentCycle.cycle}, and the weapon focus is ${currentCycle.weapon} (${currentCycle.shortWeapon}). The next cycle change is ${formatCycleDate(currentCycle.nextChangeDate)}.`
             : `The current testing cycle is ${currentCycle.cycle}, and the weapon focus is ${currentCycle.weapon} (${currentCycle.shortWeapon}).`,
@@ -123,14 +126,14 @@ export function getMembersHomeContent(): MembersHomeContent {
     quickLinksEyebrow: "Quick Links",
     quickLinks: [
       {
-        title: "Curriculum",
-        description: "Belt requirements and testing criteria for each rank.",
-        href: "/members/curriculum",
+        title: "Tiny Tigers",
+        description: "Curriculum and belt requirements for ages 4-6.",
+        href: "/members/curriculum/tiny-tigers",
       },
       {
-        title: "Poomsae Forms",
-        description: "Video library of all forms organized by belt level.",
-        href: "/members/forms",
+        title: "Color Belt",
+        description: "Beginner through advanced color belt curriculum by cycle.",
+        href: "/members/curriculum/color-belt",
       },
       {
         title: "Resources",
