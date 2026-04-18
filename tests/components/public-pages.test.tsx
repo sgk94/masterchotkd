@@ -10,7 +10,6 @@ import TinyTigersProgramPage from "@/app/(main)/programs/tiny-tigers/page";
 import BlackBeltClubPage from "@/app/(main)/programs/black-belt-club/page";
 import LeadershipClubPage from "@/app/(main)/programs/leadership-club/page";
 import CompetitionTeamPage from "@/app/(main)/programs/competition-team/page";
-import CurriculumHubPage from "@/app/(main)/students/curriculum/page";
 import CurrentCyclePage from "@/app/(main)/students/current-cycle/page";
 
 type PageFn = () =>
@@ -28,7 +27,6 @@ describe.each<readonly [string, PageFn]>([
   ["BlackBeltClubPage", BlackBeltClubPage as PageFn],
   ["LeadershipClubPage", LeadershipClubPage as PageFn],
   ["CompetitionTeamPage", CompetitionTeamPage as PageFn],
-  ["CurriculumHubPage", CurriculumHubPage as PageFn],
   ["CurrentCyclePage", CurrentCyclePage as PageFn],
 ])("%s", (_label, Page) => {
   it("renders an h1", async () => {

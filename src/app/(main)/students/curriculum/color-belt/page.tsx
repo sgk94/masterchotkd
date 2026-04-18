@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
-import { BackLink } from "@/components/members/back-link";
 import { SectionChips } from "@/components/members/section-chips";
 import { VideoPlaceholder, SectionHeader, VideoCard } from "@/components/members/shared";
 import { skillLevelPalette } from "@/lib/static-data";
@@ -57,8 +56,8 @@ const sectionLinks = [
   { href: "#poomsae-videos", label: "Poomsae" },
   { href: "#weapon-videos", label: "Weapons" },
   { href: "#one-steps", label: "One-Steps" },
-  { href: "#hand-techniques", label: "Hand Techniques" },
-  { href: "#board-breaking", label: "Board Breaking" },
+  { href: "#hand-techniques", label: "Hand Tech" },
+  { href: "#board-breaking", label: "Breaking" },
   { href: "#resources", label: "Resources" },
 ];
 
@@ -203,8 +202,7 @@ export default function ColorBeltPage(): React.ReactElement {
               <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-brand-gold/10 blur-3xl" />
               <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-brand-red/8 blur-3xl" />
               <div className="relative z-10">
-                <BackLink href="/members/curriculum" label="Back to Curriculum" />
-                <h1 className="mt-4 font-heading text-3xl tracking-tight text-white sm:text-4xl">Color Belt Curriculum</h1>
+                <h1 className="font-heading text-3xl tracking-tight text-white sm:text-4xl">Color Belt Curriculum</h1>
                 <p className="mt-3 max-w-xl text-base leading-relaxed text-white/50">
                   Each level has 3 cycles. Find your current belt and cycle to see your full set of requirements.
                 </p>

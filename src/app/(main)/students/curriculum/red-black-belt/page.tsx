@@ -1,5 +1,4 @@
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
-import { BackLink } from "@/components/members/back-link";
 import { SectionChips } from "@/components/members/section-chips";
 import { SectionHeader } from "@/components/members/shared";
 import { createMetadata } from "@/lib/metadata";
@@ -246,9 +245,7 @@ export default function RedBlackBeltPage(): React.ReactElement {
               <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-brand-gold/8 blur-3xl" />
 
               <div className="relative z-10">
-                <BackLink href="/members/curriculum" label="Back to Curriculum" />
-
-                <EyebrowBadge variant="gold" className="mt-5">Black Belt Preparation</EyebrowBadge>
+                <EyebrowBadge variant="gold">Black Belt Preparation</EyebrowBadge>
                 <h1 className="mt-4 font-heading text-3xl tracking-tight text-white sm:text-4xl">Preparing for Black Belt</h1>
                 <p className="mt-3 max-w-2xl text-base leading-relaxed text-white/55">
                   This page gives red and black belt students a focused overview of what to prepare, what to turn in, and what to expect before first-degree black belt testing.

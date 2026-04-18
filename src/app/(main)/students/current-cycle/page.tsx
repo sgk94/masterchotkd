@@ -19,6 +19,11 @@ export const revalidate = 3600;
 const sectionLinks = [
   { href: "#overview", label: "Overview" },
   { href: "#color-belt", label: "Color Belt" },
+  { href: "#poomsae", label: "Poomsae" },
+  { href: "#weapon", label: "Weapons" },
+  { href: "#one-step", label: "One-Step" },
+  { href: "#hand-tech", label: "Hand Tech" },
+  { href: "#board-breaking", label: "Breaking" },
   { href: "#schedule", label: "Schedule" },
 ];
 
@@ -187,7 +192,7 @@ export default function CurrentCyclePage(): React.ReactElement {
           <section id="color-belt" className="scroll-mt-28 space-y-10">
             <SectionHeader
               label="Color Belt"
-              title={`Color Belt ${currentCycle.cycle} Shortcut`}
+              title={`${currentCycle.cycle} Overview`}
               description="Each card shows the active cycle requirement for Beginner, Intermediate, and Advanced color belts."
             />
 
@@ -199,7 +204,7 @@ export default function CurrentCyclePage(): React.ReactElement {
             </div>
 
             {/* Poomsae videos */}
-            <div className="space-y-4">
+            <div id="poomsae" className="scroll-mt-28 space-y-4">
               <SubSectionHeader title="Poomsae Videos" />
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {colorBeltEntries.map((entry) => (
@@ -215,7 +220,7 @@ export default function CurrentCyclePage(): React.ReactElement {
             </div>
 
             {/* Weapon video */}
-            <div className="space-y-4">
+            <div id="weapon" className="scroll-mt-28 space-y-4">
               <SubSectionHeader title="Weapon Video" />
               <div className="max-w-md">
                 <VideoCard
@@ -227,7 +232,7 @@ export default function CurrentCyclePage(): React.ReactElement {
             </div>
 
             {/* One-step videos */}
-            <div className="space-y-4">
+            <div id="one-step" className="scroll-mt-28 space-y-4">
               <SubSectionHeader title="One-Step Videos" />
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {colorBeltEntries.map((entry) => (
@@ -243,7 +248,7 @@ export default function CurrentCyclePage(): React.ReactElement {
             </div>
 
             {/* Hand techniques */}
-            <div className="space-y-4">
+            <div id="hand-tech" className="scroll-mt-28 space-y-4">
               <SubSectionHeader title="Hand Techniques" />
               <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                 {colorBeltEntries.map((entry) => (
@@ -259,7 +264,7 @@ export default function CurrentCyclePage(): React.ReactElement {
             </div>
 
             {/* Board breaking */}
-            <div className="space-y-4">
+            <div id="board-breaking" className="scroll-mt-28 space-y-4">
               <SubSectionHeader title="Board Breaking" />
               <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                 {colorBeltEntries.map((entry) => (

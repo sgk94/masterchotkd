@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
 import { VideoPlaceholder, SectionHeader } from "@/components/members/shared";
 import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
@@ -34,10 +33,10 @@ const weaponVideos = [
 
 const sectionLinks = [
   { href: "#curriculum-overview", label: "Curriculum" },
-  { href: "#poomsae-videos", label: "Poomsae Videos" },
-  { href: "#weapon-videos", label: "Weapon Videos" },
-  { href: "#hand-techniques", label: "Hand Techniques" },
-  { href: "#board-breaking", label: "Board Breaking" },
+  { href: "#poomsae-videos", label: "Poomsae" },
+  { href: "#weapon-videos", label: "Weapons" },
+  { href: "#hand-techniques", label: "Hand Tech" },
+  { href: "#board-breaking", label: "Breaking" },
   { href: "#resources", label: "Resources" },
 ];
 
@@ -126,11 +125,7 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
               <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-brand-red/8 blur-3xl" />
 
               <div className="relative z-10">
-                <Link href="/members/curriculum" className="inline-flex items-center gap-1.5 text-xs text-white/40 transition-colors hover:text-white/70">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
-                  Back to Curriculum
-                </Link>
-                <h1 className="mt-4 font-heading text-3xl tracking-tight text-white sm:text-4xl">
+                <h1 className="font-heading text-3xl tracking-tight text-white sm:text-4xl">
                   Tiny Tiger Curriculum
                 </h1>
                 <p className="mt-2 text-sm font-medium text-brand-gold">Ages 4-6</p>

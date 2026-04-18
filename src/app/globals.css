@@ -49,7 +49,7 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -59,7 +59,7 @@ html {
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
   font-family: var(--font-family-body);
   color: var(--color-brand-black);
   background-color: var(--color-brand-page-bg);

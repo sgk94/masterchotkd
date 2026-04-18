@@ -1,7 +1,4 @@
-import Link from "next/link";
 import { BezelCard } from "@/components/ui/bezel-card";
-
-const ease = "cubic-bezier(0.32, 0.72, 0, 1)";
 
 const weeks = [
   {
@@ -49,25 +46,8 @@ const weeks = [
 export default function WeeklyTrainingPage(): React.ReactElement {
   return (
     <div>
-      {/* Back link */}
-      <Link
-        href="/members/curriculum"
-        className="group inline-flex items-center gap-2 text-sm text-brand-black/40 transition-colors duration-500 hover:text-brand-black/70"
-        style={{ transitionTimingFunction: ease }}
-      >
-        <span
-          className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-sand/60 transition-all duration-500 group-hover:-translate-x-0.5 group-hover:bg-brand-sand"
-          style={{ transitionTimingFunction: ease }}
-        >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M8 2L4 6l4 4" />
-          </svg>
-        </span>
-        Back to Curriculum
-      </Link>
-
       {/* Header */}
-      <div className="mt-8">
+      <div>
         <span className="inline-block rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
           Training Structure
         </span>

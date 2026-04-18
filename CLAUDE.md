@@ -4,7 +4,7 @@
 Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), replacing their Foxspin-hosted website ($300/mo) and reducing dependency on Foxspin management ($300/mo). Target: ~$25/mo hosting.
 
 ## Current Status
-- **Phase 1 MVP: Built** — 24 pages, 9 API routes (`/api/contact` live + 8 protected PDF downloads), CI/CD, deployed to Vercel
+- **Phase 1 MVP: Built** — 23 pages, 9 API routes (`/api/contact` live + 8 protected PDF downloads), CI/CD, deployed to Vercel
 - **Pre-launch hardening done** — CSRF + IP-extraction + outbound-HTML-escape + Resend timeout on `/api/contact`; PDF path-traversal guard + RFC 5987 filename; proxy matcher tightened; error boundaries log
 - **Client bundle reduced** — programs-grid, schedule-grid, weekly-training, students/layout, curriculum index now Server Components; CSS `@keyframes` entrance animations replace IntersectionObserver hooks; `FloatingSectionNav` uses CSS `position: sticky` (no scroll handler)
 - **DRY consolidation** — `src/lib/nav.ts` is single nav source; `<ResourceCard>` extracted; `<EyebrowBadge variant="gold">` replaces 13 inline pills
@@ -99,10 +99,10 @@ See **Current Status** (above) and **Gotchas** / **API Routes** (below) for spec
 - Gallery: 4 dojang photos with lightbox (keyboard: Escape, arrows), ARIA roles
 - Trial banner: animated gold neon border (Server Component)
 - Programs grid: asymmetric bento layout — Tiny Tigers (col-span-7 row-span-2), Competition+Leadership stacked right (col-span-5), Black Belt Club full width (col-span-12)
-- About page: hero uses GMC.jpg image, alternating left/right instructor photo sections
+- About page: story-driven hero (3 short paragraphs), top hero photo `storefront.webp` with `ring-2 ring-brand-gold`, alternating left/right instructor sections (real bios — GMC, Master Joshua Cho, Instructor Daniel Lasala), philosophy ends with "More Than The Mat" cards
+- Members tab bar (`<MembersTabBar>`): underlined-tab pattern; active = brand-red 2px underline + semibold text; CSS `transform: scaleX` grow-from-center transition (500ms with brand easing); horizontal-scroll on mobile
 - Color Belt Curriculum: card-based layout (3 cards per level) instead of tables
 - Weekly Training: timeline cards with stripe color indicators
-- Shared `coreValues` data exported from `values-section.tsx`, imported by `bottom-cta.tsx` (DRY)
 - Mobile menu uses CSS transitions (no framer-motion), Escape key to close, `role="dialog"` + `inert`
 
 ## Navigation Structure
@@ -129,7 +129,7 @@ About, Programs, Schedule, Reviews, Members, Contact, Special Offer, Sign In
 ## Site Structure
 
 ### Public Pages (14 routes)
-- `/` — Home (hero video, marquee, programs, trial banner, values, testimonials, gallery)
+- `/` — Home (hero video, marquee, programs grid, BottomCta philosophy + challenges, trial banner, testimonials, gallery)
 - `/about` — Story + instructors (alternating photo sections)
 - `/programs` — Overview (4 cards)
 - `/programs/{tiny-tigers|black-belt-club|leadership-club|competition-team}` — Detail pages (hero, schedule, curriculum/requirements, FAQ, CTA)
@@ -140,11 +140,10 @@ About, Programs, Schedule, Reviews, Members, Contact, Special Offer, Sign In
 - `/preview` — Design exploration (gated: `notFound()` in prod, blocked by robots.txt)
 - `/sign-in`, `/sign-up` — Clerk
 
-### Protected Pages (10 routes, Clerk auth required)
+### Protected Pages (9 routes, Clerk auth required)
 Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewrites.
-- `/members` — Hub with announcements, socials, quick links
-- `/members/current-cycle` — Current training cycle (logic + 2027 fallback in `src/lib/current-cycle.ts`, boundary-tested)
-- `/members/curriculum` — Choose program (Server Component, link cards)
+- `/members` — Hub with announcements (featured cycle card links to `/members/current-cycle`), socials, Spark Member App, quick links (Tiny Tigers / Color Belt / Resources)
+- `/members/current-cycle` — Current training cycle (logic + 2027 fallback in `src/lib/current-cycle.ts`, boundary-tested); side-nav anchors: Overview, Color Belt, Poomsae, Weapons, One-Step, Hand Tech, Breaking, Schedule
 - `/members/curriculum/tiny-tigers` — Belt cards + ResourceCard PDFs
 - `/members/curriculum/black-belt-club` — FloatingSectionNav, midterm + 2nd-degree requirements, 18 combos
 - `/members/curriculum/color-belt` — Beginner/Intermediate/Advanced cycle breakdown (card-based)
@@ -173,16 +172,16 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `/members/*` → rewrites to `/students/*` (internal)
 
 ### Code layout
-- `src/components/` — grouped by `home/`, `layout/`, `ui/`, `forms/`, `schedule/`, `members/`. Key shared: `<BezelCard>`, `<PageContainer>`, `<Reveal>`, `<EyebrowBadge>` (`pill`|`gold`), `<ResourceCard>` (light/dark + preview).
+- `src/components/` — grouped by `home/`, `layout/`, `ui/`, `forms/`, `schedule/`, `members/`. Key shared: `<BezelCard>`, `<PageContainer>`, `<Reveal>`, `<EyebrowBadge>` (`pill`|`gold`), `<ResourceCard>` (light/dark + preview — wrapper is `<div>`, only the white pill "Download PDF" button is the clickable `<a>`; hover flips to red bg + white text).
 - `src/hooks/use-form-submit.ts` — shared form submission (schema validation, fetch, network-error handling).
-- `src/schemas/` — `fields.ts` (shared Zod builders: name/email/phone) + `contact.ts`.
+- `src/schemas/` — `fields.ts` (shared Zod builders: name/email/phone) + `contact.ts` (adds `programs: z.array(z.enum(...)).optional()` with `programOptions` for the contact-form multi-select; API route renders selected program labels in the email body).
 - `src/lib/` — `db`, `server-env` (lazy `getServerEnv()`), `client-env`, `fonts`, `metadata`, `email` (5s Resend timeout), `rate-limit`, `sanitize` (+ `escapeHtml`), `static-data`, `api-security` (`validateOrigin` + `getClientIp`), `members-home-content`, `current-cycle`, `current-cycle-materials`, `location`, `nav` (single nav source).
 - `src/types/index.ts` — Program, ScheduleSlot, Testimonial, DAYS_OF_WEEK.
 
 ## Auth (Clerk)
 - **Provider:** Clerk (ClerkProvider wraps root layout)
 - **Route protection:** `src/proxy.ts` — protects `/members(.*)`, `/students(.*)`, and `/student-resources(.*)`
-- **Frontend API:** first-party proxy via `clerkMiddleware(..., { frontendApiProxy: { enabled: true } })` — FAPI served from `/__clerk/*` on the site's own origin (removes third-party DNS+TLS round trip)
+- **Frontend API:** default third-party FAPI at `*.accounts.dev`. First-party proxy (`frontendApiProxy: { enabled: true }`) was temporarily disabled in #23 because dev-instance Clerk rejects `*.vercel.app` hosts with `host_invalid` on the handshake (mobile Safari blank-page). Re-enable after Clerk flips to Production mode with the custom domain (see `LAUNCH-RUNBOOK.md`).
 - **Social login:** Facebook (enabled), more can be added via Clerk dashboard
 - **Sign-in page:** `/sign-in` → `src/app/(auth)/sign-in/[[...sign-in]]/page.tsx`
 - **Sign-up page:** `/sign-up` → `src/app/(auth)/sign-up/[[...sign-up]]/page.tsx`
@@ -213,14 +212,15 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - Footer copyright year is dynamic (`new Date().getFullYear()`)
 - `next/font` weights: Oswald 400/500/600/700; Barlow 400/500/600 (no font-light usage)
 - `<EyebrowBadge variant="gold">` for navy-bg eyebrows; `pill` for cream-bg eyebrows
+- `globals.css` uses `overflow-x: clip` (NOT `hidden`) on `html` + `body` — `overflow-x: hidden` silently turns those elements into scroll containers and breaks `position: sticky` on all descendants (e.g., `<FloatingSectionNav>`)
 
 ## Assets
-- `public/images/` — JPEG, 1600px wide @ q82 (programs, gallery, instructors); `hero-poster.jpg` (79 KB first-frame LCP); `og-image.jpg` (1200×630). `logo.svg` is a 259 KB embedded raster placeholder (see Gotchas). Size budget enforced by `tests/unit/image-budget.test.ts` (600 KB cap, recursive, covers jpg/png/webp/avif/gif/svg).
+- `public/images/` — JPEG, 1600px wide @ q82 (programs, gallery, instructors); `hero-poster.jpg` (79 KB first-frame LCP); `og-image.jpg` (1200×630); `storefront.webp` (62 KB, used on About hero). `logo.svg` is a 259 KB embedded raster placeholder (see Gotchas). Size budget enforced by `tests/unit/image-budget.test.ts` (600 KB cap, recursive, covers jpg/png/webp/avif/gif/svg).
 - `public/videos/hero.mp4` — 5.9 MB, `preload="none"`.
 - `student-resources/` — 8 PDFs served via `serveProtectedPdf()` (see API Routes).
 
 ## Tests
-Vitest (`pnpm vitest run`) + Playwright E2E (`tests/e2e/*`, needs running app). 95 tests / 19 files. Coverage spans contact schema, `/api/contact` route branches, `current-cycle` boundaries (incl. 2027 fallback), component rendering (navbar, hero + poster/`<source media>` assertions, programs-grid, schedule-grid, red-black + black-belt-club pages), protected PDF route, `next.config` flags, `globals.css` grain mobile gate, image size budget.
+Vitest (`pnpm vitest run`) + Playwright E2E (`tests/e2e/*`, needs running app). 219 tests / 50 files. Coverage spans contact schema (incl. programs multi-select), `/api/contact` route branches, `current-cycle` boundaries (incl. 2027 fallback), component rendering (navbar, hero + poster/`<source media>` assertions, programs-grid, schedule-grid, red-black + black-belt-club pages, members-tab-bar, resource-card), protected PDF route, `next.config` flags, `globals.css` grain mobile gate, image size budget.
 
 ## To Get Fully Running
 See `LAUNCH-RUNBOOK.md` for step-by-step hand-holding on every item below.
@@ -231,7 +231,7 @@ See `LAUNCH-RUNBOOK.md` for step-by-step hand-holding on every item below.
 4. **Logo:** waiting on Canva-exported file from owner (do not trace existing raster)
 5. Tighten CSP (replace `unsafe-inline` with nonces)
 6. Pin Clerk CSP origins to exact production domains (replace wildcards) — coupled with Clerk Production switch
-7. Switch Clerk from Development to Production mode (DNS CNAMEs + Production keys)
+7. Switch Clerk from Development to Production mode (DNS CNAMEs + Production keys); then re-enable `frontendApiProxy: { enabled: true }` in `src/proxy.ts` (see Auth section)
 
 ## Repo
 - **GitHub:** github.com/sgk94/masterchotkd

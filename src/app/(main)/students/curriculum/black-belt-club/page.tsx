@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
 import { SectionHeader } from "@/components/members/shared";
@@ -177,26 +176,7 @@ export default function BlackBeltClubCurriculumPage(): React.ReactElement {
               <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-brand-gold/8 blur-3xl" />
 
               <div className="relative z-10">
-                <Link
-                  href="/members/curriculum"
-                  className="inline-flex items-center gap-1.5 text-xs text-white/40 transition-colors hover:text-white/70"
-                >
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M15 18l-6-6 6-6" />
-                  </svg>
-                  Back to Curriculum
-                </Link>
-                <EyebrowBadge variant="gold" className="mt-5">Members Only</EyebrowBadge>
+                <EyebrowBadge variant="gold">Members Only</EyebrowBadge>
                 <h1 className="mt-4 font-heading text-3xl tracking-tight text-white sm:text-4xl">
                   Black Belt Curriculum
                 </h1>

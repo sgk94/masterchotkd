@@ -45,11 +45,17 @@ const memberNavItems: Record<string, { icon: React.ReactElement; animation: stri
     animation: "group-hover:animate-[icon-flip-open_0.6s_ease-in-out]",
   },
   "Red/Black Belt": {
-    icon: <svg {...iconProps}><path d="M12 3l7 4v5c0 4.2-2.8 8-7 9-4.2-1-7-4.8-7-9V7l7-4Z" /><path d="M9 12l2 2 4-4" /></svg>,
+    icon: (
+      <svg {...iconProps}>
+        <path d="M6 20v-4" />
+        <path d="M12 20v-9" />
+        <path d="M18 20v-14" />
+      </svg>
+    ),
     animation: "group-hover:animate-[icon-bounce-layers_0.6s_ease-in-out]",
   },
   "Black Belt": {
-    icon: <svg {...iconProps}><path d="M12 3v18" /><path d="M7 7.5h10" /><path d="M7 16.5h10" /><path d="M5 12h14" /></svg>,
+    icon: <svg {...iconProps}><path d="M3 10h18v4H3z" /><path d="M10 8h4v8h-4z" /></svg>,
     animation: "group-hover:animate-[icon-slide-up_0.5s_ease-in-out]",
   },
   "Resources": {
