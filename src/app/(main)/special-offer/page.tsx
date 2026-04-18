@@ -46,7 +46,7 @@ function KineticStrip(): React.ReactElement {
 export default function SpecialOfferPage(): React.ReactElement {
   return (
     <>
-      <section className="relative overflow-hidden bg-brand-white">
+      <section className="relative overflow-hidden">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-12 lg:gap-8 lg:py-28">
           {/* LEFT: content column */}
           <div className="lg:col-span-7">
