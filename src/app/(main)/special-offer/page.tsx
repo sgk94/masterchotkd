@@ -139,8 +139,9 @@ export default function SpecialOfferPage(): React.ReactElement {
             </div>
 
             <p className="mt-5 max-w-xs text-sm leading-snug text-brand-black/50 lg:self-end lg:text-right">
-              Cancel anytime inside the two-week window &mdash; no questions,
-              no charges.
+              Cancel anytime inside the two-week window.
+              <br />
+              No questions, no charges.
             </p>
           </div>
         </div>
