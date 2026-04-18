@@ -11,6 +11,7 @@ const benefits = [
   "No commitment required",
   "All ages welcome",
   "Equipment provided",
+  "Uniform included",
 ] as const;
 
 const stripItems = [
