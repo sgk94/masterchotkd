@@ -14,12 +14,42 @@ function formatDate(ms: number): string {
   });
 }
 
+type PendingInvitation = {
+  id: string;
+  emailAddress: string;
+  createdAt: number;
+};
+
+type ListResult =
+  | { ok: true; data: PendingInvitation[] }
+  | { ok: false };
+
+async function loadPendingInvitations(): Promise<ListResult> {
+  try {
+    const client = await clerkClient();
+    const list = await client.invitations.getInvitationList({
+      status: "pending",
+      limit: 100,
+    });
+    return {
+      ok: true,
+      data: list.data.map((i) => ({
+        id: i.id,
+        emailAddress: i.emailAddress,
+        createdAt: i.createdAt,
+      })),
+    };
+  } catch (err) {
+    console.error("Clerk getInvitationList failed", {
+      name: err instanceof Error ? err.name : "Unknown",
+      message: err instanceof Error ? err.message : String(err),
+    });
+    return { ok: false };
+  }
+}
+
 export default async function AdminInvitationsPage(): Promise<React.ReactElement> {
-  const client = await clerkClient();
-  const list = await client.invitations.getInvitationList({
-    status: "pending",
-    limit: 100,
-  });
+  const result = await loadPendingInvitations();
 
   return (
     <div className="space-y-10">
@@ -47,32 +77,45 @@ export default async function AdminInvitationsPage(): Promise<React.ReactElement
       </section>
 
       <section>
-        <h2 className="font-heading text-xl text-brand-black">
-          Pending ({list.data.length})
-        </h2>
-        {list.data.length === 0 ? (
-          <p className="mt-4 text-sm text-brand-black/55">
-            No pending invitations.
-          </p>
+        {result.ok ? (
+          <>
+            <h2 className="font-heading text-xl text-brand-black">
+              Pending ({result.data.length})
+            </h2>
+            {result.data.length === 0 ? (
+              <p className="mt-4 text-sm text-brand-black/55">
+                No pending invitations.
+              </p>
+            ) : (
+              <ul className="mt-4 divide-y divide-brand-taupe/30 rounded-card bg-white ring-1 ring-brand-taupe/15">
+                {result.data.map((inv) => (
+                  <li
+                    key={inv.id}
+                    className="flex items-center justify-between gap-4 px-5 py-4"
+                  >
+                    <div>
+                      <p className="font-medium text-brand-black">
+                        {inv.emailAddress}
+                      </p>
+                      <p className="text-xs text-brand-black/45">
+                        Sent {formatDate(inv.createdAt)}
+                      </p>
+                    </div>
+                    <RevokeButton id={inv.id} email={inv.emailAddress} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
         ) : (
-          <ul className="mt-4 divide-y divide-brand-taupe/30 rounded-card bg-white ring-1 ring-brand-taupe/15">
-            {list.data.map((inv) => (
-              <li
-                key={inv.id}
-                className="flex items-center justify-between gap-4 px-5 py-4"
-              >
-                <div>
-                  <p className="font-medium text-brand-black">
-                    {inv.emailAddress}
-                  </p>
-                  <p className="text-xs text-brand-black/45">
-                    Sent {formatDate(inv.createdAt)}
-                  </p>
-                </div>
-                <RevokeButton id={inv.id} email={inv.emailAddress} />
-              </li>
-            ))}
-          </ul>
+          <>
+            <h2 className="font-heading text-xl text-brand-black">Pending</h2>
+            <p className="mt-4 rounded-card bg-white p-5 text-sm text-brand-red ring-1 ring-brand-red/30">
+              Couldn&rsquo;t load pending invitations right now. Sending a new
+              invitation still works — reload the page in a moment to see the
+              list.
+            </p>
+          </>
         )}
       </section>
     </div>

@@ -47,4 +47,12 @@ describe("AdminInvitationsPage", () => {
     expect(screen.getByText("c@d.com")).toBeInTheDocument();
     expect(screen.getByText(/pending \(2\)/i)).toBeInTheDocument();
   });
+
+  it("renders degraded state when Clerk list throws (InviteForm still usable)", async () => {
+    getInvitationListMock.mockRejectedValue(new Error("clerk down"));
+    const ui = await AdminInvitationsPage();
+    render(ui);
+    expect(screen.getByText(/couldn.t load pending invitations/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /send invitation/i })).toBeInTheDocument();
+  });
 });
