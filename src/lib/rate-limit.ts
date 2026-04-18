@@ -25,6 +25,15 @@ export async function checkRateLimit(
   identifier: string,
 ): Promise<{ success: boolean }> {
   if (!isRateLimitConfigured()) return { success: true };
-  const result = await getRatelimit().limit(identifier);
-  return { success: result.success };
+  try {
+    const result = await getRatelimit().limit(identifier);
+    return { success: result.success };
+  } catch (err) {
+    console.error("Rate limit check failed — failing open", {
+      identifier,
+      name: err instanceof Error ? err.name : "Unknown",
+      message: err instanceof Error ? err.message : String(err),
+    });
+    return { success: true };
+  }
 }
