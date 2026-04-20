@@ -1,6 +1,58 @@
 import { VideoPlaceholder } from "./shared";
 import { YouTubeFacade } from "./youtube-facade";
 
+function CycleRing({
+  cycle,
+  total,
+}: {
+  cycle: number;
+  total: number;
+}): React.ReactElement {
+  const size = 16;
+  const cx = size / 2;
+  const cy = size / 2;
+  const r = cx - 2;
+  const gapDeg = 16;
+  const segmentDeg = 360 / total - gapDeg;
+
+  const polar = (deg: number): { x: number; y: number } => {
+    const rad = ((deg - 90) * Math.PI) / 180;
+    return {
+      x: cx + r * Math.cos(rad),
+      y: cy + r * Math.sin(rad),
+    };
+  };
+
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
+      className="shrink-0"
+      aria-hidden="true"
+    >
+      {Array.from({ length: total }, (_, i) => {
+        const startDeg = (i * 360) / total + gapDeg / 2;
+        const endDeg = startDeg + segmentDeg;
+        const start = polar(startDeg);
+        const end = polar(endDeg);
+        const isFilled = i < cycle;
+        return (
+          <path
+            key={i}
+            d={`M ${start.x.toFixed(2)} ${start.y.toFixed(2)} A ${r} ${r} 0 0 1 ${end.x.toFixed(2)} ${end.y.toFixed(2)}`}
+            fill="none"
+            stroke={isFilled ? "var(--color-brand-blue)" : "currentColor"}
+            strokeOpacity={isFilled ? 1 : 0.2}
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
 type PoomsaeCardProps = {
   videoId?: string;
   beltName: string;
@@ -14,7 +66,6 @@ type PoomsaeCardProps = {
   level: "Beginner" | "Intermediate" | "Advanced";
   cycle: string;
   totalCycles: number;
-  accentShadow: string;
 };
 
 export function PoomsaeCard({
@@ -30,18 +81,13 @@ export function PoomsaeCard({
   level,
   cycle,
   totalCycles,
-  accentShadow,
 }: PoomsaeCardProps): React.ReactElement {
-  const cardStyle = {
-    "--card-hover-shadow": accentShadow,
-  } as React.CSSProperties;
   const cycleNum = Number.parseInt(cycle, 10);
   const thumbnailTitle = `${formName} — ${beltName} belt`;
 
   return (
     <div
-      style={cardStyle}
-      className="group overflow-hidden rounded-[1.5rem] bg-white p-1.5 shadow-[0_10px_30px_-12px_rgba(26,26,46,0.12)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-[0_22px_44px_-14px_var(--card-hover-shadow)]"
+      className="group overflow-hidden rounded-[1.5rem] bg-white p-1.5 shadow-[0_10px_30px_-12px_rgba(26,26,46,0.12)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-[0_22px_44px_-14px_rgba(26,26,46,0.22)]"
     >
       {videoId ? (
         <YouTubeFacade videoId={videoId} title={thumbnailTitle} />
@@ -68,7 +114,7 @@ export function PoomsaeCard({
                 {formKorean}
               </p>
             </div>
-            <span className="mt-0.5 flex shrink-0 items-baseline gap-0.5 font-heading text-[11px] font-semibold tracking-[0.14em] tabular-nums">
+            <span className="flex shrink-0 items-baseline gap-0.5 font-heading text-[14px] font-semibold leading-none tracking-tight tabular-nums">
               {formIndex !== null ? (
                 <>
                   <span className="text-brand-black/70">
@@ -79,7 +125,7 @@ export function PoomsaeCard({
                   </span>
                 </>
               ) : (
-                <span className="uppercase tracking-[0.24em] text-brand-black/35">
+                <span className="text-[11px] uppercase tracking-[0.24em] text-brand-black/35">
                   Basic
                 </span>
               )}
@@ -97,20 +143,7 @@ export function PoomsaeCard({
                 ·
               </span>
               <span className="flex items-center gap-1.5">
-                <span
-                  aria-hidden="true"
-                  className="flex items-center gap-0.5"
-                >
-                  {Array.from(
-                    { length: totalCycles },
-                    (_, i) => i + 1,
-                  ).map((c) => (
-                    <span
-                      key={c}
-                      className={`h-1.5 w-1.5 rounded-full ${c <= cycleNum ? "bg-brand-black/55" : "bg-brand-black/12"}`}
-                    />
-                  ))}
-                </span>
+                <CycleRing cycle={cycleNum} total={totalCycles} />
                 <span>C{cycle}</span>
               </span>
             </div>
