@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
 import { SectionChips } from "@/components/members/section-chips";
 import { VideoPlaceholder, SectionHeader, VideoCard } from "@/components/members/shared";
+import { PoomsaeCard } from "@/components/members/poomsae-card";
 import { skillLevelPalette } from "@/lib/static-data";
 import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 import { ResourceCard } from "@/components/members/resource-card";
@@ -21,11 +22,18 @@ type CurriculumEntry = {
   beltDotBorder?: string;
   beltDotStyle?: React.CSSProperties;
   poomsae: string;
+  poomsaeFullName: string;
+  poomsaeKorean: string;
+  poomsaeIndex: number | null;
+  poomsaeVideoId?: string;
   weapon: "BME" | "JB" | "SJB";
   oneStep: string;
   handTech: string;
   board: string;
 };
+
+const POOMSAE_TOTAL = 8;
+const TOTAL_CYCLES = 3;
 
 type WeaponCard = {
   weapon: "BME" | "JB" | "SJB";
@@ -34,15 +42,15 @@ type WeaponCard = {
 };
 
 const curriculumEntries: CurriculumEntry[] = [
-  { level: "Beginner", levelSubtitle: "White -> Orange -> Yellow", levelAccent: skillLevelPalette.beginner.accent, levelAccentBg: skillLevelPalette.beginner.accentBg, cycle: "1", beltName: "White", beltDotClass: "bg-white", beltDotBorder: "ring-1 ring-brand-taupe/60", poomsae: "Basic", weapon: "BME", oneStep: "White", handTech: "1-6", board: "Hammer Fist" },
-  { level: "Beginner", levelSubtitle: "White -> Orange -> Yellow", levelAccent: skillLevelPalette.beginner.accent, levelAccentBg: skillLevelPalette.beginner.accentBg, cycle: "2", beltName: "Orange", beltDotClass: "bg-orange-400", poomsae: "Taegeuk 1", weapon: "JB", oneStep: "Orange", handTech: "7-12", board: "Front Kick" },
-  { level: "Beginner", levelSubtitle: "White -> Orange -> Yellow", levelAccent: skillLevelPalette.beginner.accent, levelAccentBg: skillLevelPalette.beginner.accentBg, cycle: "3", beltName: "Yellow", beltDotClass: "bg-yellow-400", poomsae: "Taegeuk 2", weapon: "SJB", oneStep: "Yellow", handTech: "13-18", board: "Knife Hand" },
-  { level: "Intermediate", levelSubtitle: "Camo -> Green -> Purple", levelAccent: skillLevelPalette.intermediate.accent, levelAccentBg: skillLevelPalette.intermediate.accentBg, cycle: "1", beltName: "Camo", beltDotClass: "bg-cover bg-center", beltDotStyle: { backgroundImage: camoPattern }, poomsae: "Taegeuk 3", weapon: "BME", oneStep: "Camo", handTech: "19-24", board: "Round Kick" },
-  { level: "Intermediate", levelSubtitle: "Camo -> Green -> Purple", levelAccent: skillLevelPalette.intermediate.accent, levelAccentBg: skillLevelPalette.intermediate.accentBg, cycle: "2", beltName: "Green", beltDotClass: "bg-green-500", poomsae: "Taegeuk 4", weapon: "JB", oneStep: "Green", handTech: "25-30", board: "Palm Strike" },
-  { level: "Intermediate", levelSubtitle: "Camo -> Green -> Purple", levelAccent: skillLevelPalette.intermediate.accent, levelAccentBg: skillLevelPalette.intermediate.accentBg, cycle: "3", beltName: "Purple", beltDotClass: "bg-purple-600", poomsae: "Taegeuk 5", weapon: "SJB", oneStep: "Purple", handTech: "31-36", board: "Side Kick" },
-  { level: "Advanced", levelSubtitle: "Blue -> Brown -> Red", levelAccent: skillLevelPalette.advanced.accent, levelAccentBg: skillLevelPalette.advanced.accentBg, cycle: "1", beltName: "Blue", beltDotClass: "bg-blue-600", poomsae: "Taegeuk 6", weapon: "BME", oneStep: "Blue", handTech: "37-42", board: "Jump Front Kick" },
-  { level: "Advanced", levelSubtitle: "Blue -> Brown -> Red", levelAccent: skillLevelPalette.advanced.accent, levelAccentBg: skillLevelPalette.advanced.accentBg, cycle: "2", beltName: "Brown", beltDotClass: "bg-yellow-700", poomsae: "Taegeuk 7", weapon: "JB", oneStep: "Brown", handTech: "43-48", board: "Jump Round Kick" },
-  { level: "Advanced", levelSubtitle: "Blue -> Brown -> Red", levelAccent: skillLevelPalette.advanced.accent, levelAccentBg: skillLevelPalette.advanced.accentBg, cycle: "3", beltName: "Red", beltDotClass: "bg-red-600", poomsae: "Taegeuk 8", weapon: "SJB", oneStep: "Red", handTech: "49-52", board: "Jump Reverse Side Kick" },
+  { level: "Beginner", levelSubtitle: "White -> Orange -> Yellow", levelAccent: skillLevelPalette.beginner.accent, levelAccentBg: skillLevelPalette.beginner.accentBg, cycle: "1", beltName: "White", beltDotClass: "bg-white", beltDotBorder: "ring-1 ring-brand-taupe/60", poomsae: "Basic", poomsaeFullName: "Gibon Il-jang", poomsaeKorean: "기본 일장", poomsaeIndex: null, weapon: "BME", oneStep: "White", handTech: "1-6", board: "Hammer Fist" },
+  { level: "Beginner", levelSubtitle: "White -> Orange -> Yellow", levelAccent: skillLevelPalette.beginner.accent, levelAccentBg: skillLevelPalette.beginner.accentBg, cycle: "2", beltName: "Orange", beltDotClass: "bg-orange-400", poomsae: "Taegeuk 1", poomsaeFullName: "Taegeuk Il-jang", poomsaeKorean: "태극 일장", poomsaeIndex: 1, poomsaeVideoId: "n5Q-g0uUj3c", weapon: "JB", oneStep: "Orange", handTech: "7-12", board: "Front Kick" },
+  { level: "Beginner", levelSubtitle: "White -> Orange -> Yellow", levelAccent: skillLevelPalette.beginner.accent, levelAccentBg: skillLevelPalette.beginner.accentBg, cycle: "3", beltName: "Yellow", beltDotClass: "bg-yellow-400", poomsae: "Taegeuk 2", poomsaeFullName: "Taegeuk I-jang", poomsaeKorean: "태극 이장", poomsaeIndex: 2, poomsaeVideoId: "EkLZUEBOz0A", weapon: "SJB", oneStep: "Yellow", handTech: "13-18", board: "Knife Hand" },
+  { level: "Intermediate", levelSubtitle: "Camo -> Green -> Purple", levelAccent: skillLevelPalette.intermediate.accent, levelAccentBg: skillLevelPalette.intermediate.accentBg, cycle: "1", beltName: "Camo", beltDotClass: "bg-cover bg-center", beltDotStyle: { backgroundImage: camoPattern }, poomsae: "Taegeuk 3", poomsaeFullName: "Taegeuk Sam-jang", poomsaeKorean: "태극 삼장", poomsaeIndex: 3, weapon: "BME", oneStep: "Camo", handTech: "19-24", board: "Round Kick" },
+  { level: "Intermediate", levelSubtitle: "Camo -> Green -> Purple", levelAccent: skillLevelPalette.intermediate.accent, levelAccentBg: skillLevelPalette.intermediate.accentBg, cycle: "2", beltName: "Green", beltDotClass: "bg-green-500", poomsae: "Taegeuk 4", poomsaeFullName: "Taegeuk Sa-jang", poomsaeKorean: "태극 사장", poomsaeIndex: 4, weapon: "JB", oneStep: "Green", handTech: "25-30", board: "Palm Strike" },
+  { level: "Intermediate", levelSubtitle: "Camo -> Green -> Purple", levelAccent: skillLevelPalette.intermediate.accent, levelAccentBg: skillLevelPalette.intermediate.accentBg, cycle: "3", beltName: "Purple", beltDotClass: "bg-purple-600", poomsae: "Taegeuk 5", poomsaeFullName: "Taegeuk O-jang", poomsaeKorean: "태극 오장", poomsaeIndex: 5, weapon: "SJB", oneStep: "Purple", handTech: "31-36", board: "Side Kick" },
+  { level: "Advanced", levelSubtitle: "Blue -> Brown -> Red", levelAccent: skillLevelPalette.advanced.accent, levelAccentBg: skillLevelPalette.advanced.accentBg, cycle: "1", beltName: "Blue", beltDotClass: "bg-blue-600", poomsae: "Taegeuk 6", poomsaeFullName: "Taegeuk Yuk-jang", poomsaeKorean: "태극 육장", poomsaeIndex: 6, weapon: "BME", oneStep: "Blue", handTech: "37-42", board: "Jump Front Kick" },
+  { level: "Advanced", levelSubtitle: "Blue -> Brown -> Red", levelAccent: skillLevelPalette.advanced.accent, levelAccentBg: skillLevelPalette.advanced.accentBg, cycle: "2", beltName: "Brown", beltDotClass: "bg-yellow-700", poomsae: "Taegeuk 7", poomsaeFullName: "Taegeuk Chil-jang", poomsaeKorean: "태극 칠장", poomsaeIndex: 7, weapon: "JB", oneStep: "Brown", handTech: "43-48", board: "Jump Round Kick" },
+  { level: "Advanced", levelSubtitle: "Blue -> Brown -> Red", levelAccent: skillLevelPalette.advanced.accent, levelAccentBg: skillLevelPalette.advanced.accentBg, cycle: "3", beltName: "Red", beltDotClass: "bg-red-600", poomsae: "Taegeuk 8", poomsaeFullName: "Taegeuk Pal-jang", poomsaeKorean: "태극 팔장", poomsaeIndex: 8, weapon: "SJB", oneStep: "Red", handTech: "49-52", board: "Jump Reverse Side Kick" },
 ];
 
 const weaponCards: WeaponCard[] = [
@@ -269,7 +277,21 @@ export default function ColorBeltPage(): React.ReactElement {
             <SectionHeader label="Video Library" title="Poomsae Videos" description="Practice the form that matches your current belt and cycle." />
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {curriculumEntries.map((entry) => (
-                <VideoCard key={`poomsae-${entry.level}-${entry.cycle}`} eyebrow={`${entry.level} · Cycle ${entry.cycle}`} title={`${entry.beltName} - ${entry.poomsae}`} subtitle="Color Belt Poomsae" swatch={<BeltDot entry={entry} />} />
+                <PoomsaeCard
+                  key={`poomsae-${entry.level}-${entry.cycle}`}
+                  videoId={entry.poomsaeVideoId}
+                  beltName={entry.beltName}
+                  beltDotClass={entry.beltDotClass}
+                  beltDotStyle={entry.beltDotStyle}
+                  beltDotBorder={entry.beltDotBorder}
+                  formName={entry.poomsaeFullName}
+                  formKorean={entry.poomsaeKorean}
+                  formIndex={entry.poomsaeIndex}
+                  formTotal={POOMSAE_TOTAL}
+                  level={entry.level}
+                  cycle={entry.cycle}
+                  totalCycles={TOTAL_CYCLES}
+                />
               ))}
             </div>
           </section>
