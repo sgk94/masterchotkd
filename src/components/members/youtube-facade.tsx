@@ -55,38 +55,33 @@ export function YouTubeFacade({
         className="absolute inset-0 h-full w-full scale-[1.04] object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.1] group-active:scale-[1.02]"
       />
 
-      {/* Bottom navy gradient — filmic, improves contrast with label */}
+      {/* Bottom navy gradient — filmic, improves contrast with control */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-t from-brand-navy/75 via-brand-navy/10 to-transparent"
+        className="absolute inset-0 bg-gradient-to-t from-brand-navy/85 via-brand-navy/20 to-transparent"
       />
 
       {/* Soft top vignette — pulls focus to the play control */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/35 to-transparent"
+        className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/45 to-transparent"
       />
 
-      {/* Play button — glass by default, fills brand-red on hover */}
+      {/* Play button — brand-red filled by default, lifts on hover */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="relative flex h-16 w-16 items-center justify-center rounded-full border border-white/40 bg-white/10 text-white backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-110 group-hover:border-brand-red group-hover:bg-brand-red group-hover:shadow-[0_10px_28px_-8px_rgba(196,30,42,0.55)] group-active:scale-95">
+        <span className="relative flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full bg-brand-red text-white ring-1 ring-white/25 shadow-[0_10px_28px_-8px_rgba(196,30,42,0.5)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-110 group-hover:shadow-[0_16px_42px_-10px_rgba(196,30,42,0.75)] group-active:scale-95">
           <svg
-            width="20"
-            height="20"
+            width="22"
+            height="22"
             viewBox="0 0 24 24"
             fill="currentColor"
             aria-hidden="true"
-            className="ml-0.5"
+            className="ml-[3px]"
           >
             <polygon points="6 4 20 12 6 20 6 4" />
           </svg>
         </span>
       </div>
-
-      {/* Bottom-left micro-caption — belt + form, subtle */}
-      <p className="absolute bottom-3 left-4 font-heading text-[10px] font-semibold uppercase tracking-[0.22em] text-white/85">
-        Watch form
-      </p>
     </button>
   );
 }
