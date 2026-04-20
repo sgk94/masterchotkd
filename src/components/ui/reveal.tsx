@@ -9,6 +9,36 @@ type RevealProps = {
   stagger?: boolean;
 };
 
+const OBSERVER_OPTIONS: IntersectionObserverInit = {
+  threshold: 0.15,
+  rootMargin: "0px 0px -40px 0px",
+};
+
+type ObserverEntry = {
+  setVisible: (v: boolean) => void;
+};
+
+const observers = new Map<Element, ObserverEntry>();
+let sharedObserver: IntersectionObserver | null = null;
+
+function getSharedObserver(): IntersectionObserver {
+  if (!sharedObserver) {
+    sharedObserver = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          const tracked = observers.get(entry.target);
+          if (tracked) {
+            tracked.setVisible(true);
+            sharedObserver!.unobserve(entry.target);
+            observers.delete(entry.target);
+          }
+        }
+      }
+    }, OBSERVER_OPTIONS);
+  }
+  return sharedObserver;
+}
+
 export function Reveal({ children, className = "", delay = 0, stagger = false }: RevealProps): React.ReactElement {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -17,18 +47,14 @@ export function Reveal({ children, className = "", delay = 0, stagger = false }:
     const el = ref.current;
     if (!el) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
-    );
-
+    const observer = getSharedObserver();
+    observers.set(el, { setVisible });
     observer.observe(el);
-    return () => observer.disconnect();
+
+    return () => {
+      observer.unobserve(el);
+      observers.delete(el);
+    };
   }, []);
 
   return (

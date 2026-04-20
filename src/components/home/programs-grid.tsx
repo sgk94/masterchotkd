@@ -136,7 +136,7 @@ export function ProgramsGrid(): React.ReactElement {
                 )}
 
                 {/* Explore CTA with button-in-button icon */}
-                <span className={`mt-4 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.15em] ${"image" in program && program.image ? "text-white/60" : "text-white/60"} transition-colors duration-500 group-hover:text-brand-gold`}>
+                <span className={`mt-4 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.15em] text-white/60 transition-colors duration-500 group-hover:text-brand-gold`}>
                   Explore
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:scale-110 group-hover:bg-brand-gold/20">
                     <svg

@@ -13,6 +13,12 @@ export const metadata = createMetadata({ path: "/" });
 export default function HomePage(): React.ReactElement {
   return (
     <>
+      <link
+        rel="preload"
+        as="image"
+        href="/images/hero-poster.jpg"
+        fetchPriority="high"
+      />
       <Hero />
       <Marquee />
       <ProgramsGrid />
