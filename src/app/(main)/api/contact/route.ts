@@ -6,6 +6,7 @@ import { escapeHtml, sanitize } from "@/lib/sanitize";
 import { getServerEnv } from "@/lib/server-env";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getClientIp, validateOrigin } from "@/lib/api-security";
+import { formatError } from "@/lib/errors";
 import { BUSINESS_PHONE_DISPLAY } from "@/lib/location";
 
 export const dynamic = "force-dynamic";
@@ -22,8 +23,8 @@ export async function POST(request: Request): Promise<NextResponse> {
   const originError = await validateOrigin();
   if (originError) return originError;
 
-  const contentLength = Number(request.headers.get("content-length") ?? 0);
-  if (contentLength > MAX_BODY_BYTES) {
+  const raw = await request.text();
+  if (Buffer.byteLength(raw, "utf8") > MAX_BODY_BYTES) {
     return NextResponse.json({ error: "Payload too large" }, { status: 413 });
   }
 
@@ -38,7 +39,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   let body: unknown;
   try {
-    body = await request.json();
+    body = JSON.parse(raw);
   } catch {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
@@ -82,10 +83,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {
-    console.error("Contact form error", {
-      name: error instanceof Error ? error.name : "Unknown",
-      message: error instanceof Error ? error.message : String(error),
-    });
+    console.error("Contact form error", formatError(error));
     return NextResponse.json(
       { error: `Unable to send message. Please try again or call ${BUSINESS_PHONE_DISPLAY}.` },
       { status: 500 },

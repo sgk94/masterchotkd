@@ -2,6 +2,7 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { clerkErrorToResponse, requireAdmin } from "@/lib/clerk-admin";
 import { validateOrigin } from "@/lib/api-security";
+import { formatError } from "@/lib/errors";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -32,10 +33,7 @@ export async function DELETE(
     await client.invitations.revokeInvitation(id);
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error("Clerk revokeInvitation failed", {
-      name: err instanceof Error ? err.name : "Unknown",
-      message: err instanceof Error ? err.message : String(err),
-    });
+    console.error("Clerk revokeInvitation failed", formatError(err));
     return clerkErrorToResponse(err, {
       status: 502,
       message: "Could not revoke invitation.",

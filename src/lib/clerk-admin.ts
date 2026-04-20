@@ -1,5 +1,6 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { formatError } from "@/lib/errors";
 
 export async function requireAdmin(): Promise<NextResponse | null> {
   const { userId } = await auth();
@@ -14,8 +15,7 @@ export async function requireAdmin(): Promise<NextResponse | null> {
   } catch (err) {
     console.error("Clerk getUser failed in requireAdmin", {
       userId,
-      name: err instanceof Error ? err.name : "Unknown",
-      message: err instanceof Error ? err.message : String(err),
+      ...formatError(err),
     });
     return NextResponse.json(
       { error: "Auth lookup failed. Try again." },

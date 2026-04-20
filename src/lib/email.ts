@@ -10,6 +10,15 @@ type SendEmailParams = {
 
 const RESEND_TIMEOUT_MS = 5_000;
 
+let _resend: Resend | null = null;
+
+function getResend(): Resend {
+  if (!_resend) {
+    _resend = new Resend(getServerEnv().RESEND_API_KEY);
+  }
+  return _resend;
+}
+
 export async function sendEmail({
   to,
   subject,
@@ -17,7 +26,7 @@ export async function sendEmail({
   replyTo,
 }: SendEmailParams): Promise<void> {
   const env = getServerEnv();
-  const resend = new Resend(env.RESEND_API_KEY);
+  const resend = getResend();
 
   const timeout = new Promise<never>((_, reject) =>
     setTimeout(() => reject(new Error("Resend timeout")), RESEND_TIMEOUT_MS),

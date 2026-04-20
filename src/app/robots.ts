@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
+import { getSiteUrl } from "@/lib/site-url";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://masterchostaekwondo.com";
+const BASE_URL = getSiteUrl();
 
 export default function robots(): MetadataRoute.Robots {
-  return { rules: { userAgent: "*", allow: "/", disallow: ["/members/", "/students/", "/api/", "/student-resources/", "/preview/"] }, sitemap: `${BASE_URL}/sitemap.xml` };
+  return { rules: { userAgent: "*", allow: "/", disallow: ["/members/", "/students/", "/api/", "/student-resources/", "/preview/", "/sign-in/", "/sign-up/"] }, sitemap: `${BASE_URL}/sitemap.xml` };
 }

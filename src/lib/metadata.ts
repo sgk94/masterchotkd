@@ -1,15 +1,8 @@
 import type { Metadata } from "next";
+import { getSiteUrl } from "@/lib/site-url";
 
 const SITE_NAME = "Master Cho's Taekwondo";
 const SITE_DESCRIPTION = "Lynnwood's premier Taekwondo academy. Classes for all ages — Tiny Tigers through adult Black Belt. Start a 2-week trial for $49.";
-
-// Prefer production domain if set, otherwise use Vercel's auto-provided URL, then fall back
-function getSiteUrl(): string {
-  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  return "https://masterchostaekwondo.com";
-}
 
 export function createMetadata(overrides: Partial<Metadata> = {}): Metadata {
   const rawTitle = overrides.title ? `${overrides.title} | ${SITE_NAME}` : `${SITE_NAME} — Martial Arts Academy in Lynnwood`;

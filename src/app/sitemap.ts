@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 // import { db } from "@/lib/db"; // TODO: re-enable when DB is connected
 import { staticPrograms } from "@/lib/static-data";
+import { getSiteUrl } from "@/lib/site-url";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://masterchostaekwondo.com";
+const BASE_URL = getSiteUrl();
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
