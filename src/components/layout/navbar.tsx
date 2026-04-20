@@ -151,7 +151,7 @@ export function Navbar(): React.ReactElement {
           {/* Right */}
           <div className="hidden items-center gap-6 md:flex">
             {rightLinks.map(navLink)}
-            <Button variant="primary" href="/special-offer" className="px-5 py-2.5 text-xs">
+            <Button variant="primary" href="/special-offer" className="px-5 py-2.5 text-sm">
               Special Offer
             </Button>
             <ClerkLoading>
