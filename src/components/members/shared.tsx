@@ -1,3 +1,5 @@
+import { YouTubeFacade } from "./youtube-facade";
+
 export function VideoPlaceholder({ title }: { title: string }): React.ReactElement {
   return (
     <div className="flex aspect-video items-center justify-center rounded-xl bg-brand-black/[0.03]">
@@ -32,10 +34,14 @@ export function SubSectionHeader({ title }: { title: string }): React.ReactEleme
   );
 }
 
-export function VideoCard({ eyebrow, title, subtitle, swatch }: { eyebrow: string; title: string; subtitle: string; swatch?: React.ReactNode }): React.ReactElement {
+export function VideoCard({ eyebrow, title, subtitle, swatch, videoId }: { eyebrow: string; title: string; subtitle: string; swatch?: React.ReactNode; videoId?: string }): React.ReactElement {
   return (
     <div className="group overflow-hidden rounded-2xl bg-white ring-1 ring-brand-taupe/12 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-brand-taupe/10">
-      <VideoPlaceholder title={title} />
+      {videoId ? (
+        <YouTubeFacade videoId={videoId} title={title} />
+      ) : (
+        <VideoPlaceholder title={title} />
+      )}
       <div className="p-4">
         <div className="flex items-center gap-3">
           {swatch}

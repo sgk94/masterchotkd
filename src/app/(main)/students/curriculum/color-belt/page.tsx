@@ -21,6 +21,7 @@ type CurriculumEntry = {
   beltDotBorder?: string;
   beltDotStyle?: React.CSSProperties;
   poomsae: string;
+  poomsaeVideoId?: string;
   weapon: "BME" | "JB" | "SJB";
   oneStep: string;
   handTech: string;
@@ -36,7 +37,7 @@ type WeaponCard = {
 const curriculumEntries: CurriculumEntry[] = [
   { level: "Beginner", levelSubtitle: "White -> Orange -> Yellow", levelAccent: skillLevelPalette.beginner.accent, levelAccentBg: skillLevelPalette.beginner.accentBg, cycle: "1", beltName: "White", beltDotClass: "bg-white", beltDotBorder: "ring-1 ring-brand-taupe/60", poomsae: "Basic", weapon: "BME", oneStep: "White", handTech: "1-6", board: "Hammer Fist" },
   { level: "Beginner", levelSubtitle: "White -> Orange -> Yellow", levelAccent: skillLevelPalette.beginner.accent, levelAccentBg: skillLevelPalette.beginner.accentBg, cycle: "2", beltName: "Orange", beltDotClass: "bg-orange-400", poomsae: "Taegeuk 1", weapon: "JB", oneStep: "Orange", handTech: "7-12", board: "Front Kick" },
-  { level: "Beginner", levelSubtitle: "White -> Orange -> Yellow", levelAccent: skillLevelPalette.beginner.accent, levelAccentBg: skillLevelPalette.beginner.accentBg, cycle: "3", beltName: "Yellow", beltDotClass: "bg-yellow-400", poomsae: "Taegeuk 2", weapon: "SJB", oneStep: "Yellow", handTech: "13-18", board: "Knife Hand" },
+  { level: "Beginner", levelSubtitle: "White -> Orange -> Yellow", levelAccent: skillLevelPalette.beginner.accent, levelAccentBg: skillLevelPalette.beginner.accentBg, cycle: "3", beltName: "Yellow", beltDotClass: "bg-yellow-400", poomsae: "Taegeuk 2", poomsaeVideoId: "EkLZUEBOz0A", weapon: "SJB", oneStep: "Yellow", handTech: "13-18", board: "Knife Hand" },
   { level: "Intermediate", levelSubtitle: "Camo -> Green -> Purple", levelAccent: skillLevelPalette.intermediate.accent, levelAccentBg: skillLevelPalette.intermediate.accentBg, cycle: "1", beltName: "Camo", beltDotClass: "bg-cover bg-center", beltDotStyle: { backgroundImage: camoPattern }, poomsae: "Taegeuk 3", weapon: "BME", oneStep: "Camo", handTech: "19-24", board: "Round Kick" },
   { level: "Intermediate", levelSubtitle: "Camo -> Green -> Purple", levelAccent: skillLevelPalette.intermediate.accent, levelAccentBg: skillLevelPalette.intermediate.accentBg, cycle: "2", beltName: "Green", beltDotClass: "bg-green-500", poomsae: "Taegeuk 4", weapon: "JB", oneStep: "Green", handTech: "25-30", board: "Palm Strike" },
   { level: "Intermediate", levelSubtitle: "Camo -> Green -> Purple", levelAccent: skillLevelPalette.intermediate.accent, levelAccentBg: skillLevelPalette.intermediate.accentBg, cycle: "3", beltName: "Purple", beltDotClass: "bg-purple-600", poomsae: "Taegeuk 5", weapon: "SJB", oneStep: "Purple", handTech: "31-36", board: "Side Kick" },
@@ -269,7 +270,14 @@ export default function ColorBeltPage(): React.ReactElement {
             <SectionHeader label="Video Library" title="Poomsae Videos" description="Practice the form that matches your current belt and cycle." />
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {curriculumEntries.map((entry) => (
-                <VideoCard key={`poomsae-${entry.level}-${entry.cycle}`} eyebrow={`${entry.level} · Cycle ${entry.cycle}`} title={`${entry.beltName} - ${entry.poomsae}`} subtitle="Color Belt Poomsae" swatch={<BeltDot entry={entry} />} />
+                <VideoCard
+                  key={`poomsae-${entry.level}-${entry.cycle}`}
+                  eyebrow={`${entry.level} · Cycle ${entry.cycle}`}
+                  title={`${entry.beltName} - ${entry.poomsae}`}
+                  subtitle="Color Belt Poomsae"
+                  swatch={<BeltDot entry={entry} />}
+                  videoId={entry.poomsaeVideoId}
+                />
               ))}
             </div>
           </section>

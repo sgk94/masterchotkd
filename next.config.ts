@@ -15,14 +15,22 @@ const facebookCspOrigins = [
   "https://connect.facebook.net",
 ];
 
+const youtubeImgOrigins = [
+  "https://i.ytimg.com",
+];
+
+const youtubeFrameOrigins = [
+  "https://www.youtube-nocookie.com",
+];
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${[...clerkCspOrigins, ...captchaCspOrigins, ...facebookCspOrigins].join(" ")}`,
   "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' data: blob: ${[...clerkCspOrigins, ...captchaCspOrigins, ...facebookCspOrigins].join(" ")}`,
+  `img-src 'self' data: blob: ${[...clerkCspOrigins, ...captchaCspOrigins, ...facebookCspOrigins, ...youtubeImgOrigins].join(" ")}`,
   `font-src 'self' ${clerkCspOrigins.join(" ")}`,
   `connect-src 'self' ${[...clerkCspOrigins, ...captchaCspOrigins, ...facebookCspOrigins].join(" ")}`,
-  `frame-src 'self' ${[...clerkCspOrigins, ...captchaCspOrigins, ...facebookCspOrigins].join(" ")}`,
+  `frame-src 'self' ${[...clerkCspOrigins, ...captchaCspOrigins, ...facebookCspOrigins, ...youtubeFrameOrigins].join(" ")}`,
   "frame-ancestors 'none'",
   "object-src 'none'",
   "base-uri 'self'",
