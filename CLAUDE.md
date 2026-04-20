@@ -149,7 +149,6 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `/members/curriculum/color-belt` — Beginner/Intermediate/Advanced cycle breakdown (card-based)
 - `/members/curriculum/red-black-belt` — Black belt prep (FAQ, requirements, written test, resources, packet PDF)
 - `/members/curriculum/weekly-training` — 5-week training structure timeline (Server Component)
-- `/members/forms` — Poomsae videos
 - `/members/resources` — Training materials grid (light + dark `<ResourceCard>` variants, preview images)
 - `/admin/invitations` — Admin-only invitation manager (lists pending Clerk invitations, send + revoke). Guarded by `requireAdmin()` (`publicMetadata.role === "admin"`).
 
