@@ -2,7 +2,7 @@ import { YouTubeFacade } from "./youtube-facade";
 
 export function VideoPlaceholder({ title }: { title: string }): React.ReactElement {
   return (
-    <div className="flex aspect-video items-center justify-center rounded-xl bg-brand-black/[0.03]">
+    <div className="flex aspect-video items-center justify-center rounded-[1.25rem] bg-brand-black/[0.03]">
       <div className="flex flex-col items-center gap-2 text-brand-black/25">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <polygon points="5 3 19 12 5 21 5 3" />
@@ -36,20 +36,18 @@ export function SubSectionHeader({ title }: { title: string }): React.ReactEleme
 
 export function VideoCard({ eyebrow, title, subtitle, swatch, videoId }: { eyebrow: string; title: string; subtitle: string; swatch?: React.ReactNode; videoId?: string }): React.ReactElement {
   return (
-    <div className="group overflow-hidden rounded-2xl bg-white ring-1 ring-brand-taupe/12 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-brand-taupe/10">
+    <div className="group overflow-hidden rounded-[1.5rem] bg-white p-1.5 shadow-[0_10px_30px_-12px_rgba(26,26,46,0.12)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-[0_20px_40px_-14px_rgba(26,26,46,0.22)]">
       {videoId ? (
         <YouTubeFacade videoId={videoId} title={title} />
       ) : (
         <VideoPlaceholder title={title} />
       )}
-      <div className="p-4">
-        <div className="flex items-center gap-3">
-          {swatch}
-          <div className="min-w-0">
-            <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-brand-black/35">{eyebrow}</p>
-            <p className="mt-0.5 font-heading text-base text-brand-black">{title}</p>
-            <p className="truncate text-xs text-brand-black/45">{subtitle}</p>
-          </div>
+      <div className="flex items-center gap-4 px-4 pb-4 pt-5">
+        {swatch}
+        <div className="min-w-0 flex-1">
+          <p className="font-heading text-[10px] font-semibold uppercase tracking-[0.22em] text-brand-red/80">{eyebrow}</p>
+          <p className="mt-1.5 font-heading text-lg tracking-tight text-brand-black">{title}</p>
+          <p className="mt-0.5 truncate text-xs text-brand-black/50">{subtitle}</p>
         </div>
       </div>
     </div>
