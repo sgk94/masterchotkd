@@ -67,15 +67,6 @@ export function YouTubeFacade({
         className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/35 to-transparent"
       />
 
-      {/* Top-right eyebrow chip — branded, glassy */}
-      <div className="absolute right-3 top-3 flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 font-heading text-[9px] font-semibold uppercase tracking-[0.26em] text-white backdrop-blur-md">
-        <span
-          aria-hidden="true"
-          className="inline-block h-1.5 w-1.5 rounded-full bg-brand-red shadow-[0_0_8px_rgba(196,30,42,0.6)]"
-        />
-        Poomsae
-      </div>
-
       {/* Play button — glass by default, fills brand-red on hover */}
       <div className="absolute inset-0 flex items-center justify-center">
         <span className="relative flex h-16 w-16 items-center justify-center rounded-full border border-white/40 bg-white/10 text-white backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-110 group-hover:border-brand-red group-hover:bg-brand-red group-hover:shadow-[0_10px_28px_-8px_rgba(196,30,42,0.55)] group-active:scale-95">
