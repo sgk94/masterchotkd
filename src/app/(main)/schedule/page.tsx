@@ -3,7 +3,8 @@ import { ScheduleGrid } from "@/components/schedule/schedule-grid";
 
 export const metadata = createMetadata({
   title: "Schedule",
-  description: "View our weekly class schedule and book your spot.",
+  description: "Weekly taekwondo class schedule at Master Cho's in Lynnwood, WA. Classes Monday\u2013Saturday for all belt levels.",
+  path: "/schedule",
 });
 
 export default function SchedulePage(): React.ReactElement {

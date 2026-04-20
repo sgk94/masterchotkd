@@ -7,6 +7,7 @@ import { createMetadata } from "@/lib/metadata";
 export const metadata = createMetadata({
   title: "Black Belt Club",
   description: "Master Cho's standard Taekwondo program for all ages. Up to three classes per week covering poomsae, sparring, weapons, breaking, and character development.",
+  path: "/programs/black-belt-club",
 });
 
 const scheduleRows = [

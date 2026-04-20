@@ -7,6 +7,7 @@ import { createMetadata } from "@/lib/metadata";
 export const metadata = createMetadata({
   title: "Leadership Club",
   description: "Advanced Taekwondo training for dedicated students. Teach, lead, and perform with Master Cho's Leadership Club and Demo Team in Lynnwood, WA.",
+  path: "/programs/leadership-club",
 });
 
 const schedule = [

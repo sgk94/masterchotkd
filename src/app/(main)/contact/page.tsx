@@ -5,7 +5,8 @@ import { PageContainer } from "@/components/ui/page-container";
 
 export const metadata = createMetadata({
   title: "Contact",
-  description: "Get in touch with Master Cho's Taekwondo.",
+  description: "Contact Master Cho's Taekwondo in Lynnwood, WA. Call (425) 742-4282 or visit 5031 168th ST SW STE 100.",
+  path: "/contact",
 });
 
 export default function ContactPage(): React.ReactElement {
@@ -21,9 +22,9 @@ export default function ContactPage(): React.ReactElement {
           </p>
           <div className="mt-10 space-y-6">
             <div>
-              <h3 className="font-heading text-lg text-brand-black">
+              <h2 className="font-heading text-lg text-brand-black">
                 Phone
-              </h3>
+              </h2>
               <a
                 href={`tel:${BUSINESS_PHONE_TEL}`}
                 className="mt-1 inline-block text-brand-blue transition-colors hover:text-brand-red"
@@ -32,9 +33,9 @@ export default function ContactPage(): React.ReactElement {
               </a>
             </div>
             <div>
-              <h3 className="font-heading text-lg text-brand-black">
+              <h2 className="font-heading text-lg text-brand-black">
                 Location
-              </h3>
+              </h2>
               <p className="mt-1 text-brand-black/60">
                 {BUSINESS_ADDRESS_LINES[0]}
                 <br />
@@ -42,9 +43,9 @@ export default function ContactPage(): React.ReactElement {
               </p>
             </div>
             <div>
-              <h3 className="font-heading text-lg text-brand-black">
+              <h2 className="font-heading text-lg text-brand-black">
                 Follow Us
-              </h3>
+              </h2>
               <div className="mt-2 flex gap-4">
                 <a
                   href="https://www.facebook.com/masterchostaekwondo/"

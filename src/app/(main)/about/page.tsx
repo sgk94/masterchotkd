@@ -3,7 +3,7 @@ import { createMetadata } from "@/lib/metadata";
 import { Button } from "@/components/ui/button";
 import { PageContainer } from "@/components/ui/page-container";
 
-export const metadata = createMetadata({ title: "About", description: "Learn about Master Cho's Taekwondo — 25+ years in Lynnwood, WA." });
+export const metadata = createMetadata({ title: "About", description: "Learn about Master Cho's Taekwondo — 25+ years in Lynnwood, WA.", path: "/about" });
 
 const instructors = [
   {

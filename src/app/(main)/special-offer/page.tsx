@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 
 export const metadata = createMetadata({
   title: "Special Offer",
-  description: "Try 2 weeks of taekwondo classes for just $49.",
+  description: "Try 2 weeks of taekwondo classes for just $49 at Master Cho's in Lynnwood, WA. Uniform included, no commitment.",
+  path: "/special-offer",
 });
 
 const benefits = [
@@ -45,7 +46,7 @@ function KineticStrip(): React.ReactElement {
 
 export default function SpecialOfferPage(): React.ReactElement {
   return (
-    <>
+    <main>
       <section className="relative overflow-hidden">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-12 lg:gap-8 lg:py-28">
           {/* LEFT: content column */}
@@ -134,6 +135,6 @@ export default function SpecialOfferPage(): React.ReactElement {
       </section>
 
       <KineticStrip />
-    </>
+    </main>
   );
 }

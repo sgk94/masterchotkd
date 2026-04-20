@@ -22,6 +22,8 @@ export function Hero(): React.ReactElement {
           className="h-full w-full object-cover"
         >
           <source src="/videos/hero.mp4" type="video/mp4" />
+          Taekwondo training at Master Cho&#39;s Black Belt Academy in Lynnwood,
+          WA.
         </video>
         {/* Vignette — fades video into the background on all edges */}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-navy via-brand-navy/40 to-transparent" />

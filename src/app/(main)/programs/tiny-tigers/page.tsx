@@ -7,6 +7,7 @@ import { createMetadata } from "@/lib/metadata";
 export const metadata = createMetadata({
   title: "Tiny Tigers",
   description: "Taekwondo for ages 4–6. Fun, age-appropriate classes that build foundational life skills — listening, self-confidence, and respect — through martial arts.",
+  path: "/programs/tiny-tigers",
 });
 
 const schedule = [

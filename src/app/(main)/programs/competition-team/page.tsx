@@ -7,6 +7,7 @@ import { createMetadata } from "@/lib/metadata";
 export const metadata = createMetadata({
   title: "Competition Team",
   description: "Tournament-focused Taekwondo training for dedicated athletes. Compete at local, regional, and national levels with Master Cho's Competition Team in Lynnwood, WA.",
+  path: "/programs/competition-team",
 });
 
 const schedule = [
