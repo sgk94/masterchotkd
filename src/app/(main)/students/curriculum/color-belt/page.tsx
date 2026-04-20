@@ -115,6 +115,21 @@ function BeltDot({ entry, size = "h-7 w-7" }: { entry: CurriculumEntry; size?: s
   return <div className={`${size} shrink-0 rounded-full shadow-sm ${entry.beltDotClass} ${entry.beltDotBorder ?? ""}`} style={entry.beltDotStyle} />;
 }
 
+function getBeltShadowTint(beltName: string): string {
+  const map: Record<string, string> = {
+    White: "rgba(212, 197, 176, 0.38)",
+    Orange: "rgba(251, 146, 60, 0.42)",
+    Yellow: "rgba(234, 179, 8, 0.42)",
+    Camo: "rgba(101, 125, 75, 0.42)",
+    Green: "rgba(34, 139, 34, 0.42)",
+    Purple: "rgba(123, 31, 162, 0.42)",
+    Blue: "rgba(37, 99, 235, 0.42)",
+    Brown: "rgba(161, 98, 7, 0.44)",
+    Red: "rgba(196, 30, 42, 0.42)",
+  };
+  return map[beltName] ?? "rgba(26, 26, 46, 0.22)";
+}
+
 function getOverviewCardStyle(entry: CurriculumEntry): { cardBg: string; headerBg: string; borderColor: string } {
   const map: Record<string, { cardBg: string; headerBg: string; borderColor: string }> = {
     White: { cardBg: "#FCFBF8", headerBg: "#F6F2EC", borderColor: "rgba(212,197,176,0.42)" },
@@ -277,6 +292,7 @@ export default function ColorBeltPage(): React.ReactElement {
                   subtitle="Color Belt Poomsae"
                   swatch={<BeltDot entry={entry} />}
                   videoId={entry.poomsaeVideoId}
+                  accentShadow={getBeltShadowTint(entry.beltName)}
                 />
               ))}
             </div>

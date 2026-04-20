@@ -34,9 +34,15 @@ export function SubSectionHeader({ title }: { title: string }): React.ReactEleme
   );
 }
 
-export function VideoCard({ eyebrow, title, subtitle, swatch, videoId }: { eyebrow: string; title: string; subtitle: string; swatch?: React.ReactNode; videoId?: string }): React.ReactElement {
+export function VideoCard({ eyebrow, title, subtitle, swatch, videoId, accentShadow }: { eyebrow: string; title: string; subtitle: string; swatch?: React.ReactNode; videoId?: string; accentShadow?: string }): React.ReactElement {
+  const style = {
+    "--card-hover-shadow": accentShadow ?? "rgba(26, 26, 46, 0.22)",
+  } as React.CSSProperties;
   return (
-    <div className="group overflow-hidden rounded-[1.5rem] bg-white p-1.5 shadow-[0_10px_30px_-12px_rgba(26,26,46,0.12)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-[0_20px_40px_-14px_rgba(26,26,46,0.22)]">
+    <div
+      style={style}
+      className="group overflow-hidden rounded-[1.5rem] bg-white p-1.5 shadow-[0_10px_30px_-12px_rgba(26,26,46,0.12)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-[0_22px_44px_-14px_var(--card-hover-shadow)]"
+    >
       {videoId ? (
         <YouTubeFacade videoId={videoId} title={title} />
       ) : (
