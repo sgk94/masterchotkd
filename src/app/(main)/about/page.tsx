@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { createMetadata } from "@/lib/metadata";
 import { Button } from "@/components/ui/button";
+import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 import { PageContainer } from "@/components/ui/page-container";
 
 export const metadata = createMetadata({ title: "About", description: "Learn about Master Cho's Taekwondo — 25+ years in Lynnwood, WA.", path: "/about" });
@@ -57,9 +58,7 @@ export default function AboutPage(): React.ReactElement {
       {/* Instructors — alternating left/right layout */}
       <div className="mt-24 lg:mt-32">
         <div className="text-center">
-          <span className="inline-block rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
-            Our Team
-          </span>
+          <EyebrowBadge variant="pill">Our Team</EyebrowBadge>
           <h2 className="mt-5 font-heading text-3xl tracking-tight text-brand-black sm:text-4xl">
             Meet the Instructors
           </h2>

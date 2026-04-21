@@ -69,9 +69,7 @@ export default function StudentsPage(): React.ReactElement {
 
       {/* Announcements */}
       <section>
-        <span className="inline-flex rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
-          {announcementsEyebrow}
-        </span>
+        <EyebrowBadge variant="pill">{announcementsEyebrow}</EyebrowBadge>
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
           {announcements.map((announcement) => {
             const cardClass = `group relative block rounded-2xl p-6 transition-all duration-300 hover:-translate-y-0.5 ${
@@ -178,9 +176,7 @@ export default function StudentsPage(): React.ReactElement {
 
       {/* Quick Links */}
       <section>
-        <span className="inline-flex rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
-          {quickLinksEyebrow}
-        </span>
+        <EyebrowBadge variant="pill">{quickLinksEyebrow}</EyebrowBadge>
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {quickLinks.map((resource) => (
             <Link
