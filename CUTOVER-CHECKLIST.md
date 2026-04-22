@@ -30,9 +30,11 @@ Everything that must happen before, during, and after switching `masterchostaekw
 
 ## Step 2 — Google Search Console
 
-- [ ] Check if you have access at https://search.google.com/search-console
-- [ ] If yes: screenshot top pages, indexed page count, top search queries (last 28 days)
-- [ ] If no: skip — we'll verify via DNS TXT after cutover
+- [x] Verified ownership (auto-verified via DNS TXT)
+- [x] Baseline captured: 538 clicks, 26.8K impressions, avg position 9.7 (3 months)
+- [x] Top queries: "master cho's taekwondo" (107 clicks), "master cho taekwondo" (53), "taekwondo lynnwood" (11)
+- [x] Top pages: homepage (250 clicks), /grand-master-cho (39), /belt-ranks (32), /about (30), /schedule (19)
+- [x] All 23 indexed URLs verified — every old Foxspin URL has a 301 redirect or exists on new site
 
 ## Step 3 — Google Business Profile
 
