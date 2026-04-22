@@ -75,6 +75,10 @@ const nextConfig: NextConfig = {
     { source: "/cart", destination: "/special-offer", permanent: true },
     { source: "/grand-master-cho", destination: "/about", permanent: true },
     { source: "/signin", destination: "/sign-in", permanent: true },
+    { source: "/instructor-daniel-lasala", destination: "/about", permanent: true },
+    { source: "/essay-topics", destination: "/student-resources/testing-essay-topics", permanent: true },
+    { source: "/belt-form-videos", destination: "/members/curriculum/color-belt", permanent: true },
+    { source: "/announcements", destination: "/members", permanent: true },
   ],
   rewrites: async () => [
     {
