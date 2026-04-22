@@ -10,7 +10,7 @@ Everything that must happen before, during, and after switching `masterchostaekw
 
 - [x] Visit every page on the current `masterchostaekwondo.com`
 - [x] List every URL that exists
-- [ ] Screenshot each page (backup in case Foxspin goes dark after cancel)
+- [x] Screenshot each page → saved to `docs/old-site-screenshots/` (15 pages)
 - [x] Map old URLs to new site URLs — 14 redirects added to `next.config.ts`:
   - `/home` → `/`
   - `/about-us` → `/about`
