@@ -57,6 +57,22 @@ const nextConfig: NextConfig = {
       destination: "/members/:path*",
       permanent: true,
     },
+    // Old Foxspin URLs → new site (preserve SEO on cutover)
+    { source: "/home", destination: "/", permanent: true },
+    { source: "/about-us", destination: "/about", permanent: true },
+    { source: "/instructors", destination: "/about", permanent: true },
+    { source: "/belt-ranks", destination: "/members/curriculum/color-belt", permanent: true },
+    { source: "/tiny-tigers", destination: "/programs/tiny-tigers", permanent: true },
+    { source: "/black-belt-club", destination: "/programs/black-belt-club", permanent: true },
+    { source: "/leadership-club", destination: "/programs/leadership-club", permanent: true },
+    { source: "/demonstration-team", destination: "/programs/leadership-club", permanent: true },
+    { source: "/competition-team", destination: "/programs/competition-team", permanent: true },
+    { source: "/student-page", destination: "/members", permanent: true },
+    { source: "/contact-us", destination: "/contact", permanent: true },
+    { source: "/event", destination: "/", permanent: true },
+    { source: "/videos", destination: "/members/curriculum/color-belt", permanent: true },
+    { source: "/privacy-policy", destination: "/", permanent: true },
+    { source: "/cart", destination: "/special-offer", permanent: true },
   ],
   rewrites: async () => [
     {

@@ -8,13 +8,25 @@ Everything that must happen before, during, and after switching `masterchostaekw
 
 ## Step 1 — Audit the current Foxspin site
 
-- [ ] Visit every page on the current `masterchostaekwondo.com`
-- [ ] List every URL that exists (e.g., `/about`, `/classes`, `/contact`, `/schedule`)
+- [x] Visit every page on the current `masterchostaekwondo.com`
+- [x] List every URL that exists
 - [ ] Screenshot each page (backup in case Foxspin goes dark after cancel)
-- [ ] Map old URLs to new site URLs:
-  - Old `/classes` → new `/programs` (example)
-  - Old `/class-schedule` → new `/schedule` (example)
-  - Any old URL with no equivalent → note it
+- [x] Map old URLs to new site URLs — 14 redirects added to `next.config.ts`:
+  - `/home` → `/`
+  - `/about-us` → `/about`
+  - `/instructors` → `/about`
+  - `/belt-ranks` → `/members/curriculum/color-belt`
+  - `/tiny-tigers` → `/programs/tiny-tigers`
+  - `/black-belt-club` → `/programs/black-belt-club`
+  - `/leadership-club` → `/programs/leadership-club`
+  - `/demonstration-team` → `/programs/leadership-club`
+  - `/competition-team` → `/programs/competition-team`
+  - `/student-page` → `/members`
+  - `/contact-us` → `/contact`
+  - `/event` → `/`
+  - `/videos` → `/members/curriculum/color-belt`
+  - `/privacy-policy` → `/`
+  - `/cart` → `/special-offer`
 
 ## Step 2 — Google Search Console
 
@@ -75,8 +87,8 @@ Vercel dashboard → Settings → Environment Variables → scope each to **Prod
 
 ## Step 6 — Code changes (Claude does this)
 
-- [ ] Pin CSP Clerk origins from wildcards to exact production domains
-- [ ] Add 301 redirects for old Foxspin URLs (from Step 1 URL mapping)
+- [ ] Pin CSP Clerk origins from wildcards to exact production domains (need Clerk Production domain first)
+- [x] Add 301 redirects for old Foxspin URLs — 14 redirects in `next.config.ts`
 - [ ] Push to main, wait for Vercel deploy
 
 ## Step 7 — Stage DNS records in Vercel
