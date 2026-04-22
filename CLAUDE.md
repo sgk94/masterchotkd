@@ -4,13 +4,14 @@
 Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), replacing their Foxspin-hosted website ($300/mo) and reducing dependency on Foxspin management ($300/mo). Target: ~$25/mo hosting.
 
 ## Current Status
-- **Phase 1 MVP: Built** — 23 pages, 9 API routes (`/api/contact` live + 8 protected PDF downloads), CI/CD, deployed to Vercel
-- **Pre-launch hardening done** — CSRF + IP-extraction + outbound-HTML-escape + Resend timeout on `/api/contact`; PDF path-traversal guard + RFC 5987 filename; proxy matcher tightened; error boundaries log
-- **Client bundle reduced** — programs-grid, schedule-grid, weekly-training, students/layout, curriculum index now Server Components; CSS `@keyframes` entrance animations replace IntersectionObserver hooks; `FloatingSectionNav` uses CSS `position: sticky` (no scroll handler)
-- **DRY consolidation** — `src/lib/nav.ts` is single nav source; `<ResourceCard>` extracted; `<EyebrowBadge variant="gold">` replaces 13 inline pills
-- **Images optimized** — real dojang + instructor photos at 1600px JPEG @ q82 (resized from 2560px, ~8 MB disk savings); hero poster (79 KB, first-frame LCP); OG image (1200×630) wired
+- **Phase 1 MVP: Built** — 23 pages, 11 API routes (`/api/contact` + 8 PDF downloads + 2 admin invitation routes), CI/CD, deployed to Vercel
+- **Pre-launch hardening done** — CSRF + IP-extraction + outbound-HTML-escape + Resend timeout on `/api/contact`; PDF path-traversal guard + RFC 5987 filename; proxy matcher tightened; error boundaries log; contact route validates actual body bytes (not Content-Length header)
+- **Code review sweep (Apr 2026)** — Clerk CVE patched (7.0.8 → 7.2.3); canonical URLs on all 11 public pages; JSON-LD enriched (SportsActivityLocation, geo, sameAs); meta descriptions localized; heading hierarchy + semantic HTML fixed; hero poster preloaded; `<Reveal>` uses shared IntersectionObserver; `offer-glow` compositor-friendly; `<ProgramDetailPage>` template DRYs 4 program pages; `<EyebrowBadge>` consolidated; `getSiteUrl()` centralized; `formatError()` extracted; Resend singleton cached
+- **Client bundle reduced** — programs-grid, schedule-grid, weekly-training, students/layout, curriculum index, color-belt page now Server Components; CSS `@keyframes` entrance animations replace IntersectionObserver hooks; `FloatingSectionNav` uses CSS `position: sticky` (no scroll handler); `ExpandableCard` extracted to thin client boundary
+- **DRY consolidation** — `src/lib/nav.ts` is single nav source; `<ResourceCard>` extracted; `<EyebrowBadge>` replaces all inline pills; `<ProgramDetailPage>` template replaces 4 copy-pasted program pages; `getSiteUrl()` replaces 5 inline env fallbacks; `formatError()` replaces 5 catch-block patterns
+- **Images optimized** — real dojang + instructor photos at 1600px JPEG @ q82 (resized from 2560px, ~8 MB disk savings); hero poster (79 KB, first-frame LCP, preloaded via `<link>`); OG image (1200×630) wired
 - **Auth: Clerk enabled** (Development mode, see To Get Fully Running) — Facebook social login, route protection via `proxy.ts`
-- **Contact form live** — Resend wired, Upstash rate-limit when configured, validateOrigin/CSRF check, 10KB body cap, control-char + HTML escape, 5s Resend timeout
+- **Contact form live** — Resend wired, Upstash rate-limit when configured, validateOrigin/CSRF check, 10KB actual body-size cap, control-char + HTML escape, 5s Resend timeout
 - **DB + trial/booking flows** — deleted until Phase 2 (schemas, forms, routes removed); Prisma schema trimmed to Program + ClassSchedule + Testimonial
 - **PromoModal removed** (was site-wide on every route for a single-fire BOGO modal)
 - **Deployed:** Vercel (auto-deploys from `main` branch on `sgk94/masterchotkd`)
@@ -228,18 +229,17 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `student-resources/` — 8 PDFs served via `serveProtectedPdf()` (see API Routes).
 
 ## Tests
-Vitest (`pnpm vitest run`) + Playwright E2E (`tests/e2e/*`, needs running app). 219 tests / 50 files. Coverage spans contact schema (incl. programs multi-select), `/api/contact` route branches, `current-cycle` boundaries (incl. 2027 fallback), component rendering (navbar, hero + poster/`<source media>` assertions, programs-grid, schedule-grid, red-black + black-belt-club pages, members-tab-bar, resource-card), protected PDF route, `next.config` flags, `globals.css` grain mobile gate, image size budget.
+Vitest (`pnpm vitest run`) + Playwright E2E (`tests/e2e/*`, needs running app). 271 tests / 59 files. Coverage gate: 75% branches (CI enforced). Coverage spans contact + invitation schemas, `/api/contact` + `/api/admin/invitations` route branches (incl. spoofed Content-Length rejection), `clerk-admin` guard, rate-limit fail-open, `current-cycle` boundaries, `getSiteUrl` fallback chain, `formatError` utility, component rendering (navbar, hero, programs-grid, schedule-grid, red-black + black-belt-club pages, members-tab-bar, resource-card, admin invitations page, invite-form, YouTubeFacade, ProgramDetailPage template, marquee), protected PDF route, `next.config` flags, `globals.css` grain mobile gate, image size budget.
 
 ## To Get Fully Running
 See `LAUNCH-RUNBOOK.md` for step-by-step hand-holding on every item below.
 
-1. Resend: API key + `RESEND_FROM_EMAIL` + `NOTIFY_EMAIL` in `.env.local` / Vercel env (instrumentation.ts will fail prod boot if missing)
+1. Resend: verify `masterchostaekwondo.com` as sending domain (SPF + DKIM); API key + `RESEND_FROM_EMAIL` + `NOTIFY_EMAIL` in `.env.local` / Vercel env (instrumentation.ts will fail prod boot if missing)
 2. Upstash Redis keys in `.env.local` / Vercel env — contact form auto-enables rate limiting once present
-3. (Phase 2) Neon DB → `DATABASE_URL`; `pnpm prisma migrate dev --name init && pnpm prisma db seed`; restore trial/booking models + API routes + forms from git history; replace `static-data` imports with DB queries; remove `require()` workaround from `db.ts`
+3. Switch Clerk from Development to Production mode (DNS CNAMEs + Production keys); pin CSP origins to exact production domains; re-enable `frontendApiProxy: { enabled: true }` in `src/proxy.ts` (see Auth section)
 4. **Logo:** waiting on Canva-exported file from owner (do not trace existing raster)
-5. Tighten CSP (replace `unsafe-inline` with nonces)
-6. Pin Clerk CSP origins to exact production domains (replace wildcards) — coupled with Clerk Production switch
-7. Switch Clerk from Development to Production mode (DNS CNAMEs + Production keys); then re-enable `frontendApiProxy: { enabled: true }` in `src/proxy.ts` (see Auth section)
+5. (Optional) Tighten CSP further — replace `unsafe-inline` with nonces
+6. (Phase 2) Neon DB → `DATABASE_URL`; `pnpm prisma migrate dev --name init && pnpm prisma db seed`; restore trial/booking models + API routes + forms from git history; replace `static-data` imports with DB queries; remove `require()` workaround from `db.ts`
 
 ## Repo
 - **GitHub:** github.com/sgk94/masterchotkd

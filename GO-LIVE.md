@@ -197,12 +197,20 @@ google-site-verification=rvIpjicemCbIMNiNm8rXYxghLwzSTQrvjAiW_YqHaOY
 
 Items that need to be done on the Vercel-hosted site before go-live:
 
-- [ ] Create OG image (1200x630 JPEG) → `public/images/og-image.jpg`
-- [ ] Replace social link placeholders with actual Facebook/Instagram URLs
-- [ ] Replace Spark Member app download `#` placeholders with real App Store / Google Play URLs
+- [x] Create OG image (1200x630 JPEG) → `public/images/og-image.jpg`
+- [x] Replace social link placeholders with actual Facebook/Instagram URLs
+- [x] Replace Spark Member app download placeholders with real App Store / Google Play URLs
+- [x] Add canonical URLs to all public pages
+- [x] Enrich JSON-LD structured data (geo, sameAs, SportsActivityLocation)
+- [x] Add local keywords to page meta descriptions
+- [x] Fix heading hierarchy and semantic HTML issues
+- [x] Patch Clerk CVE (middleware bypass GHSA-vqx2-fgx2-5wq9)
+- [x] Fix contact route body-size validation (actual bytes, not Content-Length header)
 - [ ] Switch Clerk from Development → Production mode
 - [ ] Pin Clerk CSP origins to exact production domains (replace wildcards)
 - [ ] Verify Clerk production keys in Vercel environment variables
+- [ ] **Logo:** waiting on Canva-exported file from owner
+- [ ] Wire remaining poomsae videos as YouTube IDs become available (launching with Taegeuk 1 + 2)
 
 > 📘 **For step-by-step hand-holding on every technical task in Phases 4–5 (Clerk, Resend, Upstash, CSP, DNS cutover, post-launch testing), see [`LAUNCH-RUNBOOK.md`](./LAUNCH-RUNBOOK.md).** This file is the *what*; the runbook is the *how*.
 - [ ] Run final Lighthouse audit
