@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { heading, body } from "@/lib/fonts";
 import { BUSINESS_LOCATION, BUSINESS_PHONE_STRUCTURED } from "@/lib/location";
@@ -6,6 +6,11 @@ import { createMetadata } from "@/lib/metadata";
 import "./globals.css";
 
 export const metadata: Metadata = createMetadata();
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }): React.ReactElement {
   return (
@@ -17,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
             dangerouslySetInnerHTML={{
               __html: JSON.stringify({
                 "@context": "https://schema.org",
-                "@type": "LocalBusiness",
+                "@type": ["LocalBusiness", "SportsActivityLocation"],
                 name: "Master Cho's Taekwondo",
                 description:
                   "Premier Taekwondo academy in Lynnwood, WA offering classes for all ages — from Tiny Tigers to adult Black Belt programs.",
@@ -27,6 +32,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
                   "@type": "PostalAddress",
                   ...BUSINESS_LOCATION,
                 },
+                geo: {
+                  "@type": "GeoCoordinates",
+                  latitude: 47.8209,
+                  longitude: -122.3015,
+                },
+                priceRange: "$$",
+                hasMap: "https://www.google.com/maps/place/Master+Cho's+Black+Belt+Academy",
                 openingHoursSpecification: [
                   {
                     "@type": "OpeningHoursSpecification",
@@ -42,7 +54,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
                   },
                 ],
                 image: "https://masterchostaekwondo.com/images/og-image.jpg",
-                sameAs: [],
+                sameAs: [
+                  "https://www.facebook.com/masterchostaekwondo/",
+                  "https://www.instagram.com/masterchostaekwondo/",
+                ],
               }),
             }}
           />

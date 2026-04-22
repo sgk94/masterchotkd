@@ -1,5 +1,6 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { formatError } from "@/lib/errors";
 
 let _ratelimit: Ratelimit | null = null;
 
@@ -31,8 +32,7 @@ export async function checkRateLimit(
   } catch (err) {
     console.error("Rate limit check failed — failing open", {
       identifier,
-      name: err instanceof Error ? err.name : "Unknown",
-      message: err instanceof Error ? err.message : String(err),
+      ...formatError(err),
     });
     return { success: true };
   }

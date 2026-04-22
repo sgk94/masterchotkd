@@ -4,17 +4,15 @@ import { z } from "zod";
 import { clerkErrorToResponse, requireAdmin } from "@/lib/clerk-admin";
 import { getClientIp, validateOrigin } from "@/lib/api-security";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { formatError } from "@/lib/errors";
 import { invitationCreateSchema } from "@/schemas/invitation";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 export const maxDuration = 10;
 
 const MAX_BODY_BYTES = 2_000;
-
-function siteUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-}
 
 export async function POST(request: Request): Promise<NextResponse> {
   const originError = await validateOrigin();
@@ -63,7 +61,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     const client = await clerkClient();
     const invitation = await client.invitations.createInvitation({
       emailAddress: parsed.data.email,
-      redirectUrl: `${siteUrl()}/sign-up`,
+      redirectUrl: `${getSiteUrl()}/sign-up`,
     });
     return NextResponse.json(
       {
@@ -76,10 +74,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       { status: 201 },
     );
   } catch (err) {
-    console.error("Clerk createInvitation failed", {
-      name: err instanceof Error ? err.name : "Unknown",
-      message: err instanceof Error ? err.message : String(err),
-    });
+    console.error("Clerk createInvitation failed", formatError(err));
     return clerkErrorToResponse(err, {
       status: 502,
       message: "Could not send invitation. Try again.",

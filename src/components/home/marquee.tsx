@@ -10,7 +10,7 @@ const items = [
 ];
 
 export function Marquee(): React.ReactElement {
-  const repeated = [...items, ...items, ...items, ...items];
+  const repeated = [...items, ...items];
 
   return (
     <div className="relative overflow-hidden border-y border-brand-taupe/30 bg-brand-cream py-4">

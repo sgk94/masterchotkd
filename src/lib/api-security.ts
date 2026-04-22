@@ -1,10 +1,11 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { getSiteUrl } from "@/lib/site-url";
 
 export async function validateOrigin(): Promise<NextResponse | null> {
   const headersList = await headers();
   const origin = headersList.get("origin");
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
   const expectedOrigin = new URL(siteUrl).origin;
 
   if (!origin || origin !== expectedOrigin) {

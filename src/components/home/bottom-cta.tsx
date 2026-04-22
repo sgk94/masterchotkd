@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 import { Reveal } from "@/components/ui/reveal";
 import { BezelCard } from "@/components/ui/bezel-card";
 
@@ -69,9 +70,7 @@ export function BottomCta(): React.ReactElement {
           {/* Header */}
           <Reveal>
             <div className="text-center">
-              <span className="inline-block rounded-full border border-brand-gold/20 bg-brand-gold/5 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-gold/70">
-                Our Philosophy
-              </span>
+              <EyebrowBadge variant="gold" className="!text-brand-gold/70">Our Philosophy</EyebrowBadge>
               <h2 className="mt-6 font-heading text-3xl tracking-tight text-white sm:text-4xl lg:text-5xl">
                 More Than Just Kicks & Punches
               </h2>

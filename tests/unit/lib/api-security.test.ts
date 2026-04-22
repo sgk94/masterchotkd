@@ -48,9 +48,11 @@ describe("validateOrigin", () => {
     expect(res!.status).toBe(403);
   });
 
-  it("defaults to localhost when NEXT_PUBLIC_SITE_URL is unset", async () => {
+  it("falls back to production domain when NEXT_PUBLIC_SITE_URL is unset", async () => {
+    delete process.env.VERCEL_PROJECT_PRODUCTION_URL;
+    delete process.env.VERCEL_URL;
     headersMock.mockResolvedValue(
-      makeHeaders({ origin: "http://localhost:3000" }),
+      makeHeaders({ origin: "https://masterchostaekwondo.com" }),
     );
     const { validateOrigin } = await import("@/lib/api-security");
     await expect(validateOrigin()).resolves.toBeNull();

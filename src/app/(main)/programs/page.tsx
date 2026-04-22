@@ -6,7 +6,8 @@ import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
   title: "Programs",
-  description: "Explore our martial arts programs for all ages.",
+  description: "Taekwondo programs for all ages in Lynnwood, WA — Tiny Tigers (4-6), Black Belt Club, Leadership Club, and Competition Team.",
+  path: "/programs",
 });
 
 export default async function ProgramsPage(): Promise<React.ReactElement> {

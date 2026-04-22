@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 const SAFE_FILENAME = /^[A-Za-z0-9 ._-]+\.pdf$/;
 
 export async function serveProtectedPdf(
-  request: Request | undefined,
+  request: Request,
   fileName: string,
 ): Promise<Response> {
   const { userId } = await auth();
@@ -24,9 +24,7 @@ export async function serveProtectedPdf(
   }
 
   try {
-    const download = request
-      ? new URL(request.url).searchParams.get("download") === "1"
-      : false;
+    const download = new URL(request.url).searchParams.get("download") === "1";
     const file = await readFile(filePath);
 
     const encoded = encodeURIComponent(fileName);

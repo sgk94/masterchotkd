@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 import { staticPrograms } from "@/lib/static-data";
 
 type ProgramLayout = {
@@ -62,9 +63,7 @@ export function ProgramsGrid(): React.ReactElement {
     <section className="mx-auto max-w-7xl px-4 pt-12 pb-24 sm:px-6 lg:pt-16 lg:pb-32">
       {/* Section header */}
       <div className="max-w-xl">
-        <span className="inline-block rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
-          Programs
-        </span>
+        <EyebrowBadge variant="pill">Programs</EyebrowBadge>
         <h2 className="mt-5 font-heading text-3xl tracking-tight text-brand-black sm:text-4xl lg:text-5xl">
           Find your path
         </h2>
@@ -136,7 +135,7 @@ export function ProgramsGrid(): React.ReactElement {
                 )}
 
                 {/* Explore CTA with button-in-button icon */}
-                <span className={`mt-4 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.15em] ${"image" in program && program.image ? "text-white/60" : "text-white/60"} transition-colors duration-500 group-hover:text-brand-gold`}>
+                <span className={`mt-4 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.15em] text-white/60 transition-colors duration-500 group-hover:text-brand-gold`}>
                   Explore
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:scale-110 group-hover:bg-brand-gold/20">
                     <svg

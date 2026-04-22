@@ -12,10 +12,8 @@ describe("serveProtectedPdf", () => {
     const { serveProtectedPdf } = await import(
       "@/app/student-resources/_lib/serve-protected-pdf"
     );
-    const res = await serveProtectedPdf(
-      undefined,
-      "RedBlack Training Packet.pdf",
-    );
+    const req = new Request("http://localhost/x");
+    const res = await serveProtectedPdf(req, "RedBlack Training Packet.pdf");
     expect(res.status).toBe(401);
   });
 
@@ -24,7 +22,8 @@ describe("serveProtectedPdf", () => {
     const { serveProtectedPdf } = await import(
       "@/app/student-resources/_lib/serve-protected-pdf"
     );
-    const res = await serveProtectedPdf(undefined, "../etc/passwd");
+    const req = new Request("http://localhost/x");
+    const res = await serveProtectedPdf(req, "../etc/passwd");
     expect(res.status).toBe(404);
   });
 
@@ -33,7 +32,8 @@ describe("serveProtectedPdf", () => {
     const { serveProtectedPdf } = await import(
       "@/app/student-resources/_lib/serve-protected-pdf"
     );
-    const res = await serveProtectedPdf(undefined, "handbook.exe");
+    const req = new Request("http://localhost/x");
+    const res = await serveProtectedPdf(req, "handbook.exe");
     expect(res.status).toBe(404);
   });
 
@@ -42,7 +42,8 @@ describe("serveProtectedPdf", () => {
     const { serveProtectedPdf } = await import(
       "@/app/student-resources/_lib/serve-protected-pdf"
     );
-    const res = await serveProtectedPdf(undefined, "does-not-exist.pdf");
+    const req = new Request("http://localhost/x");
+    const res = await serveProtectedPdf(req, "does-not-exist.pdf");
     expect(res.status).toBe(404);
   });
 
@@ -72,10 +73,8 @@ describe("serveProtectedPdf", () => {
     const { serveProtectedPdf } = await import(
       "@/app/student-resources/_lib/serve-protected-pdf"
     );
-    const res = await serveProtectedPdf(
-      undefined,
-      "RedBlack Training Packet.pdf",
-    );
+    const req = new Request("http://localhost/x");
+    const res = await serveProtectedPdf(req, "RedBlack Training Packet.pdf");
     expect(res.headers.get("Content-Disposition")).toContain(
       "filename*=UTF-8''RedBlack%20Training%20Packet.pdf",
     );

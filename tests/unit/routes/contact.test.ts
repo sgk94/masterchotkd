@@ -76,10 +76,11 @@ describe("POST /api/contact", () => {
     expect(call.subject).toContain("John Doe");
   });
 
-  it("returns 413 when content-length exceeds limit", async () => {
+  it("returns 413 when actual body exceeds limit", async () => {
     const { POST } = await import("@/app/(main)/api/contact/route");
 
-    const response = await POST(makeRequest(validBody, { contentLength: 50_000 }));
+    const oversized = JSON.stringify({ ...validBody, message: "x".repeat(11_000) });
+    const response = await POST(makeRequest(null, { raw: oversized }));
 
     expect(response.status).toBe(413);
     expect(sendEmailMock).not.toHaveBeenCalled();
@@ -116,6 +117,31 @@ describe("POST /api/contact", () => {
     expect(payload.error).toBe("Invalid form data");
     expect(payload.fieldErrors).toBeDefined();
     expect(payload).not.toHaveProperty("formErrors");
+    expect(sendEmailMock).not.toHaveBeenCalled();
+  });
+
+  it("rejects body larger than 10 KB regardless of Content-Length header", async () => {
+    const { POST } = await import("@/app/(main)/api/contact/route");
+
+    const oversizedBody = JSON.stringify({
+      name: "Test User",
+      email: "test@example.com",
+      phone: "425-555-1234",
+      message: "x".repeat(11_000),
+    });
+
+    const response = await POST(
+      new Request("http://localhost/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": "100",
+        },
+        body: oversizedBody,
+      }),
+    );
+
+    expect(response.status).toBe(413);
     expect(sendEmailMock).not.toHaveBeenCalled();
   });
 

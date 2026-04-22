@@ -6,10 +6,19 @@ import { Testimonials } from "@/components/home/testimonials";
 import { Gallery } from "@/components/home/gallery";
 import { BottomCta } from "@/components/home/bottom-cta";
 import { Reveal } from "@/components/ui/reveal";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata = createMetadata({ path: "/" });
 
 export default function HomePage(): React.ReactElement {
   return (
     <>
+      <link
+        rel="preload"
+        as="image"
+        href="/images/hero-poster.jpg"
+        fetchPriority="high"
+      />
       <Hero />
       <Marquee />
       <ProgramsGrid />

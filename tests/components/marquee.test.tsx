@@ -8,8 +8,8 @@ describe("Marquee", () => {
     expect(container.querySelector(".animate-marquee")).not.toBeNull();
   });
 
-  it("repeats items four times", () => {
+  it("repeats items twice", () => {
     const { getAllByText } = render(<Marquee />);
-    expect(getAllByText("Tiny Tigers").length).toBe(4);
+    expect(getAllByText("Tiny Tigers").length).toBe(2);
   });
 });

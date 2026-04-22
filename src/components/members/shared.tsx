@@ -1,3 +1,4 @@
+import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 import { YouTubeFacade } from "./youtube-facade";
 
 export function VideoPlaceholder({ title }: { title: string }): React.ReactElement {
@@ -16,9 +17,7 @@ export function VideoPlaceholder({ title }: { title: string }): React.ReactEleme
 export function SectionHeader({ label, title, description }: { label: string; title: string; description?: string }): React.ReactElement {
   return (
     <div>
-      <span className="inline-flex rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
-        {label}
-      </span>
+      <EyebrowBadge variant="pill">{label}</EyebrowBadge>
       <h2 className="mt-4 font-heading text-2xl tracking-tight text-brand-black sm:text-3xl">{title}</h2>
       {description && <p className="mt-2 max-w-3xl text-sm leading-relaxed text-brand-black/55">{description}</p>}
     </div>

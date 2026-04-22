@@ -2,7 +2,7 @@ import { createMetadata } from "@/lib/metadata";
 import { staticTestimonials } from "@/lib/static-data";
 import { PageContainer } from "@/components/ui/page-container";
 
-export const metadata = createMetadata({ title: "Reviews", description: "See what students say about Master Cho's Taekwondo." });
+export const metadata = createMetadata({ title: "Reviews", description: "See what students say about Master Cho's Taekwondo in Lynnwood, WA.", path: "/reviews" });
 
 export default async function ReviewsPage(): Promise<React.ReactElement> {
   return (

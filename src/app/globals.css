@@ -158,16 +158,28 @@ p {
 }
 
 @keyframes offer-glow {
-  0%, 100% { box-shadow: 0 6px 20px -4px rgba(196, 30, 42, 0.25); }
-  50% { box-shadow: 0 12px 36px -4px rgba(196, 30, 42, 0.55); }
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
 }
 
 .animate-offer-glow {
-  animation: offer-glow 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  will-change: box-shadow;
+  position: relative;
 }
+
+.animate-offer-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 12px 36px -4px rgba(196, 30, 42, 0.55);
+  animation: offer-glow 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: opacity;
+  pointer-events: none;
+  z-index: -1;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-offer-glow { animation: none; }
+  .animate-offer-glow::after { animation: none; opacity: 0.45; }
 }
 
 /* Subtle grain overlay for premium feel */

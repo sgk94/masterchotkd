@@ -1,4 +1,5 @@
 import { BezelCard } from "@/components/ui/bezel-card";
+import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 
 const weeks = [
   {
@@ -48,9 +49,7 @@ export default function WeeklyTrainingPage(): React.ReactElement {
     <div>
       {/* Header */}
       <div>
-        <span className="inline-block rounded-full border border-brand-taupe/40 bg-brand-cream px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-black/50">
-          Training Structure
-        </span>
+        <EyebrowBadge variant="pill">Training Structure</EyebrowBadge>
         <h1 className="mt-5 font-heading text-3xl tracking-tight text-brand-black sm:text-4xl lg:text-5xl">
           Weekly Training
         </h1>
