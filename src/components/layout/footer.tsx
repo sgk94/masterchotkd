@@ -21,7 +21,7 @@ export function Footer(): React.ReactElement {
           <p className="mb-4 text-sm font-semibold text-brand-gold">Contact</p>
           <ul className="flex flex-col gap-2">
             <li><a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-sm text-white/70 hover:text-white transition-colors">{BUSINESS_PHONE_DISPLAY}</a></li>
-            <li><a href="https://www.facebook.com/masterchostaekwondo/" target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 hover:text-white transition-colors">Facebook</a></li>
+            <li><a href="https://www.facebook.com/masterchostaekwondo" target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 hover:text-white transition-colors">Facebook</a></li>
             <li><a href="https://www.instagram.com/masterchostaekwondo/" target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 hover:text-white transition-colors">Instagram</a></li>
           </ul>
         </div>

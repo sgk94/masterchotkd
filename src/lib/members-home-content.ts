@@ -89,7 +89,7 @@ export function getMembersHomeContent(): MembersHomeContent {
       title: "Stay Connected",
       description:
         "Looking for a place to connect with other parents, find updates, and keep up with news? Follow our social pages. Announcements can be posted there as well as here on the Members page.",
-      facebookUrl: "https://www.facebook.com/masterchostaekwondo/",
+      facebookUrl: "https://www.facebook.com/masterchostaekwondo",
       instagramUrl: "https://www.instagram.com/masterchostaekwondo/",
     },
     announcementsEyebrow: "Latest Updates",
