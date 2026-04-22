@@ -209,7 +209,7 @@ Items that need to be done on the Vercel-hosted site before go-live:
 - [ ] Switch Clerk from Development → Production mode
 - [ ] Pin Clerk CSP origins to exact production domains (replace wildcards)
 - [ ] Verify Clerk production keys in Vercel environment variables
-- [ ] **Logo:** waiting on Canva-exported file from owner
+- [x] **Logo:** replaced with Canva PNG export (`logo.png`, 153 KB)
 - [ ] Wire remaining poomsae videos as YouTube IDs become available (launching with Taegeuk 1 + 2)
 
 > 📘 **For step-by-step hand-holding on every technical task in Phases 4–5 (Clerk, Resend, Upstash, CSP, DNS cutover, post-launch testing), see [`LAUNCH-RUNBOOK.md`](./LAUNCH-RUNBOOK.md).** This file is the *what*; the runbook is the *how*.

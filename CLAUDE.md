@@ -202,7 +202,7 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - Lighthouse gate is `error` at 0.9 with mobile preset on home, tiny-tigers, schedule (CI fails if regressed)
 - pnpm 10 declared in `packageManager` — CI must not specify `version: 9`
 - Hero uses CSS entrance animations (`@keyframes fade-up`, `hero-video-in`) — no JS needed
-- `logo.svg` is 259 KB (embedded raster) — SVGO can't optimize; **waiting on Canva-exported logo** (do not auto-trace; user rejected that path)
+- `logo.png` is 153 KB (833×798 Canva export) — `next/image` optimizes at runtime to avif/webp at rendered sizes (44px navbar, 96px footer)
 - Programs grid order is hardcoded in `gridOrder` array — must match bento layout positions
 - CSP allows `unsafe-inline` + `unsafe-eval` for scripts (required by Next.js) — tighten with nonces later
 - CSP includes Clerk wildcard domains — pin to `clerk.<domain>` + `accounts.<domain>` at Clerk Production cutover (see `LAUNCH-RUNBOOK.md`)
@@ -224,7 +224,7 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - First admin must be granted manually: Clerk Dashboard → Users → select account → Metadata → Public → `{ "role": "admin" }`.
 
 ## Assets
-- `public/images/` — JPEG, 1600px wide @ q82 (programs, gallery, instructors); `hero-poster.jpg` (79 KB first-frame LCP); `og-image.jpg` (1200×630); `storefront.webp` (62 KB, used on About hero). `logo.svg` is a 259 KB embedded raster placeholder (see Gotchas). Size budget enforced by `tests/unit/image-budget.test.ts` (600 KB cap, recursive, covers jpg/png/webp/avif/gif/svg).
+- `public/images/` — JPEG, 1600px wide @ q82 (programs, gallery, instructors); `hero-poster.jpg` (79 KB first-frame LCP); `og-image.jpg` (1200×630); `storefront.webp` (62 KB, used on About hero). `logo.png` (153 KB Canva export, optimized at runtime via next/image). Size budget enforced by `tests/unit/image-budget.test.ts` (600 KB cap, recursive, covers jpg/png/webp/avif/gif/svg).
 - `public/videos/hero.mp4` — 5.9 MB, `preload="none"`.
 - `student-resources/` — 8 PDFs served via `serveProtectedPdf()` (see API Routes).
 
@@ -237,11 +237,11 @@ See `LAUNCH-RUNBOOK.md` for step-by-step hand-holding on every item below.
 1. Resend: verify `masterchostaekwondo.com` as sending domain (SPF + DKIM); API key + `RESEND_FROM_EMAIL` + `NOTIFY_EMAIL` in `.env.local` / Vercel env (instrumentation.ts will fail prod boot if missing)
 2. Upstash Redis keys in `.env.local` / Vercel env — contact form auto-enables rate limiting once present
 3. Switch Clerk from Development to Production mode (DNS CNAMEs + Production keys); pin CSP origins to exact production domains; re-enable `frontendApiProxy: { enabled: true }` in `src/proxy.ts` (see Auth section)
-4. **Logo:** waiting on Canva-exported file from owner (do not trace existing raster)
+4. ~~**Logo:**~~ replaced with Canva PNG export (153 KB, `logo.png`)
 5. (Optional) Tighten CSP further — replace `unsafe-inline` with nonces
 6. (Phase 2) Neon DB → `DATABASE_URL`; `pnpm prisma migrate dev --name init && pnpm prisma db seed`; restore trial/booking models + API routes + forms from git history; replace `static-data` imports with DB queries; remove `require()` workaround from `db.ts`
 
 ## Repo
 - **GitHub:** github.com/sgk94/masterchotkd
 - **Hosting:** Vercel (auto-deploys from main)
-- **Logo:** `public/images/logo.svg`
+- **Logo:** `public/images/logo.png`
