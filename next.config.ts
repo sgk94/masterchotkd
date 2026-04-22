@@ -73,6 +73,8 @@ const nextConfig: NextConfig = {
     { source: "/videos", destination: "/members/curriculum/color-belt", permanent: true },
     { source: "/privacy-policy", destination: "/", permanent: true },
     { source: "/cart", destination: "/special-offer", permanent: true },
+    { source: "/grand-master-cho", destination: "/about", permanent: true },
+    { source: "/signin", destination: "/sign-in", permanent: true },
   ],
   rewrites: async () => [
     {
