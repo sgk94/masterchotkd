@@ -107,15 +107,15 @@ google-site-verification=rvIpjicemCbIMNiNm8rXYxghLwzSTQrvjAiW_YqHaOY
 
 ## Phase 3 — What Must Be Preserved
 
-- [ ] Google MX records — do not remove unless intentionally replacing email
-- [ ] Google TXT verification records — tied to Search Console / business verification
-- [ ] `www` → apex redirect behavior
-- [ ] Final business information on new site:
-  - [ ] Phone: 425-742-4282
-  - [ ] Address: 5031 168th ST SW STE 100, Lynnwood, WA 98037
-  - [ ] Email: (confirm)
-  - [ ] Social links: (need actual Facebook/Instagram URLs)
-  - [ ] Pricing / offer copy: $49 / 2 weeks trial
+- [x] Google MX records — no active mailbox; skip MX for now, add Zoho MX later if domain email needed
+- [x] Google TXT verification records — preserving in Vercel DNS (CUTOVER-CHECKLIST step 7)
+- [x] `www` → apex redirect — configured in Vercel (308 permanent redirect)
+- [x] Final business information on new site:
+  - [x] Phone: 425-742-4282 (verified against GBP)
+  - [x] Address: 5031 168th Street Southwest STE 100, Lynnwood, WA 98037 (verified against GBP)
+  - [x] Email: `NOTIFY_EMAIL` = `tkdkscho@gmail.com`
+  - [x] Social links: Facebook + Instagram (verified against GBP)
+  - [x] Pricing / offer copy: $49 / 2 weeks trial
 
 ---
 
