@@ -64,22 +64,28 @@ google-site-verification=rvIpjicemCbIMNiNm8rXYxghLwzSTQrvjAiW_YqHaOY
 
 ## Phase 1 — Before Contacting Foxspin
 
-- [ ] Confirm the goal: full control of domain, DNS, hosting, and connected services
-- [ ] Decide long-term providers:
-  - [ ] Registrar (e.g., Cloudflare, Namecheap, Google Domains)
-  - [ ] DNS (e.g., Vercel DNS, Cloudflare)
-  - [ ] Hosting: **Vercel** (already deployed)
-  - [ ] Form handling (Resend or stubbed for now)
-  - [ ] Analytics / verification (Google Search Console, existing TXT records)
-  - [ ] Email DNS management (preserve Google MX)
-- [ ] Confirm replacement website is ready to launch
-- [ ] Save copies of all current content and assets:
-  - [ ] Page copy
-  - [ ] Images / logos
-  - [ ] Privacy policy text
-  - [ ] Downloadable files
-  - [ ] Business contact details
-  - [ ] Social links
+- [x] Confirm the goal:
+  - [x] Own and control the website — built and deployed on Vercel
+  - [ ] Own and control the domain — have GoDaddy access, unclear if nameserver change needs Foxspin approval
+  - [ ] Own and control DNS — moving to Vercel DNS (blocked on domain control question)
+  - [x] Own and control hosting — Vercel, we control it
+  - [x] Connected services we control: Resend (email sending), Clerk (auth), Google Search Console (verified), Google Business Profile (access confirmed)
+  - [x] SparkMembership/Pitbull payments — staying separate, not part of this migration
+  - [ ] Domain email (@masterchostaekwondo.com) — no active mailbox currently, may set up later
+- [x] Decide long-term providers:
+  - [x] Registrar — Wild West Domains / GoDaddy (staying for now, optional transfer to Cloudflare later)
+  - [x] DNS — Vercel DNS
+  - [x] Hosting — Vercel
+  - [x] Form handling — Resend
+  - [x] Analytics / verification — Google Search Console (verified)
+  - [x] Email DNS — no Google Workspace in use; MX records exist but no active mailbox
+- [x] Confirm replacement website is ready to launch — code-complete, 272 tests passing
+- [x] Save copies of all current content and assets:
+  - [x] Page screenshots — saved to `docs/old-site-screenshots/` (15 pages)
+  - [x] Logo — new Canva PNG export (`logo.png`)
+  - [x] Privacy policy — new page created at `/privacy-policy`
+  - [x] Business contact details — verified against GBP
+  - [x] Social links — Facebook + Instagram confirmed, matching GBP
 
 ---
 
