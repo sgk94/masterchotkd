@@ -66,12 +66,12 @@ google-site-verification=rvIpjicemCbIMNiNm8rXYxghLwzSTQrvjAiW_YqHaOY
 
 - [x] Confirm the goal:
   - [x] Own and control the website — built and deployed on Vercel
-  - [ ] Own and control the domain — have GoDaddy access, unclear if nameserver change needs Foxspin approval
-  - [ ] Own and control DNS — moving to Vercel DNS (blocked on domain control question)
+  - [x] Own and control the domain — our GoDaddy account, can change nameservers directly
+  - [x] Own and control DNS — moving to Vercel DNS (nameserver change available via GoDaddy)
   - [x] Own and control hosting — Vercel, we control it
   - [x] Connected services we control: Resend (email sending), Clerk (auth), Google Search Console (verified), Google Business Profile (access confirmed)
   - [x] SparkMembership/Pitbull payments — staying separate, not part of this migration
-  - [ ] Domain email (@masterchostaekwondo.com) — no active mailbox currently, may set up later
+  - [ ] Domain email (@masterchostaekwondo.com) — no active mailbox; if needed later, use Zoho Mail (free tier)
 - [x] Decide long-term providers:
   - [x] Registrar — Wild West Domains / GoDaddy (staying for now, optional transfer to Cloudflare later)
   - [x] DNS — Vercel DNS
@@ -91,24 +91,17 @@ google-site-verification=rvIpjicemCbIMNiNm8rXYxghLwzSTQrvjAiW_YqHaOY
 
 ## Phase 2 — Questions For Foxspin
 
-- [ ] Who controls the domain registration account? (our account or theirs?)
-- [ ] Who controls DNS? (Foxspin, Register.com, or other?)
-- [ ] Request full DNS record export (A, CNAME, MX, TXT, SRV, all records)
-- [ ] Will canceling service shut off hosting immediately?
-- [ ] Do they manage SSL certificates? (tied to their platform?)
-- [ ] Request export of any old platform data:
-  - [ ] Lead form submissions
-  - [ ] Contact / trial requests
-  - [ ] Student/member portal data
-  - [ ] Media files
-  - [ ] Privacy policy / legal text
-  - [ ] Analytics or tracking setup
-- [ ] Are any old platform features still active? (cart, checkout, student page, privacy policy)
-- [ ] If transferring domain away, request:
-  - [ ] Domain unlock
-  - [ ] EPP/auth code
-  - [ ] Confirmation transfer is permitted
-  - [ ] Confirmation no settings will block transfer
+- [x] Who controls the domain registration account? — **Our account** (GoDaddy/Wild West Domains, we have direct login)
+- [x] Who controls DNS? — Register.com nameservers, but we can change nameservers ourselves via GoDaddy Nameservers tab
+- [x] Full DNS record export — captured in Current Setup Snapshot above (A, CNAME, MX, TXT)
+- [ ] Will canceling service shut off hosting immediately? — **need to ask**
+- [x] SSL certificates — not relevant, Vercel auto-provisions SSL after nameserver switch
+- [ ] Request export of any old platform data — **need to ask:**
+  - [ ] Lead form submissions / contact history
+  - [ ] Any other data tied to our account
+- [x] Old platform features — cart goes to SparkPages (separate from Foxspin); SparkMembership staying as-is
+- [ ] Cancellation terms — **need to ask:** notice period, contract end date
+- [x] Domain transfer — not needed now (domain expires March 2027, optional transfer to Cloudflare later)
 
 ---
 
