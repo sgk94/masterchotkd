@@ -122,52 +122,61 @@ google-site-verification=rvIpjicemCbIMNiNm8rXYxghLwzSTQrvjAiW_YqHaOY
 ## Phase 4 — Technical Transition
 
 ### Provider Decisions
-- [ ] Keep current registrar or transfer? (recommend transfer to Cloudflare or Namecheap)
-- [ ] DNS managed by: (recommend Vercel DNS — simplest with Vercel hosting)
+- [x] Keep current registrar (Wild West / GoDaddy) — optional transfer to Cloudflare later
+- [x] DNS managed by: Vercel DNS
 
 ### Vercel Domain Setup
-- [ ] Add `masterchostaekwondo.com` as custom domain in Vercel project
-- [ ] Add `www.masterchostaekwondo.com` as redirect domain in Vercel project
-- [ ] Verify SSL is provisioned for both hostnames
+- [x] Add `masterchostaekwondo.com` as custom domain in Vercel project (Production)
+- [x] Add `www.masterchostaekwondo.com` as redirect domain (308 → apex)
+- [ ] Verify SSL is provisioned for both hostnames (happens automatically after nameserver switch)
 
 ### Resend / Contact Form Cutover
-- [ ] Verify `masterchostaekwondo.com` as a sending domain in Resend (SPF + DKIM)
-- [ ] Wait for Resend to show the domain as "Verified"
-- [ ] Only then flip `RESEND_FROM_EMAIL` in Vercel env vars from `onboarding@resend.dev` → `noreply@masterchostaekwondo.com`
-- [ ] Confirm `NOTIFY_EMAIL` in Vercel env vars is set (contact form fails on boot if missing)
-- [ ] Send a test submission through the live form; confirm Master Cho receives it and "Reply" goes back to the prospect
-- [ ] Confirm Upstash env vars (`UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`) are set so rate limiting is active — otherwise the form runs without rate limits
+- [ ] Add `masterchostaekwondo.com` as sending domain in Resend (get SPF + DKIM DNS records)
+- [ ] Add Resend DNS records to Vercel DNS (after nameserver switch)
+- [ ] Verify domain in Resend dashboard
+- [ ] Set `RESEND_FROM_EMAIL` = `noreply@masterchostaekwondo.com` in Vercel Production env
+- [ ] Set `NOTIFY_EMAIL` = `tkdkscho@gmail.com` in Vercel Production env
+- [ ] Send test contact form submission → confirm email arrives + Reply-To works
+- [ ] Provision Upstash Redis → set `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` in Vercel Production env
+
+### Clerk Production
+- [ ] Create Clerk Production instance
+- [ ] Set up Facebook OAuth with production callback URL
+- [ ] Set sign-up mode = Restricted (invitation-only)
+- [ ] Set first admin (`publicMetadata.role = "admin"`)
+- [ ] Copy `pk_live_` + `sk_live_` keys → set in Vercel Production env
+- [ ] Add Clerk DNS records to Vercel DNS (5 CNAMEs)
+- [ ] Verify domain in Clerk dashboard
+- [ ] Pin CSP origins in code (Claude does this — needs production domain first)
 
 ### DNS Cutover
-- [ ] Recreate all required DNS records in new DNS provider BEFORE cutover:
-  - [ ] A / CNAME records pointing to Vercel
-  - [ ] `www` → apex redirect
-  - [ ] MX records (all 5 Google entries)
-  - [ ] TXT records (both google-site-verification)
-- [ ] Lower DNS TTLs before switching (if registrar/DNS provider allows)
-- [ ] Point nameservers or A records to Vercel
-- [ ] Wait for DNS propagation
+- [ ] Stage Google TXT verification records in Vercel DNS
+- [ ] Switch nameservers at GoDaddy: Register.com → `ns1.vercel-dns.com` + `ns2.vercel-dns.com`
+- [ ] Wait for DNS propagation (~10-60 min)
+- [ ] Add Resend + Clerk DNS records in Vercel DNS (available after nameserver switch)
 
 ### Post-Cutover Testing
 - [ ] Homepage loads on `masterchostaekwondo.com`
 - [ ] `www.masterchostaekwondo.com` redirects to apex
-- [ ] HTTPS works on both hostnames
+- [ ] HTTPS works (no cert errors)
 - [ ] Desktop and mobile rendering
 - [ ] All internal links work
-- [ ] Forms submit (or show appropriate message if stubbed)
+- [ ] Contact form submits → email arrives at `tkdkscho@gmail.com`
+- [ ] Old Foxspin URLs return 301 redirects (not 404)
 - [ ] Redirects work (`/students/*` → `/members/*`)
 - [ ] Members area auth works (Clerk sign-in)
-- [ ] Review page loads
-- [ ] Contact page loads with phone `tel:` link
-- [ ] Schedule page loads
-- [ ] Program detail pages load
-- [ ] PDF download works (auth required)
+- [ ] Facebook social login works
+- [ ] PDF downloads work (must be signed in)
+- [ ] All program detail pages load
+- [ ] Schedule, reviews, contact, special-offer pages load
+- [ ] Privacy policy page loads
+- [ ] DevTools Console → no CSP violations, no 404s
 
-### Email & Services Verification
-- [ ] Send/receive test email to confirm Google MX still works
-- [ ] Google Search Console still shows verified
-- [ ] Google verification TXT records resolve correctly
-- [ ] Any social or business profile integrations still work
+### Services Verification
+- [ ] Google Search Console still shows verified (TXT records preserved)
+- [ ] Resend domain shows "Verified"
+- [ ] Clerk domain shows verified
+- [ ] Update GBP website URL → `https://masterchostaekwondo.com` (no www)
 
 ---
 
