@@ -79,6 +79,11 @@ const nextConfig: NextConfig = {
     { source: "/essay-topics", destination: "/student-resources/testing-essay-topics", permanent: true },
     { source: "/belt-form-videos", destination: "/members/curriculum/color-belt", permanent: true },
     { source: "/announcements", destination: "/members", permanent: true },
+    { source: "/blog", destination: "/", permanent: true },
+    { source: "/blog/:path*", destination: "/", permanent: true },
+    { source: "/calendar", destination: "/schedule", permanent: true },
+    { source: "/belt-graduation", destination: "/members", permanent: true },
+    { source: "/new-members", destination: "/special-offer", permanent: true },
   ],
   rewrites: async () => [
     {
