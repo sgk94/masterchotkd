@@ -4,7 +4,7 @@
 Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), replacing their Foxspin-hosted website ($300/mo) and reducing dependency on Foxspin management ($300/mo). Target: ~$25/mo hosting.
 
 ## Current Status
-- **Phase 1 MVP: Built** — 23 pages, 11 API routes (`/api/contact` + 8 PDF downloads + 2 admin invitation routes), CI/CD, deployed to Vercel
+- **Phase 1 MVP: Built** — 24 pages, 11 API routes (`/api/contact` + 8 PDF downloads + 2 admin invitation routes), CI/CD, deployed to Vercel
 - **Pre-launch hardening done** — CSRF + IP-extraction + outbound-HTML-escape + Resend timeout on `/api/contact`; PDF path-traversal guard + RFC 5987 filename; proxy matcher tightened; error boundaries log; contact route validates actual body bytes (not Content-Length header)
 - **Code review sweep (Apr 2026)** — Clerk CVE patched (7.0.8 → 7.2.3); canonical URLs on all 11 public pages; JSON-LD enriched (SportsActivityLocation, geo, sameAs); meta descriptions localized; heading hierarchy + semantic HTML fixed; hero poster preloaded; `<Reveal>` uses shared IntersectionObserver; `offer-glow` compositor-friendly; `<ProgramDetailPage>` template DRYs 4 program pages; `<EyebrowBadge>` consolidated; `getSiteUrl()` centralized; `formatError()` extracted; Resend singleton cached
 - **Client bundle reduced** — programs-grid, schedule-grid, weekly-training, students/layout, curriculum index, color-belt page now Server Components; CSS `@keyframes` entrance animations replace IntersectionObserver hooks; `FloatingSectionNav` uses CSS `position: sticky` (no scroll handler); `ExpandableCard` extracted to thin client boundary
@@ -18,7 +18,7 @@ Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), rep
 - **GitHub:** github.com/sgk94/masterchotkd
 
 ## Business Context
-- **Business:** Master Cho's Black Belt Academy, Lynnwood, WA
+- **Business:** Master Cho's Taekwondo, Lynnwood, WA (GBP-verified name)
 - **Location:** 5031 168th ST SW STE 100, Lynnwood, WA 98037
 - **Students:** 50-150 active members
 - **Current stack:** Foxspin website + SparkMembership/Pitbull payments
@@ -35,7 +35,7 @@ Additional class types on schedule: White-Yellow (Beginner), Camo-Purple (Interm
 ## Phasing
 
 ### Phase 1 (MVP) — COMPLETE
-See **Current Status** (above) and **Gotchas** / **API Routes** (below) for specifics. Trial offer: $49 / 2 weeks (no uniform). Schedule effective 01/01/2026. Security headers include CSP (`object-src 'none'`, `upgrade-insecure-requests`), HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy.
+See **Current Status** (above) and **Gotchas** / **API Routes** (below) for specifics. Trial offer: $49 / 2 weeks (uniform included). Schedule effective 01/01/2026. Security headers include CSP (`object-src 'none'`, `upgrade-insecure-requests`), HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy.
 
 ### Phase 2 — Student Portal (not started)
 ### Phase 3 — Admin Dashboard (not started)
@@ -129,15 +129,16 @@ About, Programs, Schedule, Reviews, Members, Contact, Special Offer, Sign In
 
 ## Site Structure
 
-### Public Pages (14 routes)
+### Public Pages (15 routes)
 - `/` — Home (hero video, marquee, programs grid, BottomCta philosophy + challenges, trial banner, testimonials, gallery)
 - `/about` — Story + instructors (alternating photo sections)
 - `/programs` — Overview (4 cards)
-- `/programs/{tiny-tigers|black-belt-club|leadership-club|competition-team}` — Detail pages (hero, schedule, curriculum/requirements, FAQ, CTA)
+- `/programs/{tiny-tigers|black-belt-club|leadership-club|competition-team}` — Detail pages via `<ProgramDetailPage>` template (hero, schedule, curriculum/requirements, FAQ, CTA)
 - `/schedule` — Weekly class table
 - `/reviews` — Wall of Love
 - `/contact` — Form + location + phone
 - `/special-offer` — Trial ($49 / 2 weeks); `<main>` wrapper (no PageContainer — full-bleed marquee); breathing `offer-glow` CTA shadow
+- `/privacy-policy` — Privacy policy (data practices, third-party services, children's privacy)
 - `/preview` — Design exploration (gated: `notFound()` in prod, blocked by robots.txt)
 - `/sign-in`, `/sign-up` — Clerk
 
@@ -169,11 +170,12 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `(auth)` — Clerk sign-in/sign-up pages (minimal layout, no navbar/footer)
 - `(main)` — All public + protected pages (navbar + footer layout, error boundary + loading state)
 
-### URL Rewriting (`next.config.ts`)
+### URL Rewriting & Redirects (`next.config.ts`)
 - `/students` → redirects to `/members` (permanent)
 - `/students/*` → redirects to `/members/*` (permanent)
 - `/members` → rewrites to `/students` (internal)
 - `/members/*` → rewrites to `/students/*` (internal)
+- 25 Foxspin 301 redirects for old URLs (e.g., `/home` → `/`, `/contact-us` → `/contact`, `/grand-master-cho` → `/about`, `/belt-ranks` → `/members/curriculum/color-belt`, `/blog/:path*` → `/`). Full list audited from Foxspin sitemap.xml + Google Search Console top pages.
 
 ### Code layout
 - `src/components/` — grouped by `home/`, `layout/`, `ui/`, `forms/`, `schedule/`, `members/`, `programs/`, `admin/`. Key shared: `<BezelCard>`, `<PageContainer>`, `<Reveal>`, `<EyebrowBadge>` (`pill`|`gold`), `<ResourceCard>` (light/dark + preview). Members: `<YouTubeFacade>` (click-to-load iframe facade for YouTube, uses `youtube-nocookie.com`), `<PoomsaeCard>` (specialized video card with Korean form names, cycle-ring indicator, belt stripe, form index), `<ExpandableCard>` + `<ExpandableCardGroup>` (context-based client boundary with independent state per group), `<VideoCard>` (generic video placeholder). Programs: `<ProgramDetailPage>` (shared template for all 4 program detail pages). Admin: `<InviteForm>` + `<RevokeButton>` (Clerk invitation management).
