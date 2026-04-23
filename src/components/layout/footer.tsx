@@ -14,14 +14,14 @@ export function Footer(): React.ReactElement {
           </ul>
         </div>
         <div className="text-center">
-          <Image src="/images/logo.svg" alt="Master Cho's Black Belt Academy" width={96} height={96} className="mx-auto mb-4 h-24 w-24" />
+          <Image src="/images/logo.png" alt="Master Cho's Black Belt Academy" width={96} height={96} className="mx-auto mb-4 h-24 w-24" />
           <p className="text-sm text-white/70 leading-relaxed">Making a difference, one belt at a time. Lynnwood&apos;s best martial arts program since 1999.</p>
         </div>
         <div className="text-center">
           <p className="mb-4 text-sm font-semibold text-brand-gold">Contact</p>
           <ul className="flex flex-col gap-2">
             <li><a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-sm text-white/70 hover:text-white transition-colors">{BUSINESS_PHONE_DISPLAY}</a></li>
-            <li><a href="https://www.facebook.com/masterchostaekwondo/" target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 hover:text-white transition-colors">Facebook</a></li>
+            <li><a href="https://www.facebook.com/masterchostaekwondo" target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 hover:text-white transition-colors">Facebook</a></li>
             <li><a href="https://www.instagram.com/masterchostaekwondo/" target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 hover:text-white transition-colors">Instagram</a></li>
           </ul>
         </div>
@@ -36,7 +36,11 @@ export function Footer(): React.ReactElement {
           </address>
         </div>
       </div>
-      <div className="border-t border-white/10 px-6 py-4 text-center text-xs text-white/40">&copy; {new Date().getFullYear()} Master Cho&apos;s Taekwondo. All rights reserved.</div>
+      <div className="border-t border-white/10 px-6 py-4 text-center text-xs text-white/40">
+        &copy; {new Date().getFullYear()} Master Cho&apos;s Taekwondo. All rights reserved.
+        <span className="mx-2">·</span>
+        <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+      </div>
     </footer>
   );
 }
