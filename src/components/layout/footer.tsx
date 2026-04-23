@@ -36,7 +36,11 @@ export function Footer(): React.ReactElement {
           </address>
         </div>
       </div>
-      <div className="border-t border-white/10 px-6 py-4 text-center text-xs text-white/40">&copy; {new Date().getFullYear()} Master Cho&apos;s Taekwondo. All rights reserved.</div>
+      <div className="border-t border-white/10 px-6 py-4 text-center text-xs text-white/40">
+        &copy; {new Date().getFullYear()} Master Cho&apos;s Taekwondo. All rights reserved.
+        <span className="mx-2">·</span>
+        <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+      </div>
     </footer>
   );
 }

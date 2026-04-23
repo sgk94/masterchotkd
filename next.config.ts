@@ -71,7 +71,6 @@ const nextConfig: NextConfig = {
     { source: "/contact-us", destination: "/contact", permanent: true },
     { source: "/event", destination: "/", permanent: true },
     { source: "/videos", destination: "/members/curriculum/color-belt", permanent: true },
-    { source: "/privacy-policy", destination: "/", permanent: true },
     { source: "/cart", destination: "/special-offer", permanent: true },
     { source: "/grand-master-cho", destination: "/about", permanent: true },
     { source: "/signin", destination: "/sign-in", permanent: true },
