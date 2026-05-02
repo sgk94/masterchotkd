@@ -10,7 +10,7 @@ Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), rep
 - **Client bundle reduced** — programs-grid, schedule-grid, weekly-training, students/layout, curriculum index, color-belt page now Server Components; CSS `@keyframes` entrance animations replace IntersectionObserver hooks; `FloatingSectionNav` uses CSS `position: sticky` (no scroll handler); `ExpandableCard` extracted to thin client boundary
 - **DRY consolidation** — `src/lib/nav.ts` is single nav source; `<ResourceCard>` extracted; `<EyebrowBadge>` replaces all inline pills; `<ProgramDetailPage>` template replaces 4 copy-pasted program pages; `getSiteUrl()` replaces 5 inline env fallbacks; `formatError()` replaces 5 catch-block patterns
 - **Images optimized** — real dojang + instructor photos at 1600px JPEG @ q82 (resized from 2560px, ~8 MB disk savings); hero poster (79 KB, first-frame LCP, preloaded via `<link>`); OG image (1200×630) wired
-- **Auth: Clerk enabled** (Development mode, see To Get Fully Running) — Facebook social login, route protection via `proxy.ts`
+- **Auth: Clerk enabled** (Development mode, see To Get Fully Running) — email auth for launch; Facebook social login intentionally disabled, route protection via `proxy.ts`
 - **Contact form live** — Resend wired, Upstash rate-limit when configured, validateOrigin/CSRF check, 10KB actual body-size cap, control-char + HTML escape, 5s Resend timeout
 - **DB + trial/booking flows** — deleted until Phase 2 (schemas, forms, routes removed); Prisma schema trimmed to Program + ClassSchedule + Testimonial
 - **PromoModal removed** (was site-wide on every route for a single-fire BOGO modal)
@@ -46,7 +46,7 @@ See **Current Status** (above) and **Gotchas** / **API Routes** (below) for spec
 - **Language:** TypeScript (strict mode)
 - **Styling:** Tailwind CSS v4 (CSS-only config via `@theme` in globals.css — NO tailwind.config.ts)
 - **Animation:** CSS only (scroll reveals via `<Reveal>`, marquee, border-spin, hero entrance animations)
-- **Auth:** Clerk (enabled — Facebook social login, route protection via `proxy.ts`)
+- **Auth:** Clerk (enabled — email auth for launch; Facebook social login intentionally disabled, route protection via `proxy.ts`)
 - **Database:** PostgreSQL (Neon — schema defined, not connected)
 - **ORM:** Prisma 7.6 (`db.ts` uses `require()` to avoid CI type errors)
 - **Validation:** Zod v4 (uses `.issues` not `.errors` on ZodError); shared field builders in `schemas/fields.ts`
@@ -190,7 +190,7 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - **Sign-up restriction:** Clerk Dashboard → User & Authentication → Restrictions → **Sign-up mode = Restricted**. Only emails with an active invitation (or on the dashboard allowlist) can complete sign-up. Admin role is set via `publicMetadata.role = "admin"` in the Clerk Dashboard or via `clerkClient.users.updateUserMetadata`.
 - **Admin guard:** `src/lib/clerk-admin.ts` — `requireAdmin()` returns 401/403 `NextResponse` for API routes; `isAdminUser()` returns boolean for Server Component layout guards.
 - **Frontend API:** default third-party FAPI at `*.accounts.dev`. First-party proxy (`frontendApiProxy: { enabled: true }`) was temporarily disabled in #23 because dev-instance Clerk rejects `*.vercel.app` hosts with `host_invalid` on the handshake (mobile Safari blank-page). Re-enable after Clerk flips to Production mode with the custom domain (see `LAUNCH-RUNBOOK.md`).
-- **Social login:** Facebook (enabled), more can be added via Clerk dashboard
+- **Social login:** Facebook intentionally disabled for launch; can be added later via Clerk dashboard after Facebook Developer callback setup
 - **Sign-in page:** `/sign-in` → `src/app/(auth)/sign-in/[[...sign-in]]/page.tsx`
 - **Sign-up page:** `/sign-up` → `src/app/(auth)/sign-up/[[...sign-up]]/page.tsx`
 - **Navbar integration:** `ClerkLoading`/`ClerkLoaded`/`Show`/`UserButton`/`SignInButton` — Members dropdown is gated

@@ -11,7 +11,7 @@ Everything that must happen before, during, and after switching `masterchostaekw
 - [x] Visit every page on the current `masterchostaekwondo.com`
 - [x] List every URL that exists
 - [x] Screenshot each page → saved to `docs/old-site-screenshots/` (15 pages)
-- [x] Map old URLs to new site URLs — 14 redirects added to `next.config.ts`:
+- [x] Map old URLs to new site URLs — 25 old Foxspin redirects added to `next.config.ts`:
   - `/home` → `/`
   - `/about-us` → `/about`
   - `/instructors` → `/about`
@@ -25,8 +25,19 @@ Everything that must happen before, during, and after switching `masterchostaekw
   - `/contact-us` → `/contact`
   - `/event` → `/`
   - `/videos` → `/members/curriculum/color-belt`
-  - `/privacy-policy` → `/`
   - `/cart` → `/special-offer`
+  - `/grand-master-cho` → `/about`
+  - `/signin` → `/sign-in`
+  - `/instructor-daniel-lasala` → `/about`
+  - `/essay-topics` → `/student-resources/testing-essay-topics`
+  - `/belt-form-videos` → `/members/curriculum/color-belt`
+  - `/announcements` → `/members`
+  - `/blog` → `/`
+  - `/blog/:path*` → `/`
+  - `/calendar` → `/schedule`
+  - `/belt-graduation` → `/members`
+  - `/new-members` → `/special-offer`
+  - `/privacy-policy` exists directly on the new site, so no redirect is needed
 
 ## Step 2 — Google Search Console
 
@@ -64,11 +75,11 @@ Everything that must happen before, during, and after switching `masterchostaekw
 
 ### 4C — Clerk Production instance
 - [ ] Clerk Dashboard → Create new application → "Master Cho's Taekwondo (Production)"
-- [ ] Enable Email + Facebook sign-in
+- [ ] Enable Email sign-in only (Facebook social login intentionally disabled for launch)
 - [ ] Switch to Production mode
 - [ ] Domains → Add `masterchostaekwondo.com` → save the 5 CNAME records Clerk gives you
 - [ ] Match settings to Dev instance (email required, sign-in/up paths, after-sign-in → `/members`)
-- [ ] Facebook Developer Console → add new Production callback URL from Clerk
+- [ ] Skip Facebook Developer setup for launch
 - [ ] Restrictions → Sign-up mode = Restricted (invitation-only)
 - [ ] Users → your account → Metadata → Public → `{ "role": "admin" }`
 - [ ] API Keys → copy `pk_live_...` and `sk_live_...`
@@ -90,16 +101,27 @@ Vercel dashboard → Settings → Environment Variables → scope each to **Prod
 ## Step 6 — Code changes (Claude does this)
 
 - [ ] Pin CSP Clerk origins from wildcards to exact production domains (need Clerk Production domain first)
-- [x] Add 301 redirects for old Foxspin URLs — 14 redirects in `next.config.ts`
+- [x] Add 301 redirects for old Foxspin URLs — 25 redirects in `next.config.ts`
 - [ ] Push to main, wait for Vercel deploy
 
-## Step 7 — Stage DNS records in Vercel
+## Step 7 — Prepare paste-ready DNS packet
 
-After nameservers are switched, Vercel DNS will be manageable. Add these records:
+Vercel currently requires the nameserver switch before Vercel DNS record management is enabled. Before cutover, collect these records in the paste-ready packet at `docs/DNS-CUTOVER-PACKET.md`. After nameservers are switched, add them immediately in Vercel DNS.
+
+### Vercel hosting
+- [ ] A `@` → `216.198.79.1`
+- [ ] CNAME `www` → value shown by Vercel, if Vercel requires one for the redirect domain
 
 ### Google verification (preserve)
 - [ ] TXT `@` → `google-site-verification=88zBDQ9BPN_83ITavC8-Yvu9QI-PVokGg3Vkcu_GxJ8`
 - [ ] TXT `@` → `google-site-verification=rvIpjicemCbIMNiNm8rXYxghLwzSTQrvjAiW_YqHaOY`
+
+### Google MX records (preserve domain-email receiving)
+- [ ] MX `@` priority 1 → `aspmx.l.google.com`
+- [ ] MX `@` priority 5 → `alt1.aspmx.l.google.com`
+- [ ] MX `@` priority 5 → `alt2.aspmx.l.google.com`
+- [ ] MX `@` priority 10 → `alt3.aspmx.l.google.com`
+- [ ] MX `@` priority 10 → `alt4.aspmx.l.google.com`
 
 ### Resend (from Step 4A)
 - [ ] MX record (subdomain from Resend)
@@ -125,6 +147,8 @@ After nameservers are switched, Vercel DNS will be manageable. Add these records
   - `ns2.vercel-dns.com`
 - [ ] Save
 - [ ] Wait ~10-60 minutes for propagation
+- [ ] Enable/manage Vercel DNS after nameserver switch
+- [ ] Immediately add all Step 7 paste-ready DNS records in Vercel DNS
 
 ## Step 9 — Post-cutover verification
 
@@ -136,7 +160,7 @@ After nameservers are switched, Vercel DNS will be manageable. Add these records
 - [ ] Reply to test email → confirm Reply-To goes to the submitter
 - [ ] `/sign-in` → test sign-in works
 - [ ] `/members` → content loads (auth working)
-- [ ] Facebook social login works
+- [ ] Email sign-in works (Facebook social login intentionally disabled for launch)
 - [ ] PDF downloads work (must be signed in)
 - [ ] `/students/*` redirects to `/members/*`
 - [ ] Old Foxspin URLs return 301 redirects (not 404)
