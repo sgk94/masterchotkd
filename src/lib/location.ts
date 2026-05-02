@@ -1,5 +1,5 @@
 export const BUSINESS_LOCATION = {
-  streetAddress: "5031 168th ST SW STE 100",
+  streetAddress: "5031 168th Street Southwest STE 100",
   addressLocality: "Lynnwood",
   addressRegion: "WA",
   postalCode: "98037",

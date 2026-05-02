@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
                 openingHoursSpecification: [
                   {
                     "@type": "OpeningHoursSpecification",
-                    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"],
+                    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
                     opens: "15:00",
                     closes: "20:00",
                   },
@@ -50,7 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
                     "@type": "OpeningHoursSpecification",
                     dayOfWeek: "Saturday",
                     opens: "09:00",
-                    closes: "13:00",
+                    closes: "11:00",
                   },
                 ],
                 image: "https://masterchostaekwondo.com/images/og-image.jpg",
