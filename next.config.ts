@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
 const clerkCspOrigins = [
-  "https://*.clerk.accounts.dev",
-  "https://*.clerk.dev",
-  "https://*.clerk.services",
+  "https://clerk.masterchostaekwondo.com",
+  "https://accounts.masterchostaekwondo.com",
+  "https://clerk-telemetry.com",
 ];
 
 const captchaCspOrigins = [
