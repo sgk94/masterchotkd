@@ -1,10 +1,8 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
 import { SectionChips } from "@/components/members/section-chips";
-import { VideoPlaceholder, SectionHeader, VideoCard } from "@/components/members/shared";
+import { SectionHeader, VideoCard } from "@/components/members/shared";
 import { PoomsaeCard } from "@/components/members/poomsae-card";
+import { ExpandableCard, ExpandableCardGroup } from "@/components/members/expandable-card";
 import { skillLevelPalette } from "@/lib/static-data";
 import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 import { ResourceCard } from "@/components/members/resource-card";
@@ -140,63 +138,9 @@ function getOverviewCardStyle(entry: CurriculumEntry): { cardBg: string; headerB
 
 
 
-function ExpandableCard({ id, eyebrow, title, subtitle, swatch, details, expandedLayout = "stack", expandedId, onToggle }: { id: string; eyebrow: string; title: string; subtitle: string; swatch?: React.ReactNode; details: React.ReactNode; expandedLayout?: "stack" | "split"; expandedId: string | null; onToggle: (id: string) => void }): React.ReactElement {
-  const isOpen = expandedId === id;
-  return (
-    <div className="relative" data-expandable-card>
-      <button
-        type="button"
-        onClick={() => onToggle(id)}
-        aria-expanded={isOpen}
-        aria-controls={`panel-${id}`}
-        className={`flex w-full items-center justify-between rounded-2xl bg-white px-6 py-5 text-left transition-all duration-300 ${isOpen ? "ring-2 ring-brand-blue/25 shadow-md shadow-brand-taupe/10" : "ring-1 ring-brand-taupe/12 hover:shadow-sm"}`}
-      >
-        <div className="flex items-center gap-3">
-          {swatch}
-          <div className="min-w-0">
-            <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-brand-red/60">{eyebrow}</p>
-            <p className="mt-1 font-heading text-lg text-brand-black">{title}</p>
-            <p className="text-sm text-brand-black/50">{subtitle}</p>
-          </div>
-        </div>
-        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-cream text-brand-black/30 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
-        </div>
-      </button>
-      {isOpen && (
-        <div id={`panel-${id}`} role="region" className="absolute left-0 right-0 top-full z-20 mt-2 rounded-2xl bg-white p-6 shadow-xl shadow-brand-black/10 ring-1 ring-brand-taupe/12">
-          <div className={expandedLayout === "split" ? "grid gap-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:items-start" : ""}>
-            <VideoPlaceholder title={title} />
-            <div className={`text-sm text-brand-black/60 ${expandedLayout === "split" ? "" : "mt-4"}`}>{details}</div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
 export default function ColorBeltPage(): React.ReactElement {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  function handleToggle(id: string): void {
-    setExpandedId((prev) => (prev === id ? null : id));
-  }
-
-  useEffect(() => {
-    if (!expandedId) return;
-    function handleClickOutside(e: MouseEvent): void {
-      const target = e.target as HTMLElement;
-      if (!target.closest("[data-expandable-card]")) {
-        setExpandedId(null);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [expandedId]);
-
   return (
-    <div ref={containerRef}>
+    <div>
       {/* Mobile section jump links */}
       <SectionChips links={sectionLinks} />
 
@@ -309,78 +253,78 @@ export default function ColorBeltPage(): React.ReactElement {
           {/* ONE-STEPS */}
           <section id="one-steps" className="scroll-mt-28 space-y-6">
             <SectionHeader label="Video Library" title="One-Steps" description="These stay compact and expand when you hover so there is room for each video later." />
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              {curriculumEntries.map((entry) => (
-                <ExpandableCard
-                  key={`one-step-${entry.level}-${entry.cycle}`}
-                  id={`one-step-${entry.level}-${entry.cycle}`}
-                  eyebrow={`${entry.level} · Cycle ${entry.cycle}`}
-                  title={`${entry.beltName} One-Step`}
-                  subtitle={entry.oneStep}
-                  swatch={<BeltDot entry={entry} />}
-                  expandedId={expandedId}
-                  onToggle={handleToggle}
-                  details={<p>This card will open the {entry.beltName} one-step video once it is added.</p>}
-                />
-              ))}
-            </div>
+            <ExpandableCardGroup>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                {curriculumEntries.map((entry) => (
+                  <ExpandableCard
+                    key={`one-step-${entry.level}-${entry.cycle}`}
+                    id={`one-step-${entry.level}-${entry.cycle}`}
+                    eyebrow={`${entry.level} · Cycle ${entry.cycle}`}
+                    title={`${entry.beltName} One-Step`}
+                    subtitle={entry.oneStep}
+                    swatch={<BeltDot entry={entry} />}
+                    details={<p>This card will open the {entry.beltName} one-step video once it is added.</p>}
+                  />
+                ))}
+              </div>
+            </ExpandableCardGroup>
           </section>
 
           {/* HAND TECHNIQUES */}
           <section id="hand-techniques" className="scroll-mt-28 space-y-6">
             <SectionHeader label="Video Library" title="Hand Techniques" description="One compact card keeps this section small, then expands to show the full hand-technique breakdown." />
-            <div className="max-w-5xl">
-              <ExpandableCard
-                id="hand-techniques-card"
-                eyebrow="All Levels"
-                title="Color Belt Hand Techniques"
-                subtitle="Beginner, Intermediate, and Advanced ranges"
-                expandedId={expandedId}
-                onToggle={handleToggle}
-                expandedLayout="split"
-                details={
-                  <div className="grid gap-3 md:grid-cols-3">
-                    {handTechniqueGroups.map((group) => (
-                      <div key={group.level} className="flex flex-col items-center rounded-xl bg-brand-page-bg/80 p-4 text-center">
-                        <span className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.18em] ring-1 ${group.accentBg} ${group.accent}`}>{group.level}</span>
-                        <div className="mt-4 space-y-3 text-sm leading-relaxed text-brand-black/70">
-                          {group.ranges.map((range) => <p key={range}>{range}</p>)}
+            <ExpandableCardGroup>
+              <div className="max-w-5xl">
+                <ExpandableCard
+                  id="hand-techniques-card"
+                  eyebrow="All Levels"
+                  title="Color Belt Hand Techniques"
+                  subtitle="Beginner, Intermediate, and Advanced ranges"
+                  expandedLayout="split"
+                  details={
+                    <div className="grid gap-3 md:grid-cols-3">
+                      {handTechniqueGroups.map((group) => (
+                        <div key={group.level} className="flex flex-col items-center rounded-xl bg-brand-page-bg/80 p-4 text-center">
+                          <span className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.18em] ring-1 ${group.accentBg} ${group.accent}`}>{group.level}</span>
+                          <div className="mt-4 space-y-3 text-sm leading-relaxed text-brand-black/70">
+                            {group.ranges.map((range) => <p key={range}>{range}</p>)}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                }
-              />
-            </div>
+                      ))}
+                    </div>
+                  }
+                />
+              </div>
+            </ExpandableCardGroup>
           </section>
 
           {/* BOARD BREAKING */}
           <section id="board-breaking" className="scroll-mt-28 space-y-6">
             <SectionHeader label="Video Library" title="Board Breaking" description="This section stays compact until hover, then expands to show the full board-breaking reference." />
-            <div className="max-w-5xl">
-              <ExpandableCard
-                id="board-breaking-card"
-                eyebrow="All Levels"
-                title="Color Belt Board Breaking"
-                subtitle="All board-breaking requirements"
-                expandedId={expandedId}
-                onToggle={handleToggle}
-                expandedLayout="split"
-                details={
-                  <div className="grid gap-2.5 md:grid-cols-3">
-                    {curriculumEntries.map((entry) => (
-                      <div key={`board-${entry.level}-${entry.cycle}`} className="flex items-center gap-3 rounded-xl bg-brand-page-bg/80 px-4 py-3">
-                        <BeltDot entry={entry} size="h-5 w-5" />
-                        <div>
-                          <p className="text-xs font-medium text-brand-black/65">{entry.beltName}</p>
-                          <p className="text-[11px] text-brand-black/40">{entry.board}</p>
+            <ExpandableCardGroup>
+              <div className="max-w-5xl">
+                <ExpandableCard
+                  id="board-breaking-card"
+                  eyebrow="All Levels"
+                  title="Color Belt Board Breaking"
+                  subtitle="All board-breaking requirements"
+                  expandedLayout="split"
+                  details={
+                    <div className="grid gap-2.5 md:grid-cols-3">
+                      {curriculumEntries.map((entry) => (
+                        <div key={`board-${entry.level}-${entry.cycle}`} className="flex items-center gap-3 rounded-xl bg-brand-page-bg/80 px-4 py-3">
+                          <BeltDot entry={entry} size="h-5 w-5" />
+                          <div>
+                            <p className="text-xs font-medium text-brand-black/65">{entry.beltName}</p>
+                            <p className="text-[11px] text-brand-black/40">{entry.board}</p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                }
-              />
-            </div>
+                      ))}
+                    </div>
+                  }
+                />
+              </div>
+            </ExpandableCardGroup>
           </section>
 
           {/* RESOURCES — dark section */}

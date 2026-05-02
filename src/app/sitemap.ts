@@ -14,6 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/reviews`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE_URL}/contact`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/special-offer`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/privacy-policy`, changeFrequency: "yearly", priority: 0.3 },
   ];
   const programPages: MetadataRoute.Sitemap = staticPrograms.map((p) => ({
     url: `${BASE_URL}/programs/${p.slug}`,

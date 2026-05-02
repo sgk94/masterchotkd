@@ -116,7 +116,7 @@ All steps here are additive — they create new accounts/keys but don't change a
 
 1. `https://dashboard.clerk.com` → top-left dropdown → **Create application**
 2. Name: `Master Cho's Taekwondo (Production)`
-3. Sign-in options: enable **Email** + **Facebook** (match Dev)
+3. Sign-in options: enable **Email** only for launch. Leave **Facebook** disabled to avoid making Facebook Developer a launch dependency.
 4. After creation, top-right corner → switch to **Production**
 5. **Domains** in sidebar → **Add domain** → `masterchostaekwondo.com`
 6. Clerk gives you DNS records — **save these for Phase 3**:
@@ -127,12 +127,9 @@ All steps here are additive — they create new accounts/keys but don't change a
 7. Don't verify yet.
 8. Configure to match Dev:
    - **User & Authentication → Email, Phone, Username** → match Dev (probably Email required only)
-   - **Social Connections → Facebook** → toggle on, paste same Facebook App ID + Secret
+   - **Social Connections → Facebook** → keep disabled for launch
    - **Paths**: sign-in `/sign-in`, sign-up `/sign-up`, after sign-in/up `/members`
-9. **Facebook Developer Console** (separate site: `developers.facebook.com`):
-   - Your App → **Facebook Login → Settings → Valid OAuth Redirect URIs**
-   - Add the new Production callback URL Clerk shows (something like `https://clerk.masterchostaekwondo.com/v1/oauth_callback`)
-   - Switch app to **Live mode** (top-right toggle) if not already
+9. Skip Facebook Developer setup for launch. If Facebook login is re-enabled later, add Clerk's production OAuth callback URL in Facebook Developer first.
 10. **API Keys** in Clerk sidebar → copy:
     - `pk_live_...` (Publishable Key)
     - `sk_live_...` (Secret Key) — treat like a password
@@ -143,9 +140,10 @@ All steps here are additive — they create new accounts/keys but don't change a
 
 1. Clerk Dashboard → **User & Authentication → Restrictions** → set **Sign-up mode = Restricted**. (On the Production instance once it's the active one; also flip on the Dev instance so local/preview testing matches.)
 2. Promote the first admin: **Users** → select your account → **Metadata → Public** → paste `{ "role": "admin" }` → **Save**.
-3. While signed in as that admin, visit `/admin/invitations` — page should load (non-admins are redirected to `/`; signed-out users hit Clerk sign-in).
-4. Send a test invitation to a personal email, accept the link, confirm the new account lands in the Clerk Dashboard with the invited email.
-5. Try `/sign-up` with an un-invited email — Clerk should reject with "you are not allowed to sign up" (or similar).
+3. Do not test production invitation acceptance until after DNS cutover. Production invitation links can route through `clerk.masterchostaekwondo.com` / `accounts.masterchostaekwondo.com`, which will return `DNS_PROBE_FINISHED_NXDOMAIN` until the Clerk CNAME records are live.
+4. After cutover, while signed in as that admin, visit `/admin/invitations` — page should load (non-admins are redirected to `/`; signed-out users hit Clerk sign-in).
+5. After cutover, send a test invitation to a personal email, accept the link, confirm the new account lands in the Clerk Dashboard with the invited email.
+6. After cutover, try `/sign-up` with an un-invited email — Clerk should reject with "you are not allowed to sign up" (or similar).
 
 ### 1D — Vercel domain (without DNS pointing to it yet)
 
@@ -156,7 +154,7 @@ All steps here are additive — they create new accounts/keys but don't change a
 3. Vercel will show "Invalid configuration" — that's expected, DNS still points to Foxspin
 4. **Add Domain** again → `www.masterchostaekwondo.com` → choose "Redirect to `masterchostaekwondo.com`"
 5. Vercel will show DNS records you'd need to add. **Save these for Phase 3:**
-   - `A` record: `@` → `76.76.21.21` (Vercel's anycast IP — current value, double-check what Vercel shows you)
+   - `A` record: `@` → `216.198.79.1` (Vercel's value for this project — double-check what Vercel shows you)
    - `CNAME`: `www` → `cname.vercel-dns.com`
 
 ### Phase 1 Rollback
@@ -279,26 +277,26 @@ If anything breaks: Vercel dashboard → **Deployments** → find previous good 
 
 ---
 
-## Phase 3 — Stage all DNS records at the new provider (no impact on live site)
+## Phase 3 — Prepare paste-ready DNS packet (no impact on live site)
 
-⚠️ **Important:** Don't change nameservers or A records yet. This phase only *prepares* the new DNS so the cutover in Phase 4 is instant.
+⚠️ **Important:** Don't change nameservers or A records yet. Vercel shows "Update your domain's nameservers to enable Vercel DNS," so we cannot pre-stage these records in Vercel DNS before the nameserver switch. This phase prepares a paste-ready DNS packet so records can be added immediately after Vercel DNS is enabled in Phase 4.
 
-**Where you do this depends on your Phase 0 decision:**
-- If **Vercel DNS**: Vercel dashboard → **Settings → Domains → masterchostaekwondo.com → DNS Records** section
-- If **Cloudflare**: Cloudflare dashboard → your domain → **DNS → Records**
-- If something else: same idea, find the DNS records UI
+Copy every record below into a temporary launch note with exact Type, Name, Value, Priority, and TTL where applicable. Do not rely on memory during cutover.
 
-### 3A — Stage all the records
+### 3A — Prepare all records
 
-Add **every record below** to the new DNS provider. Don't switch nameservers yet.
+Prepare **every record below**. Don't switch nameservers yet.
 
 **Vercel A/CNAME (from Phase 1D):**
 | Type | Name | Value | TTL |
 |---|---|---|---|
-| A | `@` | `76.76.21.21` | 300 |
+| A | `@` | `216.198.79.1` | 300 |
 | CNAME | `www` | `cname.vercel-dns.com` | 300 |
 
 **Google Workspace MX (preserve from current Foxspin DNS — see `GO-LIVE.md`):**
+
+These control receiving email for `@masterchostaekwondo.com`. They are separate from the contact-form notification recipient (`NOTIFY_EMAIL`, currently `tkdkscho@gmail.com`) and should be preserved during cutover.
+
 | Type | Name | Priority | Value |
 |---|---|---|---|
 | MX | `@` | 1 | `aspmx.l.google.com` |
@@ -331,11 +329,11 @@ google-site-verification=rvIpjicemCbIMNiNm8rXYxghLwzSTQrvjAiW_YqHaOY
 | CNAME | `clk._domainkey` | (Clerk's value) |
 | CNAME | `clk2._domainkey` | (Clerk's value) |
 
-**Lower TTL on apex A record** to 300 seconds (5 min) so future changes propagate fast.
+Use TTL `300` where Vercel allows it. If Vercel uses a default TTL, leave the default.
 
 ### Phase 3 Rollback
 
-Records exist at the new provider but aren't authoritative — current visitors still hit Foxspin. To roll back, just delete what you added. Zero user impact.
+No DNS changes have been made yet. Rollback is simply not proceeding with Phase 4.
 
 ---
 
@@ -359,13 +357,26 @@ You have to do this at the **registrar**, which is Wild West Domains via Foxspin
 3. Replace the four current Register.com nameservers with your new ones.
 4. Save.
 
-### 4B — Verify Resend, Clerk, and Vercel can all see the records
+### 4B — Enable/manage Vercel DNS and add records
+
+After the nameserver switch, Vercel DNS record management should become available for `masterchostaekwondo.com`.
+
+1. In Vercel, open the domain's **Vercel DNS** / DNS records area.
+2. Add the paste-ready records from Phase 3 immediately:
+   - Vercel A/CNAME records
+   - Google MX records
+   - Google TXT verification records
+   - Resend MX/TXT/CNAME records
+   - Clerk CNAME records
+3. Save each record and keep the DNS packet open until verification is complete.
+
+### 4C — Verify Resend, Clerk, and Vercel can all see the records
 
 Within ~10 minutes, the new nameservers should be live. Check:
 
 ```bash
 dig masterchostaekwondo.com NS +short      # should show your new nameservers
-dig masterchostaekwondo.com A +short       # should show 76.76.21.21
+dig masterchostaekwondo.com A +short       # should show 216.198.79.1
 dig clerk.masterchostaekwondo.com CNAME +short
 dig resend._domainkey.masterchostaekwondo.com CNAME +short
 dig masterchostaekwondo.com MX +short      # should show all 5 Google entries
@@ -377,7 +388,7 @@ When CNAMEs resolve:
 - **Clerk:** dashboard → Domains → click **Verify** for each record → all 5 should turn green
 - **Resend:** dashboard → Domains → click **Verify** → all records should turn green
 
-### 4C — Smoke test the live site
+### 4D — Smoke test the live site
 
 Open `https://masterchostaekwondo.com` in an incognito window:
 
@@ -390,20 +401,20 @@ Open `https://masterchostaekwondo.com` in an incognito window:
 - [ ] Reply to that test email → confirm it goes back to the test prospect (Reply-To header)
 - [ ] `/sign-in` — sign up with a test account → confirm sign-in works → lands on `/members`
 - [ ] `/members` content loads (auth working)
-- [ ] Facebook social login works
+- [ ] Email sign-in works (Facebook social login intentionally disabled for launch)
 - [ ] PDF downloads work (`/student-resources/tiny-tiger-handbook` etc. — must be signed in)
 - [ ] `/students/*` redirects to `/members/*`
 - [ ] Sitemap loads: `https://masterchostaekwondo.com/sitemap.xml`
 - [ ] **Send/receive a test email** to `<your-name>@masterchostaekwondo.com` (or whatever your Google Workspace address is) — confirms MX records didn't break
 
-### 4D — Browser console check
+### 4E — Browser console check
 
 DevTools → Console on each page above:
 - [ ] No red CSP violations
 - [ ] No 404s for assets
 - [ ] No "blocked by CORS" errors
 
-### 4E — SEO & structured data verification
+### 4F — SEO & structured data verification
 
 **JSON-LD (structured data):**
 
@@ -427,7 +438,7 @@ curl -sI https://masterchostaekwondo.com/classes | head -5    # should show 301 
 
 If any old Foxspin URL returns 404 instead of 301, add the redirect immediately and push.
 
-### 4F — Update Google Business Profile
+### 4G — Update Google Business Profile
 
 ⚠️ **Do this within 24 hours of DNS cutover** — don't let GBP point to a dead Foxspin site.
 
@@ -441,7 +452,7 @@ If any old Foxspin URL returns 404 instead of 301, add the redirect immediately 
 5. Add new photos from the new site if the old photos were Foxspin-hosted (GBP images hosted elsewhere don't break, but fresh photos help)
 6. Save and allow 1–3 days for Google to re-crawl
 
-### 4G — Resubmit to Google Search Console
+### 4H — Resubmit to Google Search Console
 
 1. `https://search.google.com/search-console` → select property `masterchostaekwondo.com`
 2. **Sitemaps** → if old sitemap URL is listed, remove it → add `https://masterchostaekwondo.com/sitemap.xml`
@@ -508,13 +519,13 @@ This moves billing/control of the domain from Wild West (via Foxspin) to a regis
 
 | Scenario | Mitigation |
 |---|---|
-| DNS propagation breaks email mid-cutover | Google MX records were staged in Phase 3 — should never break. If it does, double-check MX entries copied verbatim from `GO-LIVE.md` |
+| DNS propagation breaks email mid-cutover | Add the prepared Google MX records immediately after Vercel DNS is enabled. If email fails, double-check MX entries copied verbatim from `GO-LIVE.md` |
 | Resend domain doesn't verify | Email sends still work via Resend's `onboarding@resend.dev` if you don't change `RESEND_FROM_EMAIL` yet — verify Resend domain *first*, then flip the env var |
 | Clerk Production sign-ins fail | Vercel Promote previous deployment back → Clerk Dev keys take over → users can sign in via Dev clerk while you debug |
-| Google Search Console loses verification | TXT records are preserved in Phase 3. If still lost: re-add via Search Console UI |
+| Google Search Console loses verification | Add the prepared TXT records immediately after Vercel DNS is enabled. If still lost: re-add via Search Console UI |
 | Vercel SSL cert doesn't provision | Usually auto-provisions within 5 min after DNS resolves. If it stays "Pending" for 30+ min: Vercel dashboard → Domains → Refresh button. If still stuck: Vercel support ticket |
 | Contact form spam after launch | Upstash rate limiting is active (4/hr per IP). For more abuse: add Cloudflare Turnstile — see review history in repo |
-| **GBP ranking drops after cutover** | Most common cause: NAP inconsistency between GBP listing and new site, or GBP website URL still pointing to old Foxspin. Fix: update GBP listing (Phase 4F), wait 3–7 days for recovery. Google local rankings are resilient if the domain stays the same. |
+| **GBP ranking drops after cutover** | Most common cause: NAP inconsistency between GBP listing and new site, or GBP website URL still pointing to old Foxspin. Fix: update GBP listing (Phase 4G), wait 3–7 days for recovery. Google local rankings are resilient if the domain stays the same. |
 | **Old Foxspin URLs return 404** | Google drops those pages from search results within 1–2 weeks. Fix: add 301 redirects in `next.config.ts` for every old URL that doesn't exist on the new site. Use Search Console's "Pages not found" report to find them. |
 | **Search traffic drops after cutover** | Normal during first 1–2 weeks — Google re-crawls and re-evaluates. If it persists past 3 weeks: check for missing 301 redirects (404 report in Search Console), verify structured data (JSON-LD), verify sitemap is submitted, check that robots.txt isn't blocking important pages. |
 | **Google indexes both old and new site** | Can happen during DNS propagation when some Google bots still hit Foxspin cache. Resolves naturally within 48–72 hrs. Don't do anything — just wait. |
@@ -526,7 +537,7 @@ This moves billing/control of the domain from Wild West (via Foxspin) to a regis
 
 | Service | DNS records required |
 |---|---|
-| Vercel hosting | A `@` → `76.76.21.21`, CNAME `www` → `cname.vercel-dns.com` |
+| Vercel hosting | A `@` → `216.198.79.1`, CNAME `www` → `cname.vercel-dns.com` |
 | Google Workspace email | MX × 5 (priorities 1, 5, 5, 10, 10) |
 | Google Search Console | TXT × 2 (existing verifications) |
 | Resend (email sending) | MX `send`, TXT `send` SPF, CNAME × 3 DKIM |
@@ -541,6 +552,6 @@ This moves billing/control of the domain from Wild West (via Foxspin) to a regis
 | 0 | Decisions | None | ✅ |
 | 1 | Provision external services | None | ✅ |
 | 2 | Vercel env + CSP/code change | None (Vercel deploys not authoritative yet) | ✅ via Promote previous |
-| 3 | Stage DNS at new provider | None | ✅ |
+| 3 | Prepare paste-ready DNS packet | None | ✅ |
 | 4 | Switch nameservers | ⚠️ Live cutover | ⚠️ ~10 min (revert nameservers) |
 | 5 | Stabilize + decommission | None | n/a |

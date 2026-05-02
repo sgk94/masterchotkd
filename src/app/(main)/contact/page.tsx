@@ -48,7 +48,7 @@ export default function ContactPage(): React.ReactElement {
               </h2>
               <div className="mt-2 flex gap-4">
                 <a
-                  href="https://www.facebook.com/masterchostaekwondo/"
+                  href="https://www.facebook.com/masterchostaekwondo"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-brand-blue transition-colors hover:text-brand-red"

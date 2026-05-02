@@ -142,7 +142,7 @@ export function Navbar(): React.ReactElement {
 
           {/* Center — logo */}
           <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
-            <Image src="/images/logo.svg" alt="Master Cho's Black Belt Academy" width={44} height={44} className="h-11 w-11" />
+            <Image src="/images/logo.png" alt="Master Cho's Black Belt Academy" width={44} height={44} className="h-11 w-11" />
             <span className="hidden font-heading text-lg font-bold tracking-wide text-brand-gold sm:inline">
               MASTER CHO&apos;S TAEKWONDO
             </span>

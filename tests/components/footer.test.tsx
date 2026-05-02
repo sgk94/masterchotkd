@@ -13,7 +13,7 @@ describe("Footer", () => {
     render(<Footer />);
     expect(
       screen.getByRole("link", { name: /facebook/i }),
-    ).toHaveAttribute("href", "https://www.facebook.com/masterchostaekwondo/");
+    ).toHaveAttribute("href", "https://www.facebook.com/masterchostaekwondo");
     expect(
       screen.getByRole("link", { name: /instagram/i }),
     ).toHaveAttribute(
