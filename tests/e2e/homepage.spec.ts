@@ -8,14 +8,14 @@ test.describe("Homepage", () => {
   test("all major sections are visible", async ({ page }) => {
     // Hero section
     await expect(
-      page.getByText("Making a Difference, One Belt at a Time"),
+      page.getByRole("heading", { name: /making a difference, one belt at a time/i }),
     ).toBeVisible();
 
     // Programs section
-    await expect(page.getByText("Our Programs")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Find your path" })).toBeVisible();
 
     // Testimonials section
-    await expect(page.getByText("What Families Say")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Real people, real results" })).toBeVisible();
   });
 
   test("navigation to programs works", async ({ page }) => {

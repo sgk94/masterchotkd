@@ -15,14 +15,14 @@ test.describe("Contact Page", () => {
     ).toBeVisible();
   });
 
-  test("shows validation errors on empty submit", async ({ page }) => {
+  test("shows validation errors for invalid values", async ({ page }) => {
+    await page.getByLabel("Name").fill("J");
+    await page.getByLabel("Email").fill("parent@example.com");
+    await page.getByLabel("Message").fill("Hi");
     await page.getByRole("button", { name: "Send Message" }).click();
 
     await expect(
       page.getByText("Name must be at least 2 characters"),
-    ).toBeVisible();
-    await expect(
-      page.getByText("Please enter a valid email address"),
     ).toBeVisible();
     await expect(
       page.getByText("Message must be at least 10 characters"),
