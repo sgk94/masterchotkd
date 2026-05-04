@@ -154,12 +154,108 @@ describe("POST /api/admin/invitations", () => {
     });
   });
 
-  it("returns 413 when body exceeds 2KB", async () => {
+  it("returns 201 and sends bulk invitations sequentially", async () => {
+    asAdmin();
+    createInvitationMock
+      .mockResolvedValueOnce({
+        id: "inv_1",
+        emailAddress: "one@example.com",
+        status: "pending",
+      })
+      .mockResolvedValueOnce({
+        id: "inv_2",
+        emailAddress: "two@example.com",
+        status: "pending",
+      });
+    const { POST } = await import(
+      "@/app/(main)/api/admin/invitations/route"
+    );
+    const res = await POST(
+      jsonRequest({ emails: ["One@Example.com", "two@example.com"] }),
+    );
+    const body = await res.json();
+    expect(res.status).toBe(201);
+    expect(body.summary).toEqual({ requested: 2, sent: 2, failed: 0 });
+    expect(createInvitationMock).toHaveBeenNthCalledWith(1, {
+      emailAddress: "one@example.com",
+      redirectUrl: "https://masterchostaekwondo.com/sign-up",
+    });
+    expect(createInvitationMock).toHaveBeenNthCalledWith(2, {
+      emailAddress: "two@example.com",
+      redirectUrl: "https://masterchostaekwondo.com/sign-up",
+    });
+  });
+
+  it("deduplicates bulk invitations before sending", async () => {
+    asAdmin();
+    createInvitationMock.mockResolvedValue({
+      id: "inv_1",
+      emailAddress: "parent@example.com",
+      status: "pending",
+    });
+    const { POST } = await import(
+      "@/app/(main)/api/admin/invitations/route"
+    );
+    const res = await POST(
+      jsonRequest({ emails: ["Parent@Example.com", "parent@example.com"] }),
+    );
+    const body = await res.json();
+    expect(res.status).toBe(201);
+    expect(body.summary).toEqual({ requested: 1, sent: 1, failed: 0 });
+    expect(createInvitationMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns 207 when a bulk invitation partially fails", async () => {
+    asAdmin();
+    createInvitationMock
+      .mockResolvedValueOnce({
+        id: "inv_1",
+        emailAddress: "ok@example.com",
+        status: "pending",
+      })
+      .mockRejectedValueOnce({
+        status: 422,
+        errors: [{ code: "duplicate_record", message: "already exists" }],
+      });
+    const { POST } = await import(
+      "@/app/(main)/api/admin/invitations/route"
+    );
+    const res = await POST(
+      jsonRequest({ emails: ["ok@example.com", "dupe@example.com"] }),
+    );
+    const body = await res.json();
+    expect(res.status).toBe(207);
+    expect(body.summary).toEqual({ requested: 2, sent: 1, failed: 1 });
+    expect(body.results).toEqual([
+      expect.objectContaining({ email: "ok@example.com", ok: true }),
+      expect.objectContaining({
+        email: "dupe@example.com",
+        ok: false,
+        status: 409,
+      }),
+    ]);
+  });
+
+  it("returns 400 when bulk invite exceeds the batch cap", async () => {
     asAdmin();
     const { POST } = await import(
       "@/app/(main)/api/admin/invitations/route"
     );
-    const big = { email: `${"a".repeat(2500)}@example.com` };
+    const emails = Array.from(
+      { length: 26 },
+      (_, index) => `parent${index}@example.com`,
+    );
+    const res = await POST(jsonRequest({ emails }));
+    expect(res.status).toBe(400);
+    expect(createInvitationMock).not.toHaveBeenCalled();
+  });
+
+  it("returns 413 when body exceeds 8KB", async () => {
+    asAdmin();
+    const { POST } = await import(
+      "@/app/(main)/api/admin/invitations/route"
+    );
+    const big = { email: `${"a".repeat(9000)}@example.com` };
     const res = await POST(jsonRequest(big));
     expect(res.status).toBe(413);
   });

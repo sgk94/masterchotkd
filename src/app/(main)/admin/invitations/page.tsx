@@ -65,11 +65,11 @@ export default async function AdminInvitationsPage(): Promise<React.ReactElement
 
       <section className="rounded-card bg-brand-cream p-6 sm:p-8">
         <h2 className="font-heading text-xl text-brand-black">
-          Send an invitation
+          Send invitations
         </h2>
         <p className="mt-1 text-sm text-brand-black/55">
-          Clerk will email a one-time link. Only that email can complete
-          sign-up.
+          Clerk will email each address a one-time link. Only that email can
+          complete sign-up.
         </p>
         <div className="mt-5">
           <InviteForm />

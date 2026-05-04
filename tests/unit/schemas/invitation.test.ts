@@ -2,34 +2,66 @@ import { describe, expect, it } from "vitest";
 import { invitationCreateSchema } from "@/schemas/invitation";
 
 describe("invitationCreateSchema", () => {
-  it("accepts a valid email", () => {
+  it("normalizes a single email payload", () => {
     const result = invitationCreateSchema.safeParse({
-      email: "parent@example.com",
+      email: "  Parent@Example.com ",
     });
+
     expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data).toEqual({ emails: ["parent@example.com"] });
+    }
   });
 
-  it("trims and lowercases email", () => {
+  it("normalizes and deduplicates a bulk email payload", () => {
     const result = invitationCreateSchema.safeParse({
-      email: "  PARENT@Example.COM  ",
+      emails: ["Parent@Example.com", "parent@example.com", "two@example.com"],
     });
+
     expect(result.success).toBe(true);
-    expect(result.data?.email).toBe("parent@example.com");
+    if (result.success) {
+      expect(result.data).toEqual({
+        emails: ["parent@example.com", "two@example.com"],
+      });
+    }
   });
 
-  it("rejects invalid email format", () => {
+  it("rejects invalid bulk emails", () => {
+    const result = invitationCreateSchema.safeParse({
+      emails: ["parent@example.com", "bad-email"],
+    });
+
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects invalid single email format", () => {
     const result = invitationCreateSchema.safeParse({ email: "not-an-email" });
+
     expect(result.success).toBe(false);
   });
 
-  it("rejects missing email", () => {
+  it("rejects missing email fields", () => {
     const result = invitationCreateSchema.safeParse({});
+
     expect(result.success).toBe(false);
   });
 
-  it("caps email length at 254 (RFC 5321)", () => {
-    const long = `${"a".repeat(250)}@x.io`;
-    const result = invitationCreateSchema.safeParse({ email: long });
+  it("caps single email length at 254", () => {
+    const result = invitationCreateSchema.safeParse({
+      email: `${"a".repeat(250)}@x.io`,
+    });
+
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects more than 25 emails in one batch", () => {
+    const result = invitationCreateSchema.safeParse({
+      emails: Array.from(
+        { length: 26 },
+        (_, index) => `parent${index}@example.com`,
+      ),
+    });
+
     expect(result.success).toBe(false);
   });
 });

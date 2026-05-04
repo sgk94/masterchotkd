@@ -21,18 +21,30 @@ afterEach(() => {
 });
 
 describe("InviteForm", () => {
-  it("submits the email and shows success", async () => {
+  it("submits one or more emails and shows success", async () => {
     fetchMock.mockResolvedValue(
-      new Response(JSON.stringify({ invitation: { id: "inv_1" } }), {
-        status: 201,
-        headers: { "content-type": "application/json" },
-      }),
+      new Response(
+        JSON.stringify({
+          summary: { sent: 2, failed: 0 },
+          results: [
+            { email: "parent@example.com", ok: true },
+            { email: "second@example.com", ok: true },
+          ],
+        }),
+        {
+          status: 201,
+          headers: { "content-type": "application/json" },
+        },
+      ),
     );
     const user = userEvent.setup();
     render(<InviteForm />);
-    await user.type(screen.getByLabelText(/email/i), "parent@example.com");
+    await user.type(
+      screen.getByLabelText(/emails/i),
+      "Parent@Example.com\nsecond@example.com parent@example.com",
+    );
     await user.click(
-      screen.getByRole("button", { name: /send invitation/i }),
+      screen.getByRole("button", { name: /send invitations/i }),
     );
 
     await waitFor(() => {
@@ -40,7 +52,9 @@ describe("InviteForm", () => {
         "/api/admin/invitations",
         expect.objectContaining({
           method: "POST",
-          body: JSON.stringify({ email: "parent@example.com" }),
+          body: JSON.stringify({
+            emails: ["parent@example.com", "second@example.com"],
+          }),
         }),
       );
     });
@@ -60,24 +74,75 @@ describe("InviteForm", () => {
     );
     const user = userEvent.setup();
     render(<InviteForm />);
-    await user.type(screen.getByLabelText(/email/i), "x@y.com");
+    await user.type(screen.getByLabelText(/emails/i), "x@y.com");
     await user.click(
-      screen.getByRole("button", { name: /send invitation/i }),
+      screen.getByRole("button", { name: /send invitations/i }),
     );
     expect(await screen.findByText(/bad email/i)).toBeInTheDocument();
+  });
+
+  it("shows per-email results for a partial failure", async () => {
+    fetchMock.mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          summary: { sent: 1, failed: 1 },
+          results: [
+            { email: "ok@example.com", ok: true },
+            {
+              email: "dupe@example.com",
+              ok: false,
+              error: "An invitation for that email already exists.",
+            },
+          ],
+        }),
+        { status: 207, headers: { "content-type": "application/json" } },
+      ),
+    );
+    const user = userEvent.setup();
+    render(<InviteForm />);
+    await user.type(
+      screen.getByLabelText(/emails/i),
+      "ok@example.com\ndupe@example.com",
+    );
+    await user.click(
+      screen.getByRole("button", { name: /send invitations/i }),
+    );
+
+    expect(await screen.findByText(/sent: ok@example.com/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/failed: dupe@example.com/i),
+    ).toBeInTheDocument();
+    expect(refreshMock).toHaveBeenCalled();
+  });
+
+  it("blocks batches above the local cap before calling the API", async () => {
+    const user = userEvent.setup();
+    render(<InviteForm />);
+    const emails = Array.from(
+      { length: 26 },
+      (_, index) => `parent${index}@example.com`,
+    ).join("\n");
+    await user.type(screen.getByLabelText(/emails/i), emails);
+    await user.click(
+      screen.getByRole("button", { name: /send invitations/i }),
+    );
+    expect(
+      await screen.findByText(/send at most 25 invitations/i),
+    ).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it("surfaces network error when fetch rejects and unsticks the button", async () => {
     fetchMock.mockRejectedValue(new TypeError("Failed to fetch"));
     const user = userEvent.setup();
     render(<InviteForm />);
-    await user.type(screen.getByLabelText(/email/i), "x@y.com");
+    await user.type(screen.getByLabelText(/emails/i), "x@y.com");
     await user.click(
-      screen.getByRole("button", { name: /send invitation/i }),
+      screen.getByRole("button", { name: /send invitations/i }),
     );
     expect(await screen.findByText(/network error/i)).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: /send invitation/i }),
+      screen.getByRole("button", { name: /send invitations/i }),
     ).not.toBeDisabled();
   });
 
@@ -90,9 +155,9 @@ describe("InviteForm", () => {
     );
     const user = userEvent.setup();
     render(<InviteForm />);
-    await user.type(screen.getByLabelText(/email/i), "x@y.com");
+    await user.type(screen.getByLabelText(/emails/i), "x@y.com");
     await user.click(
-      screen.getByRole("button", { name: /send invitation/i }),
+      screen.getByRole("button", { name: /send invitations/i }),
     );
     expect(screen.getByRole("button", { name: /sending/i })).toBeDisabled();
     resolve(new Response("{}", { status: 201 }));
