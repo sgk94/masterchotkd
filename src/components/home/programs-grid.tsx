@@ -96,6 +96,7 @@ export function ProgramsGrid(): React.ReactElement {
                   alt=""
                   fill
                   sizes={program.featured ? "(max-width: 640px) 100vw, 58vw" : program.span === "sm:col-span-12" ? "(max-width: 640px) 100vw, 100vw" : "(max-width: 640px) 100vw, 42vw"}
+                  priority={program.mobileOrder <= 1}
                   className={`absolute inset-0 object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04] ${"imagePosition" in program && program.imagePosition ? program.imagePosition : ""}`}
                 />
               ) : null}
