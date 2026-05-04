@@ -175,6 +175,14 @@ google-site-verification=rvIpjicemCbIMNiNm8rXYxghLwzSTQrvjAiW_YqHaOY
 ## Phase 5 — After The Switch
 
 - [ ] Wait until new website is stable (recommend 48-72 hours minimum)
+- [ ] Follow the 72-hour monitoring plan in `LAUNCH-RUNBOOK.md`
+- [ ] Check Vercel Observability at least daily:
+  - [ ] Edge requests are explainable by normal traffic, launch testing, redirects, or crawlers
+  - [ ] Function invocations remain low (`0-100/day` expected; investigate sustained `500+/day`)
+  - [ ] Error rate stays near `0%`
+- [ ] Confirm Spend Management is enabled on the Vercel Pro team
+- [ ] Keep Speed Insights disabled unless intentionally running a performance monitoring window
+- [ ] Track any old-site reports by network/device; if cellular works, treat it as local/router/ISP DNS cache
 - [ ] Get written confirmation from Foxspin:
   - [ ] Final cancellation date
   - [ ] Whether hosting ends immediately

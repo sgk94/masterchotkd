@@ -156,8 +156,8 @@ All steps here are additive — they create new accounts/keys but don't change a
 3. Vercel will show "Invalid configuration" — that's expected, DNS still points to Foxspin
 4. **Add Domain** again → `www.masterchostaekwondo.com` → choose "Redirect to `masterchostaekwondo.com`"
 5. Vercel will show DNS records you'd need to add. **Save these for Phase 3:**
-   - `A` record: `@` → `76.76.21.21` (Vercel's anycast IP — current value, double-check what Vercel shows you)
-   - `CNAME`: `www` → `cname.vercel-dns.com`
+   - `A` record: `@` → whatever Vercel currently recommends for the apex domain
+   - `www` redirect-domain record(s) → whatever Vercel currently recommends for the redirect domain
 
 ### Phase 1 Rollback
 
@@ -295,8 +295,8 @@ Add **every record below** to the new DNS provider. Don't switch nameservers yet
 **Vercel A/CNAME (from Phase 1D):**
 | Type | Name | Value | TTL |
 |---|---|---|---|
-| A | `@` | `76.76.21.21` | 300 |
-| CNAME | `www` | `cname.vercel-dns.com` | 300 |
+| A | `@` | Vercel's current recommended apex A record | 300 |
+| Vercel-recommended record | `www` | Vercel's current recommended redirect-domain value(s) | 300 |
 
 **Google Workspace MX (preserve from current Foxspin DNS — see `GO-LIVE.md`):**
 | Type | Name | Priority | Value |
@@ -365,7 +365,7 @@ Within ~10 minutes, the new nameservers should be live. Check:
 
 ```bash
 dig masterchostaekwondo.com NS +short      # should show your new nameservers
-dig masterchostaekwondo.com A +short       # should show 76.76.21.21
+dig masterchostaekwondo.com A +short       # should match Vercel's current recommended apex A record
 dig clerk.masterchostaekwondo.com CNAME +short
 dig resend._domainkey.masterchostaekwondo.com CNAME +short
 dig masterchostaekwondo.com MX +short      # should show all 5 Google entries
@@ -390,7 +390,7 @@ Open `https://masterchostaekwondo.com` in an incognito window:
 - [ ] Reply to that test email → confirm it goes back to the test prospect (Reply-To header)
 - [ ] `/sign-in` — sign up with a test account → confirm sign-in works → lands on `/members`
 - [ ] `/members` content loads (auth working)
-- [ ] Facebook social login works
+- [ ] Facebook social login remains disabled for launch; email sign-in works
 - [ ] PDF downloads work (`/student-resources/tiny-tiger-handbook` etc. — must be signed in)
 - [ ] `/students/*` redirects to `/members/*`
 - [ ] Sitemap loads: `https://masterchostaekwondo.com/sitemap.xml`
@@ -462,17 +462,51 @@ If catastrophic problems:
 
 The risky parts are over. Now you wait, monitor, and clean up.
 
-### 5A — First 48 hours
+### 5A — First 72 hours monitoring plan
 
-- [ ] Refresh `/contact` page hourly first day → submit a test message → confirm rate-limit kicks in if you submit 5+ in a row (4-per-hour limit by default)
-- [ ] Monitor Vercel **Logs** for any errors (Vercel dashboard → Logs)
-- [ ] Monitor Clerk dashboard for failed sign-ins
-- [ ] Confirm Google Workspace email still flows (send + receive)
-- [ ] Check Google Search Console — site should still be verified (TXT records preserved)
-- [ ] Search Google for `site:masterchostaekwondo.com` — confirm pages are being indexed with new content
-- [ ] Search Google for `"Master Cho" taekwondo lynnwood` — confirm GBP card shows, website link works, and the listing hasn't dropped
-- [ ] Check GBP Insights (in Google Business dashboard) — if impressions drop >50% week-over-week, investigate NAP consistency or website URL mismatch
-- [ ] Monitor Search Console **Coverage/Pages** for any spike in 404 errors — each one is an old Foxspin URL that needs a 301 redirect added
+Use this as the operating checklist for the first few days after cutover. Record anything unusual with the exact time, URL, browser/device, network, and screenshot if available.
+
+**Every few hours on launch day**
+
+- [ ] Open `https://masterchostaekwondo.com` and confirm the homepage loads from Vercel.
+- [ ] Open `https://www.masterchostaekwondo.com` and confirm it redirects to apex.
+- [ ] Check the key public pages: `/about`, `/programs`, `/schedule`, `/contact`, `/special-offer`.
+- [ ] Check at least one old Foxspin URL, such as `/contact-us`, and confirm it redirects instead of 404s.
+- [ ] Submit no more than 1-2 live contact-form tests unless debugging; confirm the email arrives and Reply-To points to the test sender.
+- [ ] Confirm Google Workspace email still sends and receives normally.
+- [ ] Check Vercel dashboard -> Observability for edge requests, function invocations, and error rate.
+- [ ] Check Vercel dashboard -> Logs for new 4xx/5xx patterns.
+- [ ] Check Clerk dashboard for failed sign-ins or domain/auth warnings.
+- [ ] Ask any person who sees the old site whether cellular data shows the new site; if cellular works, treat it as local/router/ISP DNS cache.
+
+**Daily for the first 3 days**
+
+- [ ] Check Vercel usage. For this SMB site, hundreds to a few thousand edge requests/day is normal; launch days can be higher.
+- [ ] Check Vercel function invocations. `0-100/day` is normal; investigate sustained `500+/day` unless there is obvious member/admin/contact usage.
+- [ ] Confirm Vercel error rate stays near `0%`.
+- [ ] Confirm Spend Management is enabled on the Pro team with email/SMS notifications.
+- [ ] Confirm Speed Insights is disabled unless intentionally monitoring performance.
+- [ ] Confirm Resend domain remains verified and contact emails are not bouncing.
+- [ ] Confirm Upstash/rate limiting is not producing unexpected errors in logs.
+- [ ] Check Google Search Console verification status and sitemap status.
+- [ ] Check Search Console Coverage/Pages for new `Not found (404)` URLs; add redirects for any old Foxspin paths that show up.
+- [ ] Check Google Business Profile website URL, phone, address, and hours for parity with the live site.
+- [ ] Search Google for `"Master Cho" taekwondo lynnwood` and confirm the GBP card still appears with the correct website link.
+
+**Thresholds that need action**
+
+- [ ] Apex or `www` is not serving Vercel for multiple networks/resolvers after 24 hours.
+- [ ] Contact form fails once in a real user report or twice in testing.
+- [ ] Vercel function invocations exceed `500/day` without a clear reason.
+- [ ] Vercel error rate is above `1%` for more than 15 minutes.
+- [ ] Search Console shows new old-site 404s after cutover.
+- [ ] GBP website URL, address, phone, or hours do not match the live site.
+
+**Do not overreact to**
+
+- [ ] A few users seeing the old site from one Wi-Fi network while cellular works.
+- [ ] A launch-day edge request spike from testing, redirects, crawlers, or repeated refreshes.
+- [ ] Temporary Google Search Console delays; indexing updates can take days.
 
 ### 5B — After 48–72 hours of stability
 
@@ -526,7 +560,7 @@ This moves billing/control of the domain from Wild West (via Foxspin) to a regis
 
 | Service | DNS records required |
 |---|---|
-| Vercel hosting | A `@` → `76.76.21.21`, CNAME `www` → `cname.vercel-dns.com` |
+| Vercel hosting | A `@` → Vercel's current recommended apex A record; `www` → Vercel's current recommended redirect-domain record(s) |
 | Google Workspace email | MX × 5 (priorities 1, 5, 5, 10, 10) |
 | Google Search Console | TXT × 2 (existing verifications) |
 | Resend (email sending) | MX `send`, TXT `send` SPF, CNAME × 3 DKIM |
