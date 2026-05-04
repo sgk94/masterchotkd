@@ -44,12 +44,13 @@ export default function AboutPage(): React.ReactElement {
           </p>
           <div className="mt-8"><Button variant="primary" href="/special-offer">Start Your Journey</Button></div>
         </div>
-        <div className="relative aspect-[6/5] overflow-hidden rounded-card">
+        <div className="relative aspect-[6/5] overflow-hidden rounded-card bg-brand-navy">
           <Image
             src="/images/storefront.webp"
             alt="Master Cho's Taekwondo storefront in Lynnwood, WA"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
+            priority
             className="object-cover object-center"
           />
         </div>
@@ -68,7 +69,7 @@ export default function AboutPage(): React.ReactElement {
         </div>
 
         <div className="mt-16 flex flex-col gap-20 lg:gap-28">
-          {instructors.map((instructor) => (
+          {instructors.map((instructor, index) => (
             <div
               key={instructor.name}
               className={`grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16 ${
@@ -76,12 +77,13 @@ export default function AboutPage(): React.ReactElement {
               }`}
             >
               {/* Photo */}
-              <div className="relative aspect-[4/3] overflow-hidden rounded-card lg:[direction:ltr]">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-card bg-brand-cream lg:[direction:ltr]">
                 <Image
                   src={instructor.image}
                   alt={instructor.name}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
+                  {...(index === 0 ? { loading: "eager" as const } : {})}
                   className="object-cover object-top"
                 />
               </div>

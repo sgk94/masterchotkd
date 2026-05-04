@@ -22,8 +22,15 @@ export default async function ProgramsPage(): Promise<React.ReactElement> {
       <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2">
         {programs.map((program, i) => (
           <Link key={program.slug} href={`/programs/${program.slug}`} className="group overflow-hidden rounded-card bg-brand-cream transition-transform hover:scale-[1.01]">
-            <div className="relative h-56">
-              <Image src={program.imageUrl} alt={program.name} fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" {...(i < 2 ? { priority: true } : {})} />
+            <div className="relative h-56 bg-brand-navy">
+              <Image
+                src={program.imageUrl}
+                alt={program.name}
+                fill
+                className="object-cover"
+                sizes="(max-width: 640px) 100vw, 50vw"
+                {...(i < 2 ? { priority: true } : { loading: "eager" as const })}
+              />
             </div>
             <div className="p-6">
               <h2 className="font-heading text-2xl text-brand-black group-hover:text-brand-red transition-colors">{program.name}</h2>
