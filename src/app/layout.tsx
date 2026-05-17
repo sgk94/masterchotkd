@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Analytics } from "@vercel/analytics/next";
 import { heading, body } from "@/lib/fonts";
 import { BUSINESS_LOCATION, BUSINESS_PHONE_STRUCTURED } from "@/lib/location";
 import { createMetadata } from "@/lib/metadata";
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
             }}
           />
           {children}
+          <Analytics />
         </ClerkProvider>
       </body>
     </html>

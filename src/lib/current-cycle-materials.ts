@@ -24,6 +24,7 @@ export type ColorBeltCycleEntry = {
   swatch: BeltSwatch;
   poomsae: string;
   poomsaeVideoTitle: string;
+  poomsaeVideoId?: string;
   weapon: "BME" | "JB" | "SJB";
   oneStep: string;
   handTech: string;
@@ -63,7 +64,8 @@ export const colorBeltCycleEntries: ColorBeltCycleEntry[] = [
     beltDotBorder: "ring-1 ring-brand-taupe/60",
     swatch: { color: "#ffffff", border: true },
     poomsae: "Basic",
-    poomsaeVideoTitle: "Gibon 1 (Basic)",
+    poomsaeVideoTitle: "Gibon 1 Jang",
+    poomsaeVideoId: "Na-upkp5wHo",
     weapon: "BME",
     oneStep: "White",
     handTech: "1-6",
@@ -80,6 +82,7 @@ export const colorBeltCycleEntries: ColorBeltCycleEntry[] = [
     swatch: { color: "#FF8C00" },
     poomsae: "Taegeuk 1",
     poomsaeVideoTitle: "Taegeuk 1 Jang",
+    poomsaeVideoId: "n5Q-g0uUj3c",
     weapon: "JB",
     oneStep: "Orange",
     handTech: "7-12",
@@ -96,6 +99,7 @@ export const colorBeltCycleEntries: ColorBeltCycleEntry[] = [
     swatch: { color: "#FACC15" },
     poomsae: "Taegeuk 2",
     poomsaeVideoTitle: "Taegeuk 2 Jang",
+    poomsaeVideoId: "EkLZUEBOz0A",
     weapon: "SJB",
     oneStep: "Yellow",
     handTech: "13-18",
@@ -113,6 +117,7 @@ export const colorBeltCycleEntries: ColorBeltCycleEntry[] = [
     swatch: { color: "#6B8E23", usesCamo: true },
     poomsae: "Taegeuk 3",
     poomsaeVideoTitle: "Taegeuk 3 Jang",
+    poomsaeVideoId: "VIPVITNl_bA",
     weapon: "BME",
     oneStep: "Camo",
     handTech: "19-24",
@@ -129,6 +134,7 @@ export const colorBeltCycleEntries: ColorBeltCycleEntry[] = [
     swatch: { color: "#22C55E" },
     poomsae: "Taegeuk 4",
     poomsaeVideoTitle: "Taegeuk 4 Jang",
+    poomsaeVideoId: "zAGvSKgGVQE",
     weapon: "JB",
     oneStep: "Green",
     handTech: "25-30",
@@ -145,6 +151,7 @@ export const colorBeltCycleEntries: ColorBeltCycleEntry[] = [
     swatch: { color: "#9333EA" },
     poomsae: "Taegeuk 5",
     poomsaeVideoTitle: "Taegeuk 5 Jang",
+    poomsaeVideoId: "RSRKE_p-hkg",
     weapon: "SJB",
     oneStep: "Purple",
     handTech: "31-36",

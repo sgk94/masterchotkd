@@ -9,6 +9,7 @@ Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), rep
 - **Client bundle reduced** — programs-grid, schedule-grid, weekly-training, students/layout, curriculum index now Server Components; CSS `@keyframes` entrance animations replace IntersectionObserver hooks; `FloatingSectionNav` uses CSS `position: sticky` (no scroll handler)
 - **DRY consolidation** — `src/lib/nav.ts` is single nav source; `<ResourceCard>` extracted; `<EyebrowBadge variant="gold">` replaces 13 inline pills
 - **Images optimized** — real dojang + instructor photos at 1600px JPEG @ q82 (resized from 2560px, ~8 MB disk savings); hero poster (79 KB, first-frame LCP); OG image (1200×630) wired
+- **Vercel Web Analytics wired** — `@vercel/analytics` mounted in root layout; leave enabled for a one-month evaluation through 2026-06-14, then review usage/cost before deciding whether to keep it long term
 - **Auth: Clerk enabled** (Development mode, see To Get Fully Running) — Facebook social login, route protection via `proxy.ts`
 - **Contact form live** — Resend wired, Upstash rate-limit when configured, validateOrigin/CSRF check, 10KB body cap, control-char + HTML escape, 5s Resend timeout
 - **DB + trial/booking flows** — deleted until Phase 2 (schemas, forms, routes removed); Prisma schema trimmed to Program + ClassSchedule + Testimonial
@@ -52,6 +53,7 @@ See **Current Status** (above) and **Gotchas** / **API Routes** (below) for spec
 - **Email:** Resend (configured, not connected — uses lazy `getServerEnv()`)
 - **Rate Limiting:** Upstash Redis + @upstash/ratelimit (configured, not connected)
 - **Sanitization:** sanitize-html
+- **Analytics:** Vercel Web Analytics (`@vercel/analytics`, mounted in `src/app/layout.tsx`)
 - **Hosting:** Vercel (connected to GitHub, auto-deploys)
 - **Package manager:** pnpm 10.18
 - **Testing:** Vitest + happy-dom, React Testing Library, Playwright
@@ -212,6 +214,7 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `server-env.ts` `getServerEnv()` is lazy; `src/instrumentation.ts` calls it once at prod boot to fail-fast on missing vars
 - CI `lighthouse` job uses placeholder `RESEND_API_KEY`/`RESEND_FROM_EMAIL`/`NOTIFY_EMAIL` so `pnpm start` boot validation passes; swap for real GitHub secrets at go-live (see `LAUNCH-RUNBOOK.md` Phase 2A)
 - `lighthouse` CI job consumes the `next-build.tgz` artifact from the `build` job (tar excluding `.next/cache`) instead of rebuilding
+- Vercel Web Analytics is on the Pro plan; budget roughly $3 per 100,000 page-view/custom events, with a one-month evaluation ending 2026-06-14
 - `email.ts` enforces 5s Resend timeout via `Promise.race` (Resend SDK v6 has no `signal` param)
 - `serveProtectedPdf` enforces `/^[A-Za-z0-9 ._-]+\.pdf$/` allowlist + `path.resolve` containment check
 - Footer copyright year is dynamic (`new Date().getFullYear()`)

@@ -16,4 +16,19 @@ describe("ColorBeltPage", () => {
       screen.getByRole("heading", { level: 2, name: /poomsae videos/i }),
     ).toBeInTheDocument();
   });
+
+  it("uses numeric Taegeuk names on poomsae cards", () => {
+    render(<ColorBeltPage />);
+    expect(screen.getByText("Taegeuk 1 Jang")).toBeInTheDocument();
+    expect(screen.getByText("Taegeuk 2 Jang")).toBeInTheDocument();
+    expect(screen.queryByText("Taegeuk Il-jang")).not.toBeInTheDocument();
+  });
+
+  it("renders the Gibon 1 Basic video", () => {
+    render(<ColorBeltPage />);
+    expect(screen.getByText("Gibon 1 Jang")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /play gibon 1 jang/i }),
+    ).toBeInTheDocument();
+  });
 });

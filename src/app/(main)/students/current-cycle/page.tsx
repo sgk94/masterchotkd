@@ -206,6 +206,7 @@ export default function CurrentCyclePage(): React.ReactElement {
                     eyebrow={`${entry.level} · ${entry.beltName}`}
                     title={entry.poomsaeVideoTitle}
                     subtitle={`Cycle ${entry.cycle} poomsae`}
+                    videoId={entry.poomsaeVideoId}
                     swatch={<SwatchCircle swatch={entry.swatch} />}
                   />
                 ))}
