@@ -12,7 +12,7 @@
 
 ## Working conventions
 - Use `pnpm` (packageManager is pnpm 10.18.x); do not introduce npm/yarn lockfiles
-- Always run `pnpm vitest run` after substantive changes (current local baseline: 282 tests / 60 files)
+- Always run `pnpm vitest run` after substantive changes (current local baseline: 278 tests / 59 files)
 - CI runs `pnpm vitest run --coverage` with thresholds in `vitest.config.ts`
 - Always run `pnpm exec tsc --noEmit` before committing
 - `pnpm lint` currently exits 0 with pre-existing warnings in `src/components/members/resource-card.tsx`, `src/components/members/youtube-facade.tsx`, test image mocks, and generated `coverage/` output if present; do not introduce new warnings

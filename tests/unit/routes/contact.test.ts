@@ -1,20 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const sendEmailMock = vi.fn();
-const checkRateLimitMock = vi.fn();
-const getClientIpMock = vi.fn();
 
 vi.mock("@/lib/email", () => ({
   sendEmail: sendEmailMock,
 }));
 
-vi.mock("@/lib/rate-limit", () => ({
-  checkRateLimit: checkRateLimitMock,
-  isRateLimitConfigured: () => true,
-}));
-
 vi.mock("@/lib/api-security", () => ({
-  getClientIp: getClientIpMock,
   validateOrigin: vi.fn().mockResolvedValue(null),
 }));
 
@@ -50,12 +42,8 @@ describe("POST /api/contact", () => {
     process.env.NOTIFY_EMAIL = "notify@example.com";
 
     sendEmailMock.mockReset();
-    checkRateLimitMock.mockReset();
-    getClientIpMock.mockReset();
 
     sendEmailMock.mockResolvedValue(undefined);
-    checkRateLimitMock.mockResolvedValue({ success: true });
-    getClientIpMock.mockResolvedValue("127.0.0.1");
   });
 
   afterEach(() => {
@@ -83,16 +71,6 @@ describe("POST /api/contact", () => {
     const response = await POST(makeRequest(null, { raw: oversized }));
 
     expect(response.status).toBe(413);
-    expect(sendEmailMock).not.toHaveBeenCalled();
-  });
-
-  it("returns 429 when rate limit exceeded", async () => {
-    checkRateLimitMock.mockResolvedValueOnce({ success: false });
-    const { POST } = await import("@/app/(main)/api/contact/route");
-
-    const response = await POST(makeRequest(validBody));
-
-    expect(response.status).toBe(429);
     expect(sendEmailMock).not.toHaveBeenCalled();
   });
 

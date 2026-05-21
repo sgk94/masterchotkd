@@ -1,9 +1,8 @@
-import { auth, clerkClient } from "@clerk/nextjs/server";
+import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { clerkErrorToResponse, requireAdmin } from "@/lib/clerk-admin";
-import { getClientIp, validateOrigin } from "@/lib/api-security";
-import { checkRateLimit } from "@/lib/rate-limit";
+import { validateOrigin } from "@/lib/api-security";
 import { formatError } from "@/lib/errors";
 import { MAX_BULK_INVITES } from "@/lib/invitations";
 import { invitationCreateSchema } from "@/schemas/invitation";
@@ -55,18 +54,6 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   const adminError = await requireAdmin();
   if (adminError) return adminError;
-
-  const { userId } = await auth();
-  const ip = await getClientIp();
-  const { success: ok } = await checkRateLimit(
-    `invite:${userId ?? "unknown"}:${ip}`,
-  );
-  if (!ok) {
-    return NextResponse.json(
-      { error: "Too many requests. Please slow down." },
-      { status: 429 },
-    );
-  }
 
   const raw = await request.text();
   if (Buffer.byteLength(raw, "utf8") > MAX_BODY_BYTES) {
