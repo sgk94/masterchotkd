@@ -4,7 +4,7 @@
 Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), replacing their Foxspin-hosted website ($300/mo) and reducing dependency on Foxspin management ($300/mo). Target: ~$25/mo hosting.
 
 ## Current Status
-- **Phase 1 MVP: Built** — 23 pages, 9 API routes (`/api/contact` live + 8 protected PDF downloads), CI/CD, deployed to Vercel
+- **Phase 1 MVP: Built** — 24 pages, 9 API routes (`/api/contact` live + 8 protected PDF downloads), CI/CD, deployed to Vercel
 - **Pre-launch hardening done** — CSRF + IP-extraction + outbound-HTML-escape + Resend timeout on `/api/contact`; PDF path-traversal guard + RFC 5987 filename; proxy matcher tightened; error boundaries log
 - **Client bundle reduced** — programs-grid, schedule-grid, weekly-training, students/layout, curriculum index now Server Components; CSS `@keyframes` entrance animations replace IntersectionObserver hooks; `FloatingSectionNav` uses CSS `position: sticky` (no scroll handler)
 - **DRY consolidation** — `src/lib/nav.ts` is single nav source; `<ResourceCard>` extracted; `<EyebrowBadge variant="gold">` replaces 13 inline pills
@@ -130,7 +130,7 @@ About, Programs, Schedule, Reviews, Members, Contact, Special Offer, Sign In
 
 ## Site Structure
 
-### Public Pages (14 routes)
+### Public Pages (15 routes)
 - `/` — Home (hero video, marquee, programs grid, BottomCta philosophy + challenges, trial banner, testimonials, gallery)
 - `/about` — Story + instructors (alternating photo sections)
 - `/programs` — Overview (4 cards)
@@ -139,6 +139,7 @@ About, Programs, Schedule, Reviews, Members, Contact, Special Offer, Sign In
 - `/reviews` — Wall of Love
 - `/contact` — Form + location + phone
 - `/special-offer` — Trial ($49 / 2 weeks)
+- `/trial-confirmed` — post-Spark-checkout landing page with next steps, contact/location, and shared schedule grid; noindexed and not linked in nav
 - `/preview` — Design exploration (gated: `notFound()` in prod, blocked by robots.txt)
 - `/sign-in`, `/sign-up` — Clerk
 
@@ -164,7 +165,7 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 ### Other Routes
 - `/not-found` — Custom 404
 - `/sitemap.xml` — dynamic
-- `/robots.txt` — blocks /students/, /api/, /student-resources/, /preview/
+- `/robots.txt` — blocks /students/, /api/, /student-resources/, /preview/, /trial-confirmed
 
 ### Route Groups
 - `(auth)` — Clerk sign-in/sign-up pages (minimal layout, no navbar/footer)

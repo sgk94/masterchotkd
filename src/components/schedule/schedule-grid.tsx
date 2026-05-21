@@ -1,4 +1,4 @@
-import { scheduleClassPalette, scheduleRows } from "@/lib/static-data";
+import { scheduleClassPalette, scheduleRows, type ScheduleRow } from "@/lib/static-data";
 import { BezelCard } from "@/components/ui/bezel-card";
 
 const DAYS = [
@@ -24,7 +24,11 @@ const colorMap: Record<string, { bg: string; accent: string; text: string; dot?:
 
 const ease = "cubic-bezier(0.32, 0.72, 0, 1)";
 
-export function ScheduleGrid(): React.ReactElement {
+type ScheduleGridProps = {
+  rows?: ScheduleRow[];
+};
+
+export function ScheduleGrid({ rows = scheduleRows }: ScheduleGridProps = {}): React.ReactElement {
   return (
     <div className="animate-fade-up">
       <BezelCard>
@@ -49,7 +53,7 @@ export function ScheduleGrid(): React.ReactElement {
               </thead>
 
               <tbody>
-                {scheduleRows.map((row, i) => {
+                {rows.map((row, i) => {
                   const palette = colorMap[row.color] ?? {
                     bg: "bg-white",
                     accent: "border-l-brand-taupe",
@@ -59,7 +63,7 @@ export function ScheduleGrid(): React.ReactElement {
                   return (
                     <tr
                       key={row.className}
-                      className={`group transition-colors duration-500 hover:bg-brand-cream/50 ${i !== scheduleRows.length - 1 ? "border-b border-brand-taupe/10" : ""}`}
+                      className={`group transition-colors duration-500 hover:bg-brand-cream/50 ${i !== rows.length - 1 ? "border-b border-brand-taupe/10" : ""}`}
                       style={{ transitionTimingFunction: ease }}
                     >
                       {/* Class name with accent border */}
