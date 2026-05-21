@@ -4,8 +4,7 @@ import { contactSchema, programOptions } from "@/schemas/contact";
 import { sendEmail } from "@/lib/email";
 import { escapeHtml, sanitize } from "@/lib/sanitize";
 import { getServerEnv } from "@/lib/server-env";
-import { checkRateLimit } from "@/lib/rate-limit";
-import { getClientIp, validateOrigin } from "@/lib/api-security";
+import { validateOrigin } from "@/lib/api-security";
 import { formatError } from "@/lib/errors";
 import { BUSINESS_PHONE_DISPLAY } from "@/lib/location";
 
@@ -26,15 +25,6 @@ export async function POST(request: Request): Promise<NextResponse> {
   const raw = await request.text();
   if (Buffer.byteLength(raw, "utf8") > MAX_BODY_BYTES) {
     return NextResponse.json({ error: "Payload too large" }, { status: 413 });
-  }
-
-  const ip = await getClientIp();
-  const { success: withinLimit } = await checkRateLimit(`contact:${ip}`);
-  if (!withinLimit) {
-    return NextResponse.json(
-      { error: "Too many requests. Please try again shortly." },
-      { status: 429 },
-    );
   }
 
   let body: unknown;

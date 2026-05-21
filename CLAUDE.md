@@ -11,7 +11,7 @@ Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), rep
 - **Images optimized** — real dojang + instructor photos at 1600px JPEG @ q82 (resized from 2560px, ~8 MB disk savings); hero poster (79 KB, first-frame LCP); OG image (1200×630) wired
 - **Vercel Web Analytics wired** — `@vercel/analytics` mounted in root layout; leave enabled for a one-month evaluation through 2026-06-14, then review usage/cost before deciding whether to keep it long term
 - **Auth: Clerk enabled** (Development mode, see To Get Fully Running) — Facebook social login, route protection via `proxy.ts`
-- **Contact form live** — Resend wired, Upstash rate-limit when configured, validateOrigin/CSRF check, 10KB body cap, control-char + HTML escape, 5s Resend timeout
+- **Contact form live** — Resend wired, Vercel WAF rate limiting expected in production, validateOrigin/CSRF check, 10KB body cap, control-char + HTML escape, 5s Resend timeout
 - **DB + trial/booking flows** — deleted until Phase 2 (schemas, forms, routes removed); Prisma schema trimmed to Program + ClassSchedule + Testimonial
 - **PromoModal removed** (was site-wide on every route for a single-fire BOGO modal)
 - **Deployed:** Vercel (auto-deploys from `main` branch on `sgk94/masterchotkd`)
@@ -51,7 +51,7 @@ See **Current Status** (above) and **Gotchas** / **API Routes** (below) for spec
 - **ORM:** Prisma 7.6 (`db.ts` uses `require()` to avoid CI type errors)
 - **Validation:** Zod v4 (uses `.issues` not `.errors` on ZodError); shared field builders in `schemas/fields.ts`
 - **Email:** Resend (configured, not connected — uses lazy `getServerEnv()`)
-- **Rate Limiting:** Upstash Redis + @upstash/ratelimit (configured, not connected)
+- **Rate Limiting:** Vercel WAF custom rate-limit rules for production traffic (configured in Vercel dashboard, not app code)
 - **Sanitization:** sanitize-html
 - **Analytics:** Vercel Web Analytics (`@vercel/analytics`, mounted in `src/app/layout.tsx`)
 - **Hosting:** Vercel (connected to GitHub, auto-deploys)
@@ -155,9 +155,9 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `/admin/invitations` — Admin-only invitation manager (lists pending Clerk invitations, send + revoke). Guarded by `requireAdmin()` (`publicMetadata.role === "admin"`).
 
 ### API Routes
-- `POST /api/contact` — live. Resend email to `NOTIFY_EMAIL` with `Reply-To: <submitter>`. Status codes: 201 success; 400 on JSON/Zod failure (only `fieldErrors` leaked); 403 when Origin doesn't match `NEXT_PUBLIC_SITE_URL` (CSRF); 413 when `content-length > 10_000`; 429 when Upstash rate-limit exceeded; 500 on Resend failure or 5s timeout. Runtime: Node, `maxDuration = 10`.
+- `POST /api/contact` — live. Resend email to `NOTIFY_EMAIL` with `Reply-To: <submitter>`. Status codes: 201 success; 400 on JSON/Zod failure (only `fieldErrors` leaked); 403 when Origin doesn't match `NEXT_PUBLIC_SITE_URL` (CSRF); 413 when `content-length > 10_000`; 500 on Resend failure or 5s timeout. Production rate limiting is enforced before the route by Vercel WAF and may return 429. Runtime: Node, `maxDuration = 10`.
 - `GET /student-resources/{color-belt-handbook | monthly-chore-sheet | reading-list | red-black-training-packet | respect-sheet | star-chart | testing-essay-topics | tiny-tiger-handbook}` — 8 PDF download routes via shared `serveProtectedPdf()` helper (Clerk auth, allowlist regex on filename, RFC 5987 Content-Disposition).
-- `POST /api/admin/invitations` — admin-only, creates a Clerk invitation and emails the recipient. Status codes: 201 success; 400 invalid email or JSON; 401 signed out; 403 not admin or bad origin; 413 body > 2KB; 429 rate-limited; 502 Clerk error. Body: `{ email: string }`.
+- `POST /api/admin/invitations` — admin-only, creates Clerk invitations. Status codes: 201 success; 207 partial bulk success; 400 invalid email/JSON or too many emails; 401 signed out; 403 not admin or bad origin; 413 body > 8KB; 409 duplicate invitation; 502 Clerk error. Optional production throttling should be handled by Vercel WAF before the route.
 - `GET /api/admin/invitations` — admin-only, lists pending invitations. 200 with `{ invitations: [...] }`; 401/403 as above.
 - `DELETE /api/admin/invitations/[id]` — admin-only, revokes the invitation. 200 ok; 400 malformed id; 401/403 as above; 502 Clerk error.
 
@@ -180,7 +180,7 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `src/components/` — grouped by `home/`, `layout/`, `ui/`, `forms/`, `schedule/`, `members/`. Key shared: `<BezelCard>`, `<PageContainer>`, `<Reveal>`, `<EyebrowBadge>` (`pill`|`gold`), `<ResourceCard>` (light/dark + preview — wrapper is `<div>`, only the white pill "Download PDF" button is the clickable `<a>`; hover flips to red bg + white text).
 - `src/hooks/use-form-submit.ts` — shared form submission (schema validation, fetch, network-error handling).
 - `src/schemas/` — `fields.ts` (shared Zod builders: name/email/phone) + `contact.ts` (adds `programs: z.array(z.enum(...)).optional()` with `programOptions` for the contact-form multi-select; API route renders selected program labels in the email body).
-- `src/lib/` — `db`, `server-env` (lazy `getServerEnv()`), `client-env`, `fonts`, `metadata`, `email` (5s Resend timeout), `rate-limit`, `sanitize` (+ `escapeHtml`), `static-data`, `api-security` (`validateOrigin` + `getClientIp`), `members-home-content`, `current-cycle`, `current-cycle-materials`, `location`, `nav` (single nav source).
+- `src/lib/` — `db`, `server-env` (lazy `getServerEnv()`), `client-env`, `fonts`, `metadata`, `email` (5s Resend timeout), `sanitize` (+ `escapeHtml`), `static-data`, `api-security` (`validateOrigin` + `getClientIp`), `members-home-content`, `current-cycle`, `current-cycle-materials`, `location`, `nav` (single nav source).
 - `src/types/index.ts` — Program, ScheduleSlot, Testimonial, DAYS_OF_WEEK.
 
 ## Auth (Clerk)
@@ -231,13 +231,13 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `student-resources/` — 8 PDFs served via `serveProtectedPdf()` (see API Routes).
 
 ## Tests
-Vitest (`pnpm vitest run`) + Playwright E2E (`tests/e2e/*`, needs running app). 219 tests / 50 files. Coverage spans contact schema (incl. programs multi-select), `/api/contact` route branches, `current-cycle` boundaries (incl. 2027 fallback), component rendering (navbar, hero + poster/`<source media>` assertions, programs-grid, schedule-grid, red-black + black-belt-club pages, members-tab-bar, resource-card), protected PDF route, `next.config` flags, `globals.css` grain mobile gate, image size budget.
+Vitest (`pnpm vitest run`) + Playwright E2E (`tests/e2e/*`, needs running app). 278 tests / 59 files. Coverage spans contact schema (incl. programs multi-select), `/api/contact` route branches, admin invitation routes, `current-cycle` boundaries (incl. 2027 fallback), component rendering (navbar, hero + poster/`<source media>` assertions, programs-grid, schedule-grid, red-black + black-belt-club pages, members-tab-bar, resource-card), protected PDF route, `next.config` flags, `globals.css` grain mobile gate, image size budget.
 
 ## To Get Fully Running
 See `LAUNCH-RUNBOOK.md` for step-by-step hand-holding on every item below.
 
 1. Resend: API key + `RESEND_FROM_EMAIL` + `NOTIFY_EMAIL` in `.env.local` / Vercel env (instrumentation.ts will fail prod boot if missing)
-2. Upstash Redis keys in `.env.local` / Vercel env — contact form auto-enables rate limiting once present
+2. Vercel Firewall: configure production WAF rate-limit rules for `POST /api/contact` before cutover
 3. (Phase 2) Neon DB → `DATABASE_URL`; `pnpm prisma migrate dev --name init && pnpm prisma db seed`; restore trial/booking models + API routes + forms from git history; replace `static-data` imports with DB queries; remove `require()` workaround from `db.ts`
 4. **Logo:** waiting on Canva-exported file from owner (do not trace existing raster)
 5. Tighten CSP (replace `unsafe-inline` with nonces)

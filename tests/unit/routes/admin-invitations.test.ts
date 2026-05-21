@@ -7,8 +7,6 @@ const {
   getInvitationListMock,
   revokeInvitationMock,
   validateOriginMock,
-  checkRateLimitMock,
-  getClientIpMock,
 } = vi.hoisted(() => ({
   authMock: vi.fn(),
   getUserMock: vi.fn(),
@@ -16,8 +14,6 @@ const {
   getInvitationListMock: vi.fn(),
   revokeInvitationMock: vi.fn(),
   validateOriginMock: vi.fn(),
-  checkRateLimitMock: vi.fn(),
-  getClientIpMock: vi.fn(),
 }));
 
 vi.mock("@clerk/nextjs/server", () => ({
@@ -35,11 +31,6 @@ vi.mock("@clerk/nextjs/server", () => ({
 
 vi.mock("@/lib/api-security", () => ({
   validateOrigin: validateOriginMock,
-  getClientIp: getClientIpMock,
-}));
-
-vi.mock("@/lib/rate-limit", () => ({
-  checkRateLimit: checkRateLimitMock,
 }));
 
 function asAdmin(): void {
@@ -67,8 +58,6 @@ beforeEach(() => {
   getInvitationListMock.mockReset();
   revokeInvitationMock.mockReset();
   validateOriginMock.mockReset().mockResolvedValue(null);
-  checkRateLimitMock.mockReset().mockResolvedValue({ success: true });
-  getClientIpMock.mockReset().mockResolvedValue("203.0.113.1");
   process.env.NEXT_PUBLIC_SITE_URL = "https://masterchostaekwondo.com";
 });
 
@@ -101,16 +90,6 @@ describe("POST /api/admin/invitations", () => {
     );
     const res = await POST(jsonRequest({ email: "x@y.com" }));
     expect(res.status).toBe(403);
-  });
-
-  it("returns 429 when rate limited", async () => {
-    asAdmin();
-    checkRateLimitMock.mockResolvedValue({ success: false });
-    const { POST } = await import(
-      "@/app/(main)/api/admin/invitations/route"
-    );
-    const res = await POST(jsonRequest({ email: "x@y.com" }));
-    expect(res.status).toBe(429);
   });
 
   it("returns 400 on invalid email", async () => {

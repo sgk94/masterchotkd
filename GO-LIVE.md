@@ -137,7 +137,7 @@ google-site-verification=rvIpjicemCbIMNiNm8rXYxghLwzSTQrvjAiW_YqHaOY
 - [ ] Only then flip `RESEND_FROM_EMAIL` in Vercel env vars from `onboarding@resend.dev` → `noreply@masterchostaekwondo.com`
 - [ ] Confirm `NOTIFY_EMAIL` in Vercel env vars is set (contact form fails on boot if missing)
 - [ ] Send a test submission through the live form; confirm Master Cho receives it and "Reply" goes back to the prospect
-- [ ] Confirm Upstash env vars (`UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`) are set so rate limiting is active — otherwise the form runs without rate limits
+- [ ] Confirm Vercel Firewall has a production rate-limit rule for `POST /api/contact` before cutover
 
 ### DNS Cutover
 - [ ] Recreate all required DNS records in new DNS provider BEFORE cutover:
@@ -212,7 +212,7 @@ Items that need to be done on the Vercel-hosted site before go-live:
 - [ ] Pin Clerk CSP origins to exact production domains (replace wildcards)
 - [ ] Verify Clerk production keys in Vercel environment variables
 
-> 📘 **For step-by-step hand-holding on every technical task in Phases 4–5 (Clerk, Resend, Upstash, CSP, DNS cutover, post-launch testing), see [`LAUNCH-RUNBOOK.md`](./LAUNCH-RUNBOOK.md).** This file is the *what*; the runbook is the *how*.
+> 📘 **For step-by-step hand-holding on every technical task in Phases 4–5 (Clerk, Resend, Vercel Firewall, CSP, DNS cutover, post-launch testing), see [`LAUNCH-RUNBOOK.md`](./LAUNCH-RUNBOOK.md).** This file is the *what*; the runbook is the *how*.
 - [ ] Run final Lighthouse audit
 - [ ] Run full test suite (`pnpm vitest run`)
 - [ ] Test on real devices (iOS Safari, Android Chrome)

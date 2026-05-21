@@ -99,16 +99,18 @@ All steps here are additive — they create new accounts/keys but don't change a
 5. **API Keys** → **Create API Key** → name it `production` → **save the key** (`re_...`) — you only see it once
 6. Don't click "Verify" yet — DNS doesn't have these records.
 
-### 1B — Upstash Redis (rate limiting)
+### 1B — Vercel Firewall rate limiting
 
-**Why:** The contact form has rate limiting that activates only when Upstash credentials are present. Without it, anyone can spam the form and burn your Resend quota.
+**Why:** The contact form should be throttled before it reaches the Next.js route so spam cannot burn Resend quota. Vercel WAF avoids a separate Redis database and has no low-traffic archive behavior.
 
-1. Go to `https://console.upstash.com` → sign up / log in
-2. **Create Database** → name: `masterchotkd-prod` → region: `us-west-1` (closest to Vercel SF region)
-3. Click on the new database → scroll to **REST API** section
-4. Copy two values:
-   - `UPSTASH_REDIS_REST_URL` (looks like `https://....upstash.io`)
-   - `UPSTASH_REDIS_REST_TOKEN` (long string)
+1. Vercel dashboard → project → **Firewall** → **Configure** → **New Rule**
+2. Name: `contact-form-rate-limit`
+3. Match requests where:
+   - `path` equals `/api/contact`
+   - `method` equals `POST`
+4. Action: **Rate Limit**
+5. Starting threshold: `5` requests per `10 minutes` by IP. Adjust only after observing real traffic.
+6. Save/apply the rule. Vercel should return `429` before the app route is invoked when the limit is exceeded.
 
 ### 1C — Clerk Production instance
 
@@ -161,7 +163,7 @@ All steps here are additive — they create new accounts/keys but don't change a
 
 ### Phase 1 Rollback
 
-Nothing to roll back — none of this is wired in yet. If you change your mind, just delete the Resend / Upstash / Clerk Production accounts; nothing on the live site is affected.
+Nothing to roll back — none of this is wired in yet. If you change your mind, delete the Resend / Clerk Production accounts and remove the Vercel Firewall rule; nothing on the live site is affected.
 
 ---
 
@@ -178,8 +180,6 @@ For each variable below: Vercel dashboard → **Settings → Environment Variabl
 | `RESEND_API_KEY` | `re_...` | Phase 1A step 5 |
 | `RESEND_FROM_EMAIL` | `noreply@masterchostaekwondo.com` | Phase 0 decision |
 | `NOTIFY_EMAIL` | (real business email) | Phase 0 decision |
-| `UPSTASH_REDIS_REST_URL` | `https://...upstash.io` | Phase 1B step 4 |
-| `UPSTASH_REDIS_REST_TOKEN` | (long token) | Phase 1B step 4 |
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | `pk_live_...` | Phase 1C step 10 |
 | `CLERK_SECRET_KEY` | `sk_live_...` | Phase 1C step 10 |
 | `NEXT_PUBLIC_SITE_URL` | `https://masterchostaekwondo.com` | n/a |
@@ -487,7 +487,7 @@ Use this as the operating checklist for the first few days after cutover. Record
 - [ ] Confirm Spend Management is enabled on the Pro team with email/SMS notifications.
 - [ ] Confirm Speed Insights is disabled unless intentionally monitoring performance.
 - [ ] Confirm Resend domain remains verified and contact emails are not bouncing.
-- [ ] Confirm Upstash/rate limiting is not producing unexpected errors in logs.
+- [ ] Confirm Vercel Firewall is not showing unexpected contact-form rate-limit blocks.
 - [ ] Check Google Search Console verification status and sitemap status.
 - [ ] Check Search Console Coverage/Pages for new `Not found (404)` URLs; add redirects for any old Foxspin paths that show up.
 - [ ] Check Google Business Profile website URL, phone, address, and hours for parity with the live site.
@@ -547,7 +547,7 @@ This moves billing/control of the domain from Wild West (via Foxspin) to a regis
 | Clerk Production sign-ins fail | Vercel Promote previous deployment back → Clerk Dev keys take over → users can sign in via Dev clerk while you debug |
 | Google Search Console loses verification | TXT records are preserved in Phase 3. If still lost: re-add via Search Console UI |
 | Vercel SSL cert doesn't provision | Usually auto-provisions within 5 min after DNS resolves. If it stays "Pending" for 30+ min: Vercel dashboard → Domains → Refresh button. If still stuck: Vercel support ticket |
-| Contact form spam after launch | Upstash rate limiting is active (4/hr per IP). For more abuse: add Cloudflare Turnstile — see review history in repo |
+| Contact form spam after launch | Vercel Firewall rate limiting is active for `POST /api/contact`. For more abuse: tighten the threshold or add Cloudflare Turnstile |
 | **GBP ranking drops after cutover** | Most common cause: NAP inconsistency between GBP listing and new site, or GBP website URL still pointing to old Foxspin. Fix: update GBP listing (Phase 4F), wait 3–7 days for recovery. Google local rankings are resilient if the domain stays the same. |
 | **Old Foxspin URLs return 404** | Google drops those pages from search results within 1–2 weeks. Fix: add 301 redirects in `next.config.ts` for every old URL that doesn't exist on the new site. Use Search Console's "Pages not found" report to find them. |
 | **Search traffic drops after cutover** | Normal during first 1–2 weeks — Google re-crawls and re-evaluates. If it persists past 3 weeks: check for missing 301 redirects (404 report in Search Console), verify structured data (JSON-LD), verify sitemap is submitted, check that robots.txt isn't blocking important pages. |
