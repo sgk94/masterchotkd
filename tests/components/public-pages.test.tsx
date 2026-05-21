@@ -5,6 +5,7 @@ import ContactPage from "@/app/(main)/contact/page";
 import SchedulePage from "@/app/(main)/schedule/page";
 import ReviewsPage from "@/app/(main)/reviews/page";
 import SpecialOfferPage from "@/app/(main)/special-offer/page";
+import TrialConfirmedPage from "@/app/(main)/trial-confirmed/page";
 import ProgramsPage from "@/app/(main)/programs/page";
 import TinyTigersProgramPage from "@/app/(main)/programs/tiny-tigers/page";
 import BlackBeltClubPage from "@/app/(main)/programs/black-belt-club/page";
@@ -22,6 +23,7 @@ describe.each<readonly [string, PageFn]>([
   ["SchedulePage", SchedulePage as PageFn],
   ["ReviewsPage", ReviewsPage as PageFn],
   ["SpecialOfferPage", SpecialOfferPage as PageFn],
+  ["TrialConfirmedPage", TrialConfirmedPage as PageFn],
   ["ProgramsPage", ProgramsPage as PageFn],
   ["TinyTigersProgramPage", TinyTigersProgramPage as PageFn],
   ["BlackBeltClubPage", BlackBeltClubPage as PageFn],

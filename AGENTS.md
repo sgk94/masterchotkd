@@ -12,12 +12,15 @@
 
 ## Working conventions
 - Use `pnpm` (packageManager is pnpm 10.18.x); do not introduce npm/yarn lockfiles
-- Always run `pnpm vitest run` after substantive changes (current local baseline: 282 tests / 60 files)
+- Always run `pnpm vitest run` after substantive changes (current local baseline: 286 tests / 61 files)
 - CI runs `pnpm vitest run --coverage` with thresholds in `vitest.config.ts`
 - Always run `pnpm exec tsc --noEmit` before committing
 - `pnpm lint` currently exits 0 with pre-existing warnings in `src/components/members/resource-card.tsx`, `src/components/members/youtube-facade.tsx`, test image mocks, and generated `coverage/` output if present; do not introduce new warnings
 - Playwright E2E tests live under `tests/e2e/*` and expect a running app at `PLAYWRIGHT_BASE_URL` or `http://localhost:3000`
 - Branch convention: feature branches off `main`; PR titles describe the why, not the what
+
+## Working context
+- Color belt poomsae video IDs must stay in sync between `src/app/(main)/students/curriculum/color-belt/page.tsx` and `src/lib/current-cycle-materials.ts`; `/members/current-cycle` uses the shared lib data
 
 ## Repo
 - **GitHub:** github.com/sgk94/masterchotkd
