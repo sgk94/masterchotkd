@@ -3,7 +3,6 @@ import { FloatingSectionNav } from "@/components/members/floating-section-nav";
 import { SectionHeader, SubSectionHeader, VideoCard } from "@/components/members/shared";
 import { cycleSchedule2026, formatCycleDate, getCurrentCycleWindow } from "@/lib/current-cycle";
 import {
-  colorBeltWeaponShortcuts,
   cycleNameToNumber,
   getColorBeltEntriesForCycle,
   getSwatchStyle,
@@ -101,7 +100,6 @@ export default function CurrentCyclePage(): React.ReactElement {
   const currentCycle = getCurrentCycleWindow();
   const currentCycleNumber = cycleNameToNumber(currentCycle.cycle);
   const colorBeltEntries = getColorBeltEntriesForCycle(currentCycleNumber);
-  const colorBeltWeapon = colorBeltWeaponShortcuts[currentCycleNumber];
   const cycleStatusLabel = currentCycle.status === "active" ? "Active Cycle" : "Upcoming Cycle";
   const cycleSummary =
     currentCycle.status === "active"
@@ -213,15 +211,20 @@ export default function CurrentCyclePage(): React.ReactElement {
               </div>
             </div>
 
-            {/* Weapon video */}
+            {/* Weapon videos */}
             <div id="weapon" className="scroll-mt-28 space-y-4">
-              <SubSectionHeader title="Weapon Video" />
-              <div className="max-w-md">
-                <VideoCard
-                  eyebrow={`All Color Belts · ${currentCycle.cycle}`}
-                  title={colorBeltWeapon.title}
-                  subtitle={colorBeltWeapon.description}
-                />
+              <SubSectionHeader title="Weapon Videos" />
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {colorBeltEntries.map((entry, index) => (
+                  <VideoCard
+                    key={`color-weapon-${entry.level}`}
+                    eyebrow={`${entry.level} · ${entry.beltName}`}
+                    title={`${entry.weapon} - Level ${index + 1}`}
+                    subtitle={`Cycle ${entry.cycle} weapon training`}
+                    videoId={index === 0 ? "GksjgMXonis" : index === 1 ? "GAsGhfs7jqU" : undefined}
+                    swatch={<SwatchCircle swatch={entry.swatch} />}
+                  />
+                ))}
               </div>
             </div>
 

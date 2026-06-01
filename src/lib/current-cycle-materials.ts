@@ -200,6 +200,7 @@ export const colorBeltCycleEntries: ColorBeltCycleEntry[] = [
     swatch: { color: "#DC2626" },
     poomsae: "Taegeuk 8",
     poomsaeVideoTitle: "Taegeuk 8 Jang",
+    poomsaeVideoId: "v6OXxmVh86E",
     weapon: "SJB",
     oneStep: "Red",
     handTech: "49-52",

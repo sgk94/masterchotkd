@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Show, UserButton, SignInButton, ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { IS_LOCAL_AUTH_BYPASS } from "@/lib/auth-mode";
 import { MobileMenu } from "./mobile-menu";
 import { MEMBER_NAV, PROGRAM_NAV } from "@/lib/nav";
 
@@ -154,21 +155,29 @@ export function Navbar(): React.ReactElement {
             <Button variant="primary" href="/special-offer" className="px-5 py-2.5 text-sm">
               Special Offer
             </Button>
-            <ClerkLoading>
-              <span className="text-sm text-white/60">Sign In</span>
-            </ClerkLoading>
-            <ClerkLoaded>
-              <Show when="signed-out">
-                <SignInButton>
-                  <button className="text-sm text-white/60 transition-colors duration-300 hover:text-white">
-                    Sign In
-                  </button>
-                </SignInButton>
-              </Show>
-              <Show when="signed-in">
-                <UserButton />
-              </Show>
-            </ClerkLoaded>
+            {IS_LOCAL_AUTH_BYPASS ? (
+              <Link href="/members" className="text-sm text-white/60 transition-colors duration-300 hover:text-white">
+                Members
+              </Link>
+            ) : (
+              <>
+                <ClerkLoading>
+                  <span className="text-sm text-white/60">Sign In</span>
+                </ClerkLoading>
+                <ClerkLoaded>
+                  <Show when="signed-out">
+                    <SignInButton>
+                      <button className="text-sm text-white/60 transition-colors duration-300 hover:text-white">
+                        Sign In
+                      </button>
+                    </SignInButton>
+                  </Show>
+                  <Show when="signed-in">
+                    <UserButton />
+                  </Show>
+                </ClerkLoaded>
+              </>
+            )}
           </div>
 
           {/* Mobile hamburger */}
@@ -253,49 +262,83 @@ export function Navbar(): React.ReactElement {
                 ) : (
                   /* Members grid layout — gated for signed-out users */
                   <>
-                  <Show when="signed-in">
-                    <div>
-                      <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.2em] text-white/30">
-                        {activeItem.label}
-                      </p>
-                      <div className="grid grid-cols-7 gap-1">
-                        {activeItem.children.map((child) => {
-                          const item = memberNavItems[child.label];
-                          const icon = item?.icon ?? <svg {...iconProps}><circle cx="12" cy="12" r="10" /></svg>;
-                          const anim = item?.animation ?? "";
-                          return (
-                            <Link
-                              key={child.href}
-                              href={child.href}
-                              className="group flex flex-col items-center gap-2 rounded-xl px-1.5 py-3 text-center transition-all duration-300 hover:bg-white/[0.06]"
-                              style={{ transitionTimingFunction: ease }}
-                            >
-                              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/[0.06] text-white/50 ring-1 ring-white/[0.08] transition-all duration-300 group-hover:bg-brand-gold/15 group-hover:text-brand-gold group-hover:ring-brand-gold/25 group-hover:scale-110 group-hover:-translate-y-0.5">
-                                <span className={`inline-block ${anim}`}>{icon}</span>
-                              </div>
-                              <div>
-                                <p className="text-xs font-medium leading-tight text-white/70 transition-colors duration-300 group-hover:text-white">
-                                  {child.label}
-                                </p>
-                              </div>
-                            </Link>
-                          );
-                        })}
+                    {IS_LOCAL_AUTH_BYPASS ? (
+                      <div>
+                        <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.2em] text-white/30">
+                          {activeItem.label}
+                        </p>
+                        <div className="grid grid-cols-7 gap-1">
+                          {activeItem.children.map((child) => {
+                            const item = memberNavItems[child.label];
+                            const icon = item?.icon ?? <svg {...iconProps}><circle cx="12" cy="12" r="10" /></svg>;
+                            const anim = item?.animation ?? "";
+                            return (
+                              <Link
+                                key={child.href}
+                                href={child.href}
+                                className="group flex flex-col items-center gap-2 rounded-xl px-1.5 py-3 text-center transition-all duration-300 hover:bg-white/[0.06]"
+                                style={{ transitionTimingFunction: ease }}
+                              >
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/[0.06] text-white/50 ring-1 ring-white/[0.08] transition-all duration-300 group-hover:bg-brand-gold/15 group-hover:text-brand-gold group-hover:ring-brand-gold/25 group-hover:scale-110 group-hover:-translate-y-0.5">
+                                  <span className={`inline-block ${anim}`}>{icon}</span>
+                                </div>
+                                <div>
+                                  <p className="text-xs font-medium leading-tight text-white/70 transition-colors duration-300 group-hover:text-white">
+                                    {child.label}
+                                  </p>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  </Show>
-                  <Show when="signed-out">
-                    <div className="flex flex-col items-center justify-center py-8">
-                      <p className="font-heading text-lg font-bold tracking-wide text-white/80">
-                        Member Access Only
-                      </p>
-                      <SignInButton>
-                        <button className="mt-4 inline-flex items-center justify-center rounded-full bg-brand-red px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-700">
-                          Log In
-                        </button>
-                      </SignInButton>
-                    </div>
-                  </Show>
+                    ) : (
+                      <>
+                        <Show when="signed-in">
+                          <div>
+                            <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.2em] text-white/30">
+                              {activeItem.label}
+                            </p>
+                            <div className="grid grid-cols-7 gap-1">
+                              {activeItem.children.map((child) => {
+                                const item = memberNavItems[child.label];
+                                const icon = item?.icon ?? <svg {...iconProps}><circle cx="12" cy="12" r="10" /></svg>;
+                                const anim = item?.animation ?? "";
+                                return (
+                                  <Link
+                                    key={child.href}
+                                    href={child.href}
+                                    className="group flex flex-col items-center gap-2 rounded-xl px-1.5 py-3 text-center transition-all duration-300 hover:bg-white/[0.06]"
+                                    style={{ transitionTimingFunction: ease }}
+                                  >
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/[0.06] text-white/50 ring-1 ring-white/[0.08] transition-all duration-300 group-hover:bg-brand-gold/15 group-hover:text-brand-gold group-hover:ring-brand-gold/25 group-hover:scale-110 group-hover:-translate-y-0.5">
+                                      <span className={`inline-block ${anim}`}>{icon}</span>
+                                    </div>
+                                    <div>
+                                      <p className="text-xs font-medium leading-tight text-white/70 transition-colors duration-300 group-hover:text-white">
+                                        {child.label}
+                                      </p>
+                                    </div>
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </Show>
+                        <Show when="signed-out">
+                          <div className="flex flex-col items-center justify-center py-8">
+                            <p className="font-heading text-lg font-bold tracking-wide text-white/80">
+                              Member Access Only
+                            </p>
+                            <SignInButton>
+                              <button className="mt-4 inline-flex items-center justify-center rounded-full bg-brand-red px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-700">
+                                Log In
+                              </button>
+                            </SignInButton>
+                          </div>
+                        </Show>
+                      </>
+                    )}
                   </>
                 )}
               </div>

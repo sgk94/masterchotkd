@@ -69,14 +69,14 @@ export function YouTubeFacade({
 
       {/* Play button — brand-red filled by default, lifts on hover */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="relative flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full bg-brand-red text-white ring-1 ring-white/25 shadow-[0_10px_28px_-8px_rgba(196,30,42,0.5)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-110 group-hover:shadow-[0_16px_42px_-10px_rgba(196,30,42,0.75)] group-active:scale-95">
+        <span className="relative flex h-[3.5rem] w-[3.5rem] items-center justify-center rounded-full bg-brand-red text-white ring-1 ring-white/25 shadow-[0_10px_28px_-8px_rgba(196,30,42,0.5)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-110 group-hover:shadow-[0_16px_42px_-10px_rgba(196,30,42,0.75)] group-active:scale-95">
           <svg
-            width="22"
-            height="22"
+            width="18"
+            height="18"
             viewBox="0 0 24 24"
             fill="currentColor"
             aria-hidden="true"
-            className="ml-[3px]"
+            className="ml-[2px]"
           >
             <polygon points="6 4 20 12 6 20 6 4" />
           </svg>

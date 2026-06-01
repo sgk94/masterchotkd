@@ -1,4 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { IS_LOCAL_AUTH_BYPASS } from "@/lib/auth-mode";
 
 const isProtectedRoute = createRouteMatcher([
   "/members(.*)",
@@ -9,6 +10,10 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
+  if (IS_LOCAL_AUTH_BYPASS) {
+    return;
+  }
+
   if (isProtectedRoute(req)) {
     await auth.protect();
   }

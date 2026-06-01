@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { Show, UserButton, SignInButton, ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { IS_LOCAL_AUTH_BYPASS } from "@/lib/auth-mode";
 import { PRIMARY_NAV } from "@/lib/nav";
 
 type MobileMenuProps = { open: boolean; onClose: () => void };
@@ -49,25 +50,37 @@ export function MobileMenu({ open, onClose }: MobileMenuProps): React.ReactEleme
         </div>
         <div className="mt-auto flex flex-col gap-4">
           <Button variant="primary" href="/special-offer" className="w-full">Special Offer</Button>
-          <ClerkLoading>
-            <button className="w-full rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white">
-              Sign In
-            </button>
-          </ClerkLoading>
-          <ClerkLoaded>
-            <Show when="signed-out">
-              <SignInButton>
-                <button className="w-full rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10">
+          {IS_LOCAL_AUTH_BYPASS ? (
+            <Link
+              href="/members"
+              onClick={onClose}
+              className="w-full rounded-full border border-white/20 px-6 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-white/10"
+            >
+              Members
+            </Link>
+          ) : (
+            <>
+              <ClerkLoading>
+                <button className="w-full rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white">
                   Sign In
                 </button>
-              </SignInButton>
-            </Show>
-            <Show when="signed-in">
-              <div className="flex items-center justify-center">
-                <UserButton />
-              </div>
-            </Show>
-          </ClerkLoaded>
+              </ClerkLoading>
+              <ClerkLoaded>
+                <Show when="signed-out">
+                  <SignInButton>
+                    <button className="w-full rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10">
+                      Sign In
+                    </button>
+                  </SignInButton>
+                </Show>
+                <Show when="signed-in">
+                  <div className="flex items-center justify-center">
+                    <UserButton />
+                  </div>
+                </Show>
+              </ClerkLoaded>
+            </>
+          )}
         </div>
       </div>
     </>

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics } from "@vercel/analytics/next";
+import { IS_LOCAL_AUTH_BYPASS } from "@/lib/auth-mode";
 import { heading, body } from "@/lib/fonts";
 import { BUSINESS_LOCATION, BUSINESS_PHONE_STRUCTURED } from "@/lib/location";
 import { createMetadata } from "@/lib/metadata";
@@ -14,57 +15,61 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }): React.ReactElement {
+  const page = (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": ["LocalBusiness", "SportsActivityLocation"],
+            name: "Master Cho's Taekwondo",
+            description:
+              "Premier Taekwondo academy in Lynnwood, WA offering classes for all ages — from Tiny Tigers to adult Black Belt programs.",
+            url: "https://masterchostaekwondo.com",
+            telephone: BUSINESS_PHONE_STRUCTURED,
+            address: {
+              "@type": "PostalAddress",
+              ...BUSINESS_LOCATION,
+            },
+            geo: {
+              "@type": "GeoCoordinates",
+              latitude: 47.8209,
+              longitude: -122.3015,
+            },
+            priceRange: "$$",
+            hasMap: "https://www.google.com/maps/place/Master+Cho's+Black+Belt+Academy",
+            openingHoursSpecification: [
+              {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                opens: "15:00",
+                closes: "20:00",
+              },
+              {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: "Saturday",
+                opens: "09:00",
+                closes: "11:00",
+              },
+            ],
+            image: "https://masterchostaekwondo.com/images/og-image.jpg",
+            sameAs: [
+              "https://www.facebook.com/masterchostaekwondo/",
+              "https://www.instagram.com/masterchostaekwondo/",
+            ],
+          }),
+        }}
+      />
+      {children}
+      <Analytics />
+    </>
+  );
+
   return (
     <html lang="en" className={`${heading.variable} ${body.variable}`}>
       <body className="grain font-body antialiased">
-        <ClerkProvider>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": ["LocalBusiness", "SportsActivityLocation"],
-                name: "Master Cho's Taekwondo",
-                description:
-                  "Premier Taekwondo academy in Lynnwood, WA offering classes for all ages — from Tiny Tigers to adult Black Belt programs.",
-                url: "https://masterchostaekwondo.com",
-                telephone: BUSINESS_PHONE_STRUCTURED,
-                address: {
-                  "@type": "PostalAddress",
-                  ...BUSINESS_LOCATION,
-                },
-                geo: {
-                  "@type": "GeoCoordinates",
-                  latitude: 47.8209,
-                  longitude: -122.3015,
-                },
-                priceRange: "$$",
-                hasMap: "https://www.google.com/maps/place/Master+Cho's+Black+Belt+Academy",
-                openingHoursSpecification: [
-                  {
-                    "@type": "OpeningHoursSpecification",
-                    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-                    opens: "15:00",
-                    closes: "20:00",
-                  },
-                  {
-                    "@type": "OpeningHoursSpecification",
-                    dayOfWeek: "Saturday",
-                    opens: "09:00",
-                    closes: "11:00",
-                  },
-                ],
-                image: "https://masterchostaekwondo.com/images/og-image.jpg",
-                sameAs: [
-                  "https://www.facebook.com/masterchostaekwondo/",
-                  "https://www.instagram.com/masterchostaekwondo/",
-                ],
-              }),
-            }}
-          />
-          {children}
-          <Analytics />
-        </ClerkProvider>
+        {IS_LOCAL_AUTH_BYPASS ? page : <ClerkProvider>{page}</ClerkProvider>}
       </body>
     </html>
   );
