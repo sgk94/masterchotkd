@@ -3,11 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
 import { SectionChips } from "@/components/members/section-chips";
-import { VideoPlaceholder, SectionHeader, VideoCard } from "@/components/members/shared";
+import { VideoPlaceholder, SectionHeader } from "@/components/members/shared";
 import { PoomsaeCard } from "@/components/members/poomsae-card";
 import { skillLevelPalette } from "@/lib/static-data";
 import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 import { ResourceCard } from "@/components/members/resource-card";
+import { YouTubeFacade } from "@/components/members/youtube-facade";
 
 const camoPattern = "url(/images/camo-pattern.jpg)";
 
@@ -36,9 +37,11 @@ const POOMSAE_TOTAL = 8;
 const TOTAL_CYCLES = 3;
 
 type WeaponCard = {
+  level: "Level 1" | "Level 2" | "Level 3";
   weapon: "BME" | "JB" | "SJB";
   title: string;
   description: string;
+  videoId?: string;
 };
 
 const curriculumEntries: CurriculumEntry[] = [
@@ -54,9 +57,15 @@ const curriculumEntries: CurriculumEntry[] = [
 ];
 
 const weaponCards: WeaponCard[] = [
-  { weapon: "BME", title: "Color Belt Bahng Mahng Ee", description: "Single-stick training for the Color Belt curriculum." },
-  { weapon: "JB", title: "Color Belt Jahng Bong", description: "Long-staff training for the Color Belt curriculum." },
-  { weapon: "SJB", title: "Color Belt Ssahng Jeol Bong", description: "Nunchuck training for the Color Belt curriculum." },
+  { level: "Level 1", weapon: "BME", title: "BME Level 1", description: "Bahng Mahng Ee training for Level 1." },
+  { level: "Level 2", weapon: "BME", title: "BME Level 2", description: "Bahng Mahng Ee training for Level 2." },
+  { level: "Level 3", weapon: "BME", title: "BME Level 3", description: "Bahng Mahng Ee training for Level 3." },
+  { level: "Level 1", weapon: "JB", title: "JB Level 1", description: "Jahng Bong training for Level 1." },
+  { level: "Level 2", weapon: "JB", title: "JB Level 2", description: "Jahng Bong training for Level 2." },
+  { level: "Level 3", weapon: "JB", title: "JB Level 3", description: "Jahng Bong training for Level 3." },
+  { level: "Level 1", weapon: "SJB", title: "SJB Level 1", description: "Ssahng Jeol Bong training for Level 1.", videoId: "GksjgMXonis" },
+  { level: "Level 2", weapon: "SJB", title: "SJB Level 2", description: "Ssahng Jeol Bong training for Level 2.", videoId: "GAsGhfs7jqU" },
+  { level: "Level 3", weapon: "SJB", title: "SJB Level 3", description: "Ssahng Jeol Bong training for Level 3." },
 ];
 
 const sectionLinks = [
@@ -140,7 +149,7 @@ function getOverviewCardStyle(entry: CurriculumEntry): { cardBg: string; headerB
 
 
 
-function ExpandableCard({ id, eyebrow, title, subtitle, swatch, details, expandedLayout = "stack", expandedId, onToggle }: { id: string; eyebrow: string; title: string; subtitle: string; swatch?: React.ReactNode; details: React.ReactNode; expandedLayout?: "stack" | "split"; expandedId: string | null; onToggle: (id: string) => void }): React.ReactElement {
+function ExpandableCard({ id, eyebrow, title, subtitle, swatch, media, details, expandedLayout = "stack", expandedId, onToggle }: { id: string; eyebrow: string; title: string; subtitle: string; swatch?: React.ReactNode; media?: React.ReactNode; details: React.ReactNode; expandedLayout?: "stack" | "split"; expandedId: string | null; onToggle: (id: string) => void }): React.ReactElement {
   const isOpen = expandedId === id;
   return (
     <div className="relative" data-expandable-card>
@@ -166,7 +175,7 @@ function ExpandableCard({ id, eyebrow, title, subtitle, swatch, details, expande
       {isOpen && (
         <div id={`panel-${id}`} role="region" className="absolute left-0 right-0 top-full z-20 mt-2 rounded-2xl bg-white p-6 shadow-xl shadow-brand-black/10 ring-1 ring-brand-taupe/12">
           <div className={expandedLayout === "split" ? "grid gap-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:items-start" : ""}>
-            <VideoPlaceholder title={title} />
+            {media ?? <VideoPlaceholder title={title} />}
             <div className={`text-sm text-brand-black/60 ${expandedLayout === "split" ? "" : "mt-4"}`}>{details}</div>
           </div>
         </div>
@@ -299,9 +308,19 @@ export default function ColorBeltPage(): React.ReactElement {
           {/* WEAPON VIDEOS */}
           <section id="weapon-videos" className="scroll-mt-28 space-y-6">
             <SectionHeader label="Video Library" title="Weapon Videos" description="Weapons are grouped separately so students can find the correct training weapon faster." />
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
               {weaponCards.map((card) => (
-                <VideoCard key={card.weapon} eyebrow={card.weapon} title={card.title} subtitle={card.description} />
+                <ExpandableCard
+                  key={`${card.weapon}-${card.level}`}
+                  id={`weapon-${card.weapon}-${card.level}`}
+                  eyebrow={`${card.weapon} ${card.level}`}
+                  title={card.title}
+                  subtitle={card.description}
+                  media={card.videoId ? <YouTubeFacade videoId={card.videoId} title={card.title} /> : undefined}
+                  expandedId={expandedId}
+                  onToggle={handleToggle}
+                  details={<p>{card.videoId ? `Embedded training video for ${card.title}.` : `This card will open the ${card.title} video once it is added.`}</p>}
+                />
               ))}
             </div>
           </section>

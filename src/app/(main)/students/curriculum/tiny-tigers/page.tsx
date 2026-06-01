@@ -1,7 +1,9 @@
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
 import { VideoPlaceholder, SectionHeader } from "@/components/members/shared";
+import { YouTubeFacade } from "@/components/members/youtube-facade";
 import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 import { ResourceCard } from "@/components/members/resource-card";
+import { getCurrentCycleWindow } from "@/lib/current-cycle";
 
 const camoPattern = "url(/images/camo-pattern.jpg)";
 
@@ -16,19 +18,19 @@ const cycles = [
 ];
 
 const poomsaeVideos = [
-  { belt: "White", title: "Half Gibon 1 (Basic)", cycle: "Cycle 1", color: "#ffffff", secondaryColor: undefined, border: true },
-  { belt: "White / Orange", title: "Full Gibon 1 (Basic)", cycle: "Cycle 2", color: "#FF8C00", secondaryColor: "#ffffff", border: true },
-  { belt: "Orange", title: "Half Taegeuk 1", cycle: "Cycle 3", color: "#FF8C00", secondaryColor: undefined, border: false },
-  { belt: "Orange / Yellow", title: "Full Taegeuk 1", cycle: "Cycle 1", color: "#FACC15", secondaryColor: "#FF8C00", border: false },
-  { belt: "Yellow", title: "Half Taegeuk 2", cycle: "Cycle 2", color: "#FACC15", secondaryColor: undefined, border: false },
-  { belt: "Yellow / Camo", title: "Full Taegeuk 2", cycle: "Cycle 3", color: "#6B8E23", secondaryColor: "#FACC15", border: false },
-  { belt: "Camo", title: "Half Taegeuk 3", cycle: "Cycle 1", color: "#6B8E23", secondaryColor: undefined, border: false },
+  { belt: "White", title: "Half Gibon 1 (Basic)", cycle: "Cycle 1", color: "#ffffff", secondaryColor: undefined, border: true, videoId: "Na-upkp5wHo" },
+  { belt: "White / Orange", title: "Full Gibon 1 (Basic)", cycle: "Cycle 2", color: "#FF8C00", secondaryColor: "#ffffff", border: true, videoId: "Na-upkp5wHo" },
+  { belt: "Orange", title: "Half Taegeuk 1", cycle: "Cycle 3", color: "#FF8C00", secondaryColor: undefined, border: false, videoId: "n5Q-g0uUj3c" },
+  { belt: "Orange / Yellow", title: "Full Taegeuk 1", cycle: "Cycle 1", color: "#FACC15", secondaryColor: "#FF8C00", border: false, videoId: "n5Q-g0uUj3c" },
+  { belt: "Yellow", title: "Half Taegeuk 2", cycle: "Cycle 2", color: "#FACC15", secondaryColor: undefined, border: false, videoId: "EkLZUEBOz0A" },
+  { belt: "Yellow / Camo", title: "Full Taegeuk 2", cycle: "Cycle 3", color: "#6B8E23", secondaryColor: "#FACC15", border: false, videoId: "EkLZUEBOz0A" },
+  { belt: "Camo", title: "Half Taegeuk 3", cycle: "Cycle 1", color: "#6B8E23", secondaryColor: undefined, border: false, videoId: "VIPVITNl_bA" },
 ];
 
 const weaponVideos = [
-  { title: "Tiny Tigers Bahng Mang Ee", weapon: "Bahng Mang Ee" },
-  { title: "Tiny Tigers Jahng Bong", weapon: "Jahng Bong" },
-  { title: "Tiny Tigers Sahng Jeol Bong", weapon: "Sahng Jeol Bong" },
+  { shortWeapon: "BME", title: "Tiny Tigers Bahng Mang Ee", weapon: "Bahng Mang Ee" },
+  { shortWeapon: "JB", title: "Tiny Tigers Jahng Bong", weapon: "Jahng Bong" },
+  { shortWeapon: "SJB", title: "Tiny Tigers Sahng Jeol Bong", weapon: "Sahng Jeol Bong", videoId: "GksjgMXonis" },
 ];
 
 const sectionLinks = [
@@ -99,6 +101,8 @@ function getBeltCircleStyle(options: {
 /* VideoPlaceholder and SectionHeader imported from @/components/members/shared */
 
 export default function TinyTigersCurriculumPage(): React.ReactElement {
+  const currentCycle = getCurrentCycleWindow();
+
   return (
     <div>
       {/* Mobile section jump links */}
@@ -213,7 +217,7 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
                   key={`${video.belt}-${video.title}`}
                   className="group overflow-hidden rounded-2xl bg-white ring-1 ring-brand-taupe/12 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-brand-taupe/10"
                 >
-                  <VideoPlaceholder title={video.title} />
+                  {video.videoId ? <YouTubeFacade videoId={video.videoId} title={video.title} /> : <VideoPlaceholder title={video.title} />}
                   <div className="p-4">
                     <div className="flex items-center gap-3">
                       <div
@@ -245,18 +249,23 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
               description="Practice Tiny Tigers weapon videos separately from the poomsae lessons."
             />
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              {weaponVideos.map((video) => (
-                <div
-                  key={video.title}
-                  className="group overflow-hidden rounded-2xl bg-white ring-1 ring-brand-taupe/12 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-brand-taupe/10"
-                >
-                  <VideoPlaceholder title={video.title} />
-                  <div className="p-4">
-                    <p className="font-heading text-base text-brand-black">{video.weapon}</p>
-                    <p className="text-xs text-brand-black/45">{video.title}</p>
+              {weaponVideos.map((video) => {
+                const isCurrentWeapon = video.shortWeapon === currentCycle.shortWeapon;
+
+                return (
+                  <div
+                    key={video.title}
+                    className={`group overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md ${isCurrentWeapon ? "bg-blue-50 ring-2 ring-blue-400/50 shadow-blue-100" : "bg-white ring-1 ring-brand-taupe/12 hover:shadow-brand-taupe/10"}`}
+                  >
+                    {video.videoId ? <YouTubeFacade videoId={video.videoId} title={video.title} /> : <VideoPlaceholder title={video.title} />}
+                    <div className="p-4">
+                      {isCurrentWeapon ? <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-blue-700">Current Cycle Weapon</p> : null}
+                      <p className="font-heading text-base text-brand-black">{video.weapon}</p>
+                      <p className="text-xs text-brand-black/45">{video.title}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
 
