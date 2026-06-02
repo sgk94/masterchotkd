@@ -1,206 +1,221 @@
 import Link from "next/link";
+import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 import { getMembersHomeContent } from "@/lib/members-home-content";
 import { createMetadata } from "@/lib/metadata";
-import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 
 export const metadata = createMetadata({ title: "Members Announcements" });
 export const revalidate = 3600;
 
 export default function StudentsPage(): React.ReactElement {
   const membersHomeContent = getMembersHomeContent();
-  const { hero, socials, announcements, announcementsEyebrow, memberApp, quickLinks, quickLinksEyebrow } =
-    membersHomeContent;
+  const { hero, monthlyTheme, socials, announcements, announcementsEyebrow } = membersHomeContent;
+  const featuredAnnouncement = announcements[0];
+  const upcomingAnnouncements = announcements.filter((announcement) => !announcement.featured);
 
   return (
-    <div className="space-y-14">
-      {/* Hero — welcome banner with dark bg */}
-      <section className="relative overflow-hidden rounded-[2rem] bg-brand-navy px-8 py-12 sm:px-12 sm:py-16">
-        <div className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-brand-red/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-brand-gold/8 blur-3xl" />
-        <div className="relative z-10 grid gap-8 lg:grid-cols-[1.3fr_0.7fr]">
+    <div className="space-y-12">
+      <section className="relative overflow-hidden rounded-[2.25rem] bg-[linear-gradient(135deg,#070723_0%,#10153d_52%,#171d52_100%)] px-7 py-8 text-white shadow-[0_30px_90px_rgba(10,10,46,0.18)] sm:px-10 sm:py-10">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.08),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(196,30,42,0.16),_transparent_26%)]" />
+        <div className="pointer-events-none absolute -right-16 top-10 h-56 w-56 rounded-full border border-white/6" />
+
+        <div className="relative z-10 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
           <div>
             <EyebrowBadge variant="gold">{hero.eyebrow}</EyebrowBadge>
-            <h1 className="mt-5 font-heading text-4xl tracking-tight text-white sm:text-5xl">
+            <h1 className="mt-5 max-w-[11ch] font-heading text-5xl leading-[0.92] text-white sm:text-6xl">
               {hero.title}
             </h1>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-white/50">
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/66 sm:text-lg">
               {hero.description}
             </p>
-            {/* Socials inline */}
-            <div className="mt-8 flex items-center gap-3">
+
+            <div className="mt-7 flex flex-wrap items-center gap-3">
               <a
                 href={socials.facebookUrl}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Facebook"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-brand-red hover:scale-105"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-sm text-white/80 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/[0.12]"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M13.5 21v-8.1h2.7l.4-3.2h-3.1V7.7c0-.9.2-1.6 1.5-1.6h1.7V3.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.2v2.4H8v3.2h2.3V21h3.2Z" />
-                </svg>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M13.5 21v-8.1h2.7l.4-3.2h-3.1V7.7c0-.9.2-1.6 1.5-1.6h1.7V3.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.2v2.4H8v3.2h2.3V21h3.2Z" />
+                  </svg>
+                </span>
+                Facebook
               </a>
               <a
                 href={socials.instagramUrl}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Instagram"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-brand-red hover:scale-105"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-sm text-white/80 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/[0.12]"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                  <rect x="3" y="3" width="18" height="18" rx="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-                </svg>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                  </svg>
+                </span>
+                Instagram
               </a>
-              <span className="ml-1 text-xs text-white/30">Follow us for updates</span>
+              <span className="text-sm text-white/42">Follow along for school updates and reminders.</span>
             </div>
           </div>
 
-          {/* Monthly note card */}
-          <div className="rounded-2xl bg-white/[0.06] p-6 ring-1 ring-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-            <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-brand-gold/70">{hero.noteEyebrow}</p>
-            <h2 className="mt-3 font-heading text-xl text-white/90">{hero.noteTitle}</h2>
-            <p className="mt-3 text-sm leading-relaxed text-white/45">
-              {hero.noteBody}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Announcements */}
-      <section>
-        <EyebrowBadge variant="pill">{announcementsEyebrow}</EyebrowBadge>
-        <div className="mt-6 grid gap-4 lg:grid-cols-2">
-          {announcements.map((announcement) => {
-            const cardClass = `group relative block rounded-2xl p-6 transition-all duration-300 hover:-translate-y-0.5 ${
-              announcement.featured
-                ? "bg-brand-red/[0.04] ring-1 ring-brand-red/10 hover:ring-brand-red/25"
-                : "bg-brand-sand/40 ring-1 ring-brand-taupe/15"
-            }`;
-            const cardInner = (
-              <>
-                <div className="flex items-start justify-between">
-                  <span className={`inline-flex rounded-full px-3 py-1 text-[10px] font-medium uppercase tracking-[0.15em] ${
-                    announcement.featured
-                      ? "bg-brand-red/10 text-brand-red"
-                      : "bg-brand-black/5 text-brand-black/40"
-                  }`}>
-                    {announcement.label}
-                  </span>
-                  {announcement.featured && (
-                    <span className="flex h-2 w-2 rounded-full bg-brand-red shadow-[0_0_6px_rgba(196,30,42,0.4)]" />
-                  )}
-                </div>
-                <h2 className="mt-4 font-heading text-2xl text-brand-black">{announcement.title}</h2>
-                <p className="mt-3 text-sm leading-relaxed text-brand-black/55">{announcement.body}</p>
-                {announcement.href && (
-                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-medium uppercase tracking-[0.14em] text-brand-red transition-all duration-300 group-hover:gap-2">
-                    View current cycle
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </span>
-                )}
-              </>
-            );
-            return announcement.href ? (
-              <Link key={announcement.id} href={announcement.href} className={cardClass}>
-                {cardInner}
-              </Link>
-            ) : (
-              <article key={announcement.id} className={cardClass}>
-                {cardInner}
-              </article>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Spark Member App */}
-      <section className="rounded-2xl bg-brand-cream/60 p-8 ring-1 ring-brand-taupe/10 sm:p-10">
-        <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
-          <div>
-            <span className="inline-flex rounded-full bg-brand-black/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.15em] text-brand-black/40">
-              {memberApp.eyebrow}
-            </span>
-            <h2 className="mt-4 font-heading text-3xl text-brand-black">{memberApp.title}</h2>
-            <p className="mt-3 text-base leading-relaxed text-brand-black/55">
-              {memberApp.description}
-            </p>
-
-            <div className="mt-6 flex flex-col gap-2">
-              <a
-                href={memberApp.iosUrl}
-                className="inline-flex items-center gap-2 text-sm font-medium text-brand-red transition-colors hover:text-brand-red/70"
+          <div className="grid gap-4">
+            {featuredAnnouncement?.href ? (
+              <Link
+                href={featuredAnnouncement.href}
+                className="group rounded-[1.75rem] border border-brand-gold/18 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.04))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-transform duration-300 hover:-translate-y-0.5"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
-                </svg>
-                {memberApp.iosLabel}
-              </a>
-              <a
-                href={memberApp.androidUrl}
-                className="inline-flex items-center gap-2 text-sm font-medium text-brand-red transition-colors hover:text-brand-red/70"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-                  <path
-                    fill="currentColor"
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M6.6 4.5a.5.5 0 0 1 .87-.5l1.42 2.46A6.7 6.7 0 0 1 12 6c1.1 0 2.13.16 3.11.46l1.42-2.46a.5.5 0 0 1 .87.5L16 6.92c1.84 1.13 3 2.95 3 5.08H5c0-2.13 1.16-3.95 3-5.08L6.6 4.5zM9.5 10.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5zm5.75-.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zM5 13h14v6.5a1.5 1.5 0 0 1-1.5 1.5H17v2a1 1 0 1 1-2 0v-2h-2v2a1 1 0 1 1-2 0v-2H9v2a1 1 0 1 1-2 0v-2h-.5A1.5 1.5 0 0 1 5 19.5V13z"
-                  />
-                </svg>
-                {memberApp.androidLabel}
-              </a>
-            </div>
-          </div>
-
-          <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-brand-taupe/10">
-            <h3 className="font-heading text-xl text-brand-black">{memberApp.stepsTitle}</h3>
-            <ol className="mt-5 space-y-4">
-              {memberApp.steps.map((step, i) => (
-                <li key={step} className="flex gap-4">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-red/10 font-heading text-xs text-brand-red">
-                    {i + 1}
-                  </span>
-                  <span className="text-sm leading-relaxed text-brand-black/65 pt-0.5">{step}</span>
-                </li>
-              ))}
-            </ol>
-            <p className="mt-6 rounded-lg bg-brand-cream/50 p-4 text-xs leading-relaxed text-brand-black/45">
-              {memberApp.footer}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Links */}
-      <section>
-        <EyebrowBadge variant="pill">{quickLinksEyebrow}</EyebrowBadge>
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {quickLinks.map((resource) => (
-            <Link
-              key={resource.href}
-              href={resource.href}
-              className="group relative overflow-hidden rounded-2xl bg-brand-navy p-6 transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-brand-red/10 blur-2xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
-              <div className="relative z-10">
-                <h2 className="font-heading text-xl text-white transition-colors group-hover:text-brand-gold">
-                  {resource.title}
-                </h2>
-                <p className="mt-2 text-sm leading-relaxed text-white/40">{resource.description}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-gold/70 transition-all duration-300 group-hover:gap-2 group-hover:text-brand-gold">
-                  View
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-brand-gold/80">{featuredAnnouncement.label}</p>
+                <h2 className="mt-3 font-heading text-3xl text-white">{featuredAnnouncement.title}</h2>
+                <p className="mt-3 text-sm leading-relaxed text-white/60">{featuredAnnouncement.body}</p>
+                <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand-gold">
+                  Open current cycle
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 </span>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ) : (
+              <article className="rounded-[1.75rem] border border-brand-gold/18 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.04))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-brand-gold/80">{hero.noteEyebrow}</p>
+                <h2 className="mt-3 font-heading text-3xl text-white">{hero.noteTitle}</h2>
+                <p className="mt-3 text-sm leading-relaxed text-white/60">{hero.noteBody}</p>
+              </article>
+            )}
+
+          </div>
         </div>
       </section>
+
+      <section className="grid gap-4 xl:grid-cols-[1.02fr_0.98fr]">
+        <article className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(135deg,#0b1034_0%,#10255d_100%)] p-4 text-white shadow-[0_20px_60px_rgba(15,20,60,0.16)] sm:p-5">
+          <div className="pointer-events-none absolute right-0 top-0 h-36 w-36 rounded-full bg-brand-gold/14 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-10 -left-10 h-44 w-64 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.08)_34%,transparent_72%)] blur-2xl" />
+          <div className="relative z-10">
+            <EyebrowBadge variant="gold" className="bg-white/8 text-brand-gold ring-0">
+              {monthlyTheme.eyebrow}
+            </EyebrowBadge>
+            <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.2em] text-white/42">{monthlyTheme.month}</p>
+                <h2 className="mt-2 max-w-[10ch] font-heading text-4xl leading-[0.92] text-brand-gold sm:text-5xl">
+                  {monthlyTheme.theme}
+                </h2>
+              </div>
+              <div className="rounded-full border border-white/10 bg-white/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.18em] text-white/50">
+                Character Focus
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <article className="rounded-[2rem] bg-white/88 p-4 shadow-[0_18px_45px_rgba(26,26,46,0.07)] ring-1 ring-brand-taupe/10">
+            <p className="text-[10px] uppercase tracking-[0.18em] text-brand-black/40">What It Means</p>
+            <p className="mt-2.5 text-[0.95rem] leading-relaxed text-brand-black/72 sm:text-[1rem]">{monthlyTheme.definition}</p>
+          </article>
+          <article className="rounded-[2rem] bg-brand-red/[0.05] p-4 shadow-[0_18px_45px_rgba(26,26,46,0.06)] ring-1 ring-brand-red/10">
+            <p className="text-[10px] uppercase tracking-[0.18em] text-brand-red">At Taekwondo</p>
+            <p className="mt-2.5 text-[0.95rem] leading-relaxed text-brand-black/72 sm:text-[1rem]">{monthlyTheme.example}</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="space-y-6">
+        <div className="flex flex-col gap-3 border-b border-brand-taupe/20 pb-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <EyebrowBadge variant="pill">{announcementsEyebrow}</EyebrowBadge>
+            <h2 className="mt-4 font-heading text-4xl text-brand-black sm:text-5xl">What’s Coming Up</h2>
+          </div>
+          <p className="max-w-xl text-sm leading-relaxed text-brand-black/52 sm:text-right">
+            Tournament dates, registration deadlines, community events, and school reminders.
+          </p>
+        </div>
+
+        <div className="grid gap-3 md:hidden">
+          {upcomingAnnouncements.map((announcement) => (
+            <article
+              key={announcement.id}
+              className="rounded-[1.25rem] bg-white p-5 shadow-[0_12px_28px_rgba(26,26,46,0.045)] ring-1 ring-brand-taupe/12"
+            >
+              <span className="inline-flex max-w-full rounded-md bg-brand-navy px-3 py-1.5 text-[11px] font-medium uppercase leading-none tracking-[0.08em] text-white ring-1 ring-white/10">
+                {announcement.label}
+              </span>
+              <h3 className="mt-3 font-heading text-2xl leading-tight text-brand-black">{announcement.title}</h3>
+              <p className="mt-2 text-base leading-relaxed text-brand-black/68">{announcement.body}</p>
+              {announcement.href ? (
+                <Link
+                  href={announcement.href}
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-brand-red"
+                >
+                  Open
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              ) : null}
+            </article>
+          ))}
+        </div>
+
+        <div className="hidden overflow-hidden rounded-[1.5rem] bg-white shadow-[0_18px_45px_rgba(26,26,46,0.05)] ring-1 ring-brand-taupe/12 md:block">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[760px] border-collapse text-left">
+              <thead>
+                <tr className="border-b border-brand-taupe/14 bg-brand-page-bg/70">
+                  <th scope="col" className="w-36 px-5 py-4 text-[10px] font-medium uppercase tracking-[0.18em] text-brand-black/42">
+                    Date
+                  </th>
+                  <th scope="col" className="w-72 px-5 py-4 text-[10px] font-medium uppercase tracking-[0.18em] text-brand-black/42">
+                    Announcement
+                  </th>
+                  <th scope="col" className="px-5 py-4 text-[10px] font-medium uppercase tracking-[0.18em] text-brand-black/42">
+                    Details
+                  </th>
+                  <th scope="col" className="w-32 px-5 py-4 text-right text-[10px] font-medium uppercase tracking-[0.18em] text-brand-black/42">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-brand-taupe/14">
+                {upcomingAnnouncements.map((announcement) => (
+                  <tr key={announcement.id} className="transition-colors duration-200 hover:bg-brand-page-bg/50">
+                    <td className="px-5 py-4 align-top">
+                      <span className="inline-flex whitespace-nowrap rounded-md bg-brand-navy px-3 py-1.5 text-[11px] font-medium uppercase leading-none tracking-[0.08em] text-white ring-1 ring-white/10">
+                        {announcement.label}
+                      </span>
+                    </td>
+                    <td className="px-5 py-4 align-top">
+                      <h3 className="font-heading text-xl leading-tight text-brand-black">{announcement.title}</h3>
+                    </td>
+                    <td className="px-5 py-4 align-top text-base leading-relaxed text-brand-black/68">
+                      {announcement.body}
+                    </td>
+                    <td className="px-5 py-4 text-right align-top">
+                      {announcement.href ? (
+                        <Link
+                          href={announcement.href}
+                          className="inline-flex items-center gap-2 text-sm font-medium text-brand-red transition-transform duration-200 hover:translate-x-1"
+                        >
+                          Open
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                          </svg>
+                        </Link>
+                      ) : (
+                        <span className="text-sm text-brand-black/30">-</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
