@@ -146,6 +146,103 @@ function getOverviewCardStyle(entry: CurriculumEntry): { cardBg: string; headerB
   return map[entry.beltName] ?? { cardBg: "#FFFFFF", headerBg: "#F8F5F1", borderColor: "rgba(212,197,176,0.32)" };
 }
 
+function YellowOneStepInstructions(): React.ReactElement {
+  return (
+    <div className="space-y-4">
+      <p className="text-xs font-medium uppercase tracking-[0.16em] text-brand-black/35">Step-by-Step Instructions</p>
+      <div className="space-y-3 rounded-2xl bg-brand-cream/45 p-4">
+        <div>
+          <p className="font-heading text-base text-brand-black">One-Step #1</p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Attacker:</span> Step forward front stance punch
+          </p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Defender:</span> Step back w/right leg, outer forearm block, #1 side kick, reverse punch, double step back
+          </p>
+        </div>
+        <div>
+          <p className="font-heading text-base text-brand-black">One-Step #2</p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Attacker:</span> Step forward front stance punch
+          </p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Defender:</span> Step back w/ right leg, knifehand block, right hand palm strike, step back, right leg round kick, double step back
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PurpleOneStepInstructions(): React.ReactElement {
+  return (
+    <div className="space-y-4">
+      <p className="text-xs font-medium uppercase tracking-[0.16em] text-brand-black/35">Step-by-Step Instructions</p>
+      <div className="space-y-3 rounded-2xl bg-brand-cream/45 p-4">
+        <div>
+          <p className="font-heading text-base text-brand-black">One-Step #1</p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 1:</span> Back leg round kick
+          </p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 2:</span> Cut kick, back leg round kick, same leg outer crescent kick
+          </p>
+        </div>
+        <div>
+          <p className="font-heading text-base text-brand-black">Open Stance</p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 1:</span> Back leg round kick
+          </p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 2:</span> Reverse side kick
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RedOneStepInstructions(): React.ReactElement {
+  return (
+    <div className="space-y-4">
+      <p className="text-xs font-medium uppercase tracking-[0.16em] text-brand-black/35">Step-by-Step Instructions</p>
+      <div className="space-y-3 rounded-2xl bg-brand-cream/45 p-4">
+        <div>
+          <p className="font-heading text-base text-brand-black">One-Step #1</p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 1:</span> Back leg round kick
+          </p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 2:</span> Side step, triple speed kick (body, body, face)
+          </p>
+        </div>
+        <div>
+          <p className="font-heading text-base text-brand-black">One-Step #2</p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 1:</span> Back leg round kick
+          </p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 2:</span> Switch legs butterfly double kick
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function getOneStepInstructionDetails(entry: CurriculumEntry): React.ReactNode {
+  if (entry.beltName === "Yellow") return <YellowOneStepInstructions />;
+  if (entry.beltName === "Purple") return <PurpleOneStepInstructions />;
+  if (entry.beltName === "Red") return <RedOneStepInstructions />;
+  return <p>This card will open the {entry.beltName} one-step video once it is added.</p>;
+}
+
+function getOneStepInstructionSubtitle(entry: CurriculumEntry): string {
+  if (entry.beltName === "Yellow" || entry.beltName === "Purple" || entry.beltName === "Red") {
+    return "Video coming soon. Open for step-by-step instructions.";
+  }
+  return entry.oneStep;
+}
 
 
 
@@ -328,18 +425,19 @@ export default function ColorBeltPage(): React.ReactElement {
           {/* ONE-STEPS */}
           <section id="one-steps" className="scroll-mt-28 space-y-6">
             <SectionHeader label="Video Library" title="One-Steps" description="These stay compact and expand when you hover so there is room for each video later." />
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-3">
               {curriculumEntries.map((entry) => (
                 <ExpandableCard
                   key={`one-step-${entry.level}-${entry.cycle}`}
                   id={`one-step-${entry.level}-${entry.cycle}`}
                   eyebrow={`${entry.level} · Cycle ${entry.cycle}`}
                   title={`${entry.beltName} One-Step`}
-                  subtitle={entry.oneStep}
+                  subtitle={getOneStepInstructionSubtitle(entry)}
                   swatch={<BeltDot entry={entry} />}
+                  media={entry.beltName === "Yellow" || entry.beltName === "Purple" || entry.beltName === "Red" ? <VideoPlaceholder title="Video Coming Soon" /> : undefined}
                   expandedId={expandedId}
                   onToggle={handleToggle}
-                  details={<p>This card will open the {entry.beltName} one-step video once it is added.</p>}
+                  details={getOneStepInstructionDetails(entry)}
                 />
               ))}
             </div>

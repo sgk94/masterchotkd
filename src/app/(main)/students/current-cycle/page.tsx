@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FloatingSectionNav } from "@/components/members/floating-section-nav";
-import { SectionHeader, SubSectionHeader, VideoCard } from "@/components/members/shared";
+import { SectionHeader, SubSectionHeader, VideoCard, VideoPlaceholder } from "@/components/members/shared";
 import { cycleSchedule2026, formatCycleDate, getCurrentCycleWindow } from "@/lib/current-cycle";
 import {
   cycleNameToNumber,
@@ -93,6 +93,128 @@ function RequirementCard({
         <p className="text-sm text-brand-black/55">{value}</p>
       </div>
     </div>
+  );
+}
+
+function YellowOneStepInstructions(): React.ReactElement {
+  return (
+    <div className="space-y-4">
+      <p className="text-xs font-medium uppercase tracking-[0.16em] text-brand-black/35">Step-by-Step Instructions</p>
+      <div className="space-y-3 rounded-2xl bg-brand-cream/45 p-4">
+        <div>
+          <p className="font-heading text-base text-brand-black">One-Step #1</p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Attacker:</span> Step forward front stance punch
+          </p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Defender:</span> Step back w/right leg, outer forearm block, #1 side kick, reverse punch, double step back
+          </p>
+        </div>
+        <div>
+          <p className="font-heading text-base text-brand-black">One-Step #2</p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Attacker:</span> Step forward front stance punch
+          </p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Defender:</span> Step back w/ right leg, knifehand block, right hand palm strike, step back, right leg round kick, double step back
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PurpleOneStepInstructions(): React.ReactElement {
+  return (
+    <div className="space-y-4">
+      <p className="text-xs font-medium uppercase tracking-[0.16em] text-brand-black/35">Step-by-Step Instructions</p>
+      <div className="space-y-3 rounded-2xl bg-brand-cream/45 p-4">
+        <div>
+          <p className="font-heading text-base text-brand-black">One-Step #1</p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 1:</span> Back leg round kick
+          </p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 2:</span> Cut kick, back leg round kick, same leg outer crescent kick
+          </p>
+        </div>
+        <div>
+          <p className="font-heading text-base text-brand-black">Open Stance</p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 1:</span> Back leg round kick
+          </p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 2:</span> Reverse side kick
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RedOneStepInstructions(): React.ReactElement {
+  return (
+    <div className="space-y-4">
+      <p className="text-xs font-medium uppercase tracking-[0.16em] text-brand-black/35">Step-by-Step Instructions</p>
+      <div className="space-y-3 rounded-2xl bg-brand-cream/45 p-4">
+        <div>
+          <p className="font-heading text-base text-brand-black">One-Step #1</p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 1:</span> Back leg round kick
+          </p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 2:</span> Side step, triple speed kick (body, body, face)
+          </p>
+        </div>
+        <div>
+          <p className="font-heading text-base text-brand-black">One-Step #2</p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 1:</span> Back leg round kick
+          </p>
+          <p className="mt-1 text-sm text-brand-black/65">
+            <span className="font-semibold text-brand-black">Partner 2:</span> Switch legs butterfly double kick
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function OneStepInstructionCard({
+  eyebrow,
+  title,
+  swatch,
+  instructions,
+}: {
+  eyebrow: string;
+  title: string;
+  swatch: React.ReactNode;
+  instructions: React.ReactNode;
+}): React.ReactElement {
+  return (
+    <details className="group overflow-hidden rounded-[1.5rem] bg-white p-1.5 shadow-[0_10px_30px_-12px_rgba(26,26,46,0.12)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] open:shadow-[0_22px_44px_-14px_rgba(26,26,46,0.22)]">
+      <summary className="list-none cursor-pointer [&::-webkit-details-marker]:hidden">
+        <VideoPlaceholder title="Video Coming Soon" />
+        <div className="flex items-center gap-4 px-4 pb-4 pt-5">
+          {swatch}
+          <div className="min-w-0 flex-1">
+            <p className="font-heading text-[10px] font-semibold uppercase tracking-[0.22em] text-brand-red/80">{eyebrow}</p>
+            <p className="mt-1.5 font-heading text-lg tracking-tight text-brand-black">{title}</p>
+            <p className="mt-0.5 text-xs text-brand-black/50">
+              Video coming soon. Open for step-by-step instructions.
+            </p>
+          </div>
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-cream text-brand-black/35 transition-transform duration-300 group-open:rotate-180">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </div>
+        </div>
+      </summary>
+      <div className="border-t border-brand-taupe/10 px-5 pb-5 pt-4 text-sm leading-relaxed text-brand-black/65">
+        {instructions}
+      </div>
+    </details>
   );
 }
 
@@ -231,15 +353,41 @@ export default function CurrentCyclePage(): React.ReactElement {
             {/* One-step videos */}
             <div id="one-step" className="scroll-mt-28 space-y-4">
               <SubSectionHeader title="One-Step Videos" />
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {colorBeltEntries.map((entry) => (
-                  <VideoCard
-                    key={`color-one-step-${entry.level}`}
-                    eyebrow={`${entry.level} · ${entry.beltName}`}
-                    title={`${entry.beltName} One-Step`}
-                    subtitle={entry.oneStep}
-                    swatch={<SwatchCircle swatch={entry.swatch} />}
-                  />
+                  entry.beltName === "Yellow" ? (
+                    <OneStepInstructionCard
+                      key={`color-one-step-${entry.level}`}
+                      eyebrow="Beginner · Yellow"
+                      title="Yellow One-Step"
+                      swatch={<SwatchCircle swatch={entry.swatch} />}
+                      instructions={<YellowOneStepInstructions />}
+                    />
+                  ) : entry.beltName === "Purple" ? (
+                    <OneStepInstructionCard
+                      key={`color-one-step-${entry.level}`}
+                      eyebrow="Intermediate · Purple"
+                      title="Purple One-Step"
+                      swatch={<SwatchCircle swatch={entry.swatch} />}
+                      instructions={<PurpleOneStepInstructions />}
+                    />
+                  ) : entry.beltName === "Red" ? (
+                    <OneStepInstructionCard
+                      key={`color-one-step-${entry.level}`}
+                      eyebrow="Advanced · Red"
+                      title="Red One-Step"
+                      swatch={<SwatchCircle swatch={entry.swatch} />}
+                      instructions={<RedOneStepInstructions />}
+                    />
+                  ) : (
+                    <VideoCard
+                      key={`color-one-step-${entry.level}`}
+                      eyebrow={`${entry.level} · ${entry.beltName}`}
+                      title={`${entry.beltName} One-Step`}
+                      subtitle={entry.oneStep}
+                      swatch={<SwatchCircle swatch={entry.swatch} />}
+                    />
+                  )
                 ))}
               </div>
             </div>
