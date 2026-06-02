@@ -90,21 +90,21 @@ export default function StudentsPage(): React.ReactElement {
       </section>
 
       <section className="grid gap-4 xl:grid-cols-[1.02fr_0.98fr]">
-        <article className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(135deg,#0b1034_0%,#10255d_100%)] p-6 text-white shadow-[0_20px_60px_rgba(15,20,60,0.16)] sm:p-8">
-          <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-brand-gold/14 blur-3xl" />
-          <div className="pointer-events-none absolute bottom-0 left-0 h-32 w-56 bg-[linear-gradient(90deg,rgba(255,255,255,0.12),transparent)]" />
+        <article className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(135deg,#0b1034_0%,#10255d_100%)] p-4 text-white shadow-[0_20px_60px_rgba(15,20,60,0.16)] sm:p-5">
+          <div className="pointer-events-none absolute right-0 top-0 h-36 w-36 rounded-full bg-brand-gold/14 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-10 -left-10 h-44 w-64 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.08)_34%,transparent_72%)] blur-2xl" />
           <div className="relative z-10">
             <EyebrowBadge variant="gold" className="bg-white/8 text-brand-gold ring-0">
               {monthlyTheme.eyebrow}
             </EyebrowBadge>
-            <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
+            <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
               <div>
-                <p className="text-xs uppercase tracking-[0.22em] text-white/42">{monthlyTheme.month}</p>
-                <h2 className="mt-3 max-w-[10ch] font-heading text-5xl leading-[0.94] text-brand-gold sm:text-6xl">
+                <p className="text-[11px] uppercase tracking-[0.2em] text-white/42">{monthlyTheme.month}</p>
+                <h2 className="mt-2 max-w-[10ch] font-heading text-4xl leading-[0.92] text-brand-gold sm:text-5xl">
                   {monthlyTheme.theme}
                 </h2>
               </div>
-              <div className="rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-xs uppercase tracking-[0.18em] text-white/50">
+              <div className="rounded-full border border-white/10 bg-white/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.18em] text-white/50">
                 Character Focus
               </div>
             </div>
@@ -112,13 +112,13 @@ export default function StudentsPage(): React.ReactElement {
         </article>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <article className="rounded-[2rem] bg-white/88 p-6 shadow-[0_18px_45px_rgba(26,26,46,0.07)] ring-1 ring-brand-taupe/10">
+          <article className="rounded-[2rem] bg-white/88 p-4 shadow-[0_18px_45px_rgba(26,26,46,0.07)] ring-1 ring-brand-taupe/10">
             <p className="text-[10px] uppercase tracking-[0.18em] text-brand-black/40">What It Means</p>
-            <p className="mt-4 text-lg leading-relaxed text-brand-black/72 sm:text-[1.35rem]">{monthlyTheme.definition}</p>
+            <p className="mt-2.5 text-[0.95rem] leading-relaxed text-brand-black/72 sm:text-[1rem]">{monthlyTheme.definition}</p>
           </article>
-          <article className="rounded-[2rem] bg-brand-red/[0.05] p-6 shadow-[0_18px_45px_rgba(26,26,46,0.06)] ring-1 ring-brand-red/10">
+          <article className="rounded-[2rem] bg-brand-red/[0.05] p-4 shadow-[0_18px_45px_rgba(26,26,46,0.06)] ring-1 ring-brand-red/10">
             <p className="text-[10px] uppercase tracking-[0.18em] text-brand-red">At Taekwondo</p>
-            <p className="mt-4 text-lg leading-relaxed text-brand-black/72 sm:text-[1.35rem]">{monthlyTheme.example}</p>
+            <p className="mt-2.5 text-[0.95rem] leading-relaxed text-brand-black/72 sm:text-[1rem]">{monthlyTheme.example}</p>
           </article>
         </div>
       </section>
