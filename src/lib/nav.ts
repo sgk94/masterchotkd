@@ -40,6 +40,7 @@ export const PROGRAM_NAV: ProgramNavLink[] = [
 
 export const MEMBER_NAV: MemberNavLink[] = [
   { label: "Announcements", href: "/members", description: "Monthly updates" },
+  { label: "New Members", href: "/members/new-members", description: "Start here" },
   { label: "Current Cycle", href: "/members/current-cycle", description: "Current cycle materials" },
   { label: "Tiny Tigers", href: "/members/curriculum/tiny-tigers", description: "Ages 4-6 resources" },
   { label: "Color Belt", href: "/members/curriculum/color-belt", description: "Color belt curriculum" },

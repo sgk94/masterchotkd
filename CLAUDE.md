@@ -4,7 +4,7 @@
 Full business management platform for Master Cho's Taekwondo (Lynnwood, WA), replacing their Foxspin-hosted website ($300/mo) and reducing dependency on Foxspin management ($300/mo). Target: ~$25/mo hosting.
 
 ## Current Status
-- **Phase 1 MVP: Built** — 23 pages, 9 API routes (`/api/contact` live + 8 protected PDF downloads), CI/CD, deployed to Vercel
+- **Phase 1 MVP: Built** — 24 pages, 11 route handlers (`/api/contact`, admin invitations, and 8 protected PDF downloads), CI/CD, deployed to Vercel
 - **Pre-launch hardening done** — CSRF + IP-extraction + outbound-HTML-escape + Resend timeout on `/api/contact`; PDF path-traversal guard + RFC 5987 filename; proxy matcher tightened; error boundaries log
 - **Client bundle reduced** — programs-grid, schedule-grid, weekly-training, students/layout, curriculum index now Server Components; CSS `@keyframes` entrance animations replace IntersectionObserver hooks; `FloatingSectionNav` uses CSS `position: sticky` (no scroll handler)
 - **DRY consolidation** — `src/lib/nav.ts` is single nav source; `<ResourceCard>` extracted; `<EyebrowBadge variant="gold">` replaces 13 inline pills
@@ -119,11 +119,11 @@ Single source: `src/lib/nav.ts` (`PRIMARY_NAV` + `PROGRAM_NAV` + `MEMBER_NAV`). 
 - Competition Team → `/programs/competition-team`
 
 **Members Dropdown (gated):**
-- Signed in: Announcements, Current Cycle, Tiny Tigers, Color Belt, Red/Black Belt, Black Belt Curriculum, Resources
+- Signed in: Announcements, New Members, Current Cycle, Tiny Tigers, Color Belt, Red/Black Belt, Black Belt Curriculum, Resources
 - Signed out: "Member Access Only" + Log In button
 
 ### Members Sub-Navigation (tab bar inside members pages, via `<MembersTabBar>`)
-Announcements → Current Cycle → Tiny Tigers → Color Belt → Red/Black Belt → Black Belt Curriculum → Resources
+Announcements → New Members → Current Cycle → Tiny Tigers → Color Belt → Red/Black Belt → Black Belt Curriculum → Resources
 
 ### Mobile Menu
 About, Programs, Schedule, Reviews, Members, Contact, Special Offer, Sign In
@@ -144,7 +144,8 @@ About, Programs, Schedule, Reviews, Members, Contact, Special Offer, Sign In
 
 ### Protected Pages (9 routes, Clerk auth required)
 Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewrites.
-- `/members` — Hub with announcements (featured cycle card links to `/members/current-cycle`), socials, Spark Member App, quick links (Tiny Tigers / Color Belt / Resources)
+- `/members` — Announcements hub with monthly theme, featured cycle card linking to `/members/current-cycle`, socials, and upcoming updates
+- `/members/new-members` — Lightweight onboarding page with Spark Member App setup and first links (Tiny Tigers / Color Belt / Resources)
 - `/members/current-cycle` — Current training cycle (logic + 2027 fallback in `src/lib/current-cycle.ts`, boundary-tested); side-nav anchors: Overview, Color Belt, Poomsae, Weapons, One-Step, Hand Tech, Breaking, Schedule
 - `/members/curriculum/tiny-tigers` — Belt cards + ResourceCard PDFs
 - `/members/curriculum/black-belt-club` — FloatingSectionNav, midterm + 2nd-degree requirements, 18 combos
@@ -231,7 +232,7 @@ Public-facing URLs use `/members/*`, internally mapped to `/students/*` via rewr
 - `student-resources/` — 8 PDFs served via `serveProtectedPdf()` (see API Routes).
 
 ## Tests
-Vitest (`pnpm vitest run`) + Playwright E2E (`tests/e2e/*`, needs running app). 278 tests / 59 files. Coverage spans contact schema (incl. programs multi-select), `/api/contact` route branches, admin invitation routes, `current-cycle` boundaries (incl. 2027 fallback), component rendering (navbar, hero + poster/`<source media>` assertions, programs-grid, schedule-grid, red-black + black-belt-club pages, members-tab-bar, resource-card), protected PDF route, `next.config` flags, `globals.css` grain mobile gate, image size budget.
+Vitest (`pnpm vitest run`) + Playwright E2E (`tests/e2e/*`, needs running app). 283 tests / 60 files. Coverage spans contact schema (incl. programs multi-select), `/api/contact` route branches, admin invitation routes, `current-cycle` boundaries (incl. 2027 fallback), component rendering (navbar, hero + poster/`<source media>` assertions, programs-grid, schedule-grid, red-black + black-belt-club pages, members-tab-bar, new-members page, resource-card), protected PDF route, `next.config` flags, `globals.css` grain mobile gate, image size budget.
 
 ## To Get Fully Running
 See `LAUNCH-RUNBOOK.md` for step-by-step hand-holding on every item below.

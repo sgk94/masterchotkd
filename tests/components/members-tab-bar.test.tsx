@@ -14,6 +14,9 @@ describe("MembersTabBar", () => {
       screen.getByRole("link", { name: /announcements/i }),
     ).toBeInTheDocument();
     expect(
+      screen.getByRole("link", { name: /new members/i }),
+    ).toBeInTheDocument();
+    expect(
       screen.getByRole("link", { name: /resources/i }),
     ).toBeInTheDocument();
   });
