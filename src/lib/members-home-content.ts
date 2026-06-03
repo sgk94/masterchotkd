@@ -9,6 +9,8 @@ export type MembersHomeAnnouncement = {
   body: string;
   featured?: boolean;
   href?: string;
+  actionLabel?: string;
+  actionText?: string;
 };
 
 export type MembersHomeQuickLink = {
@@ -216,7 +218,9 @@ export function getMembersHomeContent(): MembersHomeContent {
         label: "June 6",
         title: "PNW Championship",
         body:
-          "Highline College Pavilion. Doors open at 8:00 AM.",
+          "Location: Highline College Pavillion. Last Tournament of the season! Registration ends June 3rd. Good luck to our competitors!",
+        href: "https://ktawa.org/index.html#about",
+        actionLabel: "More Info",
       },
       {
         id: "yard-sale-fundraiser",
@@ -224,6 +228,8 @@ export function getMembersHomeContent(): MembersHomeContent {
         title: "Yard Sale Fundraiser",
         body:
           "Korea Trip yard sale fundraiser at Master Cho's Taekwondo from 8:30 AM to 4:00 PM.",
+        href: "/pdfs/yard-sale.pdf",
+        actionLabel: "More Info",
       },
       {
         id: "yard-sale-donations",
@@ -238,6 +244,8 @@ export function getMembersHomeContent(): MembersHomeContent {
         title: "Belt Registration Forms Due",
         body:
           "June testing registration forms are due June 17. Testing dates are June 24 through June 26.",
+        href: "/pdfs/june-slideshow.pdf",
+        actionLabel: "More Info",
       },
       {
         id: "summer-black-belt-ceremony",
@@ -245,13 +253,16 @@ export function getMembersHomeContent(): MembersHomeContent {
         title: "Summer Black Belt Ceremony & Potluck",
         body:
           "Join us on June 27 at Lynndale Park for the summer black belt ceremony and potluck.",
+        actionText: "More info soon",
       },
       {
         id: "edmonds-fourth-of-july",
         label: "July 4",
         title: "Edmonds 4th Of July",
         body:
-          "All students ages 7 and up are invited. Hosted by the City of Edmonds from 9:00 AM to 2:00 PM in Downtown Edmonds. Sign up at the front desk and attend at least 3 practices: Tue 6/16, Fri 6/19, Tue 6/23, Tue 6/30, Thu 7/2, or Fri 7/3.",
+          "All students ages 7 and up are invited! Hosted by the City of Edmonds in Downtown Edmonds. Sign up at the front desk and attend at least 3 practices!",
+        href: "/pdfs/july-4th-parade-info.pdf",
+        actionLabel: "More Info",
       },
     ],
     memberApp: {

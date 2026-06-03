@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 import { getMembersHomeContent } from "@/lib/members-home-content";
 import { createMetadata } from "@/lib/metadata";
@@ -146,15 +147,19 @@ export default function StudentsPage(): React.ReactElement {
               <h3 className="mt-3 font-heading text-2xl leading-tight text-brand-black">{announcement.title}</h3>
               <p className="mt-2 text-base leading-relaxed text-brand-black/68">{announcement.body}</p>
               {announcement.href ? (
-                <Link
+                <Button
+                  variant="primary"
                   href={announcement.href}
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-brand-red"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 !min-w-0 min-h-0 whitespace-nowrap px-2.5 py-1 text-[11px] leading-none"
                 >
-                  Open
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </Link>
+                  {announcement.actionLabel ?? "Open"}
+                </Button>
+              ) : announcement.actionText ? (
+                <p className="mt-4 text-xs font-medium uppercase tracking-[0.08em] text-brand-black/45">
+                  {announcement.actionText}
+                </p>
               ) : null}
             </article>
           ))}
@@ -195,15 +200,19 @@ export default function StudentsPage(): React.ReactElement {
                     </td>
                     <td className="px-5 py-4 text-right align-top">
                       {announcement.href ? (
-                        <Link
+                        <Button
+                          variant="primary"
                           href={announcement.href}
-                          className="inline-flex items-center gap-2 text-sm font-medium text-brand-red transition-transform duration-200 hover:translate-x-1"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="!min-w-0 min-h-0 whitespace-nowrap px-2.5 py-1 text-[11px] leading-none"
                         >
-                          Open
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                          </svg>
-                        </Link>
+                          {announcement.actionLabel ?? "Open"}
+                        </Button>
+                      ) : announcement.actionText ? (
+                        <span className="text-xs font-medium uppercase tracking-[0.08em] text-brand-black/45">
+                          {announcement.actionText}
+                        </span>
                       ) : (
                         <span className="text-sm text-brand-black/30">-</span>
                       )}
