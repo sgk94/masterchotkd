@@ -32,6 +32,29 @@ describe("ColorBeltPage", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders the SJB Level 3 weapon video when expanded", () => {
+    render(<ColorBeltPage />);
+
+    fireEvent.click(screen.getByRole("button", { name: /sjb level 3/i }));
+
+    expect(
+      screen.getByRole("button", { name: /play sjb level 3/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("disables placeholder-only video cards", () => {
+    render(<ColorBeltPage />);
+
+    const bmeLevel1 = screen.getByRole("button", { name: /bme level 1/i });
+    expect(bmeLevel1).toBeDisabled();
+
+    fireEvent.click(bmeLevel1);
+    expect(screen.queryByRole("region")).not.toBeInTheDocument();
+
+    expect(screen.getByRole("button", { name: /white one-step/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /yellow one-step/i })).not.toBeDisabled();
+  });
+
   it("shows written one-step instructions for yellow, purple, and red fallback cards", () => {
     render(<ColorBeltPage />);
 

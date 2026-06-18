@@ -33,6 +33,11 @@ const weaponVideos = [
   { shortWeapon: "SJB", title: "Tiny Tigers Sahng Jeol Bong", weapon: "Sahng Jeol Bong", videoId: "GksjgMXonis" },
 ];
 
+const boardBreakingVideo = {
+  title: "Tiny Tigers Board Breaking Parent & Student Guide",
+  videoId: "5igTpgRpLyA",
+};
+
 const sectionLinks = [
   { href: "#curriculum-overview", label: "Curriculum" },
   { href: "#poomsae-videos", label: "Poomsae" },
@@ -337,7 +342,7 @@ export default function TinyTigersCurriculumPage(): React.ReactElement {
                   <div className="overflow-hidden">
                     <div className="border-t border-brand-taupe/10 px-6 pb-6 pt-5">
                       <div className="grid gap-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:items-start">
-                        <VideoPlaceholder title="Board Breaking" />
+                        <YouTubeFacade videoId={boardBreakingVideo.videoId} title={boardBreakingVideo.title} />
                         <div className="grid gap-2.5 sm:grid-cols-2">
                           {cycles.map((row) => (
                             <div key={row.cycle} className="flex items-center gap-3 rounded-xl bg-brand-page-bg/80 px-4 py-3">

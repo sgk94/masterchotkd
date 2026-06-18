@@ -15,6 +15,8 @@ import { EyebrowBadge } from "@/components/ui/eyebrow-badge";
 export const metadata = createMetadata({ title: "Our Current Cycle Materials" });
 export const revalidate = 3600;
 
+const weaponVideoIds = ["GksjgMXonis", "GAsGhfs7jqU", "8yV4MCnclqA"] as const;
+
 const sectionLinks = [
   { href: "#overview", label: "Overview" },
   { href: "#color-belt", label: "Color Belt" },
@@ -343,7 +345,7 @@ export default function CurrentCyclePage(): React.ReactElement {
                     eyebrow={`${entry.level} · ${entry.beltName}`}
                     title={`${entry.weapon} - Level ${index + 1}`}
                     subtitle={`Cycle ${entry.cycle} weapon training`}
-                    videoId={index === 0 ? "GksjgMXonis" : index === 1 ? "GAsGhfs7jqU" : undefined}
+                    videoId={weaponVideoIds[index]}
                     swatch={<SwatchCircle swatch={entry.swatch} />}
                   />
                 ))}

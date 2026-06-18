@@ -65,7 +65,7 @@ const weaponCards: WeaponCard[] = [
   { level: "Level 3", weapon: "JB", title: "JB Level 3", description: "Jahng Bong training for Level 3." },
   { level: "Level 1", weapon: "SJB", title: "SJB Level 1", description: "Ssahng Jeol Bong training for Level 1.", videoId: "GksjgMXonis" },
   { level: "Level 2", weapon: "SJB", title: "SJB Level 2", description: "Ssahng Jeol Bong training for Level 2.", videoId: "GAsGhfs7jqU" },
-  { level: "Level 3", weapon: "SJB", title: "SJB Level 3", description: "Ssahng Jeol Bong training for Level 3." },
+  { level: "Level 3", weapon: "SJB", title: "SJB Level 3", description: "Ssahng Jeol Bong training for Level 3.", videoId: "8yV4MCnclqA" },
 ];
 
 const sectionLinks = [
@@ -237,8 +237,12 @@ function getOneStepInstructionDetails(entry: CurriculumEntry): React.ReactNode {
   return <p>This card will open the {entry.beltName} one-step video once it is added.</p>;
 }
 
+function hasOneStepInstructions(entry: CurriculumEntry): boolean {
+  return entry.beltName === "Yellow" || entry.beltName === "Purple" || entry.beltName === "Red";
+}
+
 function getOneStepInstructionSubtitle(entry: CurriculumEntry): string {
-  if (entry.beltName === "Yellow" || entry.beltName === "Purple" || entry.beltName === "Red") {
+  if (hasOneStepInstructions(entry)) {
     return "Video coming soon. Open for step-by-step instructions.";
   }
   return entry.oneStep;
@@ -246,16 +250,19 @@ function getOneStepInstructionSubtitle(entry: CurriculumEntry): string {
 
 
 
-function ExpandableCard({ id, eyebrow, title, subtitle, swatch, media, details, expandedLayout = "stack", expandedId, onToggle }: { id: string; eyebrow: string; title: string; subtitle: string; swatch?: React.ReactNode; media?: React.ReactNode; details: React.ReactNode; expandedLayout?: "stack" | "split"; expandedId: string | null; onToggle: (id: string) => void }): React.ReactElement {
-  const isOpen = expandedId === id;
+function ExpandableCard({ id, eyebrow, title, subtitle, swatch, media, details, expandedLayout = "stack", disabled = false, expandedId, onToggle }: { id: string; eyebrow: string; title: string; subtitle: string; swatch?: React.ReactNode; media?: React.ReactNode; details: React.ReactNode; expandedLayout?: "stack" | "split"; disabled?: boolean; expandedId: string | null; onToggle: (id: string) => void }): React.ReactElement {
+  const isOpen = !disabled && expandedId === id;
   return (
     <div className="relative" data-expandable-card>
       <button
         type="button"
-        onClick={() => onToggle(id)}
+        disabled={disabled}
+        onClick={() => {
+          if (!disabled) onToggle(id);
+        }}
         aria-expanded={isOpen}
-        aria-controls={`panel-${id}`}
-        className={`flex w-full items-center justify-between rounded-2xl bg-white px-6 py-5 text-left transition-all duration-300 ${isOpen ? "ring-2 ring-brand-blue/25 shadow-md shadow-brand-taupe/10" : "ring-1 ring-brand-taupe/12 hover:shadow-sm"}`}
+        aria-controls={disabled ? undefined : `panel-${id}`}
+        className={`flex w-full items-center justify-between rounded-2xl bg-white px-6 py-5 text-left transition-all duration-300 ${disabled ? "cursor-not-allowed opacity-50 ring-1 ring-brand-taupe/10" : isOpen ? "ring-2 ring-brand-blue/25 shadow-md shadow-brand-taupe/10" : "ring-1 ring-brand-taupe/12 hover:shadow-sm"}`}
       >
         <div className="flex items-center gap-3">
           {swatch}
@@ -265,9 +272,13 @@ function ExpandableCard({ id, eyebrow, title, subtitle, swatch, media, details, 
             <p className="text-sm text-brand-black/50">{subtitle}</p>
           </div>
         </div>
-        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-cream text-brand-black/30 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
-        </div>
+        {disabled ? (
+          <span className="shrink-0 rounded-full bg-brand-cream px-3 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-brand-black/35">Soon</span>
+        ) : (
+          <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-cream text-brand-black/30 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+          </div>
+        )}
       </button>
       {isOpen && (
         <div id={`panel-${id}`} role="region" className="absolute left-0 right-0 top-full z-20 mt-2 rounded-2xl bg-white p-6 shadow-xl shadow-brand-black/10 ring-1 ring-brand-taupe/12">
@@ -414,9 +425,10 @@ export default function ColorBeltPage(): React.ReactElement {
                   title={card.title}
                   subtitle={card.description}
                   media={card.videoId ? <YouTubeFacade videoId={card.videoId} title={card.title} /> : undefined}
+                  disabled={!card.videoId}
                   expandedId={expandedId}
                   onToggle={handleToggle}
-                  details={<p>{card.videoId ? `Embedded training video for ${card.title}.` : `This card will open the ${card.title} video once it is added.`}</p>}
+                  details={card.videoId ? null : <p>This card will open the {card.title} video once it is added.</p>}
                 />
               ))}
             </div>
@@ -434,7 +446,8 @@ export default function ColorBeltPage(): React.ReactElement {
                   title={`${entry.beltName} One-Step`}
                   subtitle={getOneStepInstructionSubtitle(entry)}
                   swatch={<BeltDot entry={entry} />}
-                  media={entry.beltName === "Yellow" || entry.beltName === "Purple" || entry.beltName === "Red" ? <VideoPlaceholder title="Video Coming Soon" /> : undefined}
+                  media={hasOneStepInstructions(entry) ? <VideoPlaceholder title="Video Coming Soon" /> : undefined}
+                  disabled={!hasOneStepInstructions(entry)}
                   expandedId={expandedId}
                   onToggle={handleToggle}
                   details={getOneStepInstructionDetails(entry)}

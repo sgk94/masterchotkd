@@ -18,6 +18,17 @@ describe("CurrentCyclePage", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders the SJB Level 3 weapon video for Cycle 3", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-05-17T16:00:00-07:00"));
+
+    render(<CurrentCyclePage />);
+
+    expect(
+      screen.getByRole("button", { name: /play sjb - level 3/i }),
+    ).toBeInTheDocument();
+  });
+
   it("shows expandable written instructions when the yellow one-step video is not ready", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-05-17T16:00:00-07:00"));
