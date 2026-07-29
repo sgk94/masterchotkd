@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export const metadata = createMetadata({
   title: "Special Offer",
-  description: "Try 2 weeks of taekwondo classes for just $49 at Master Cho's in Lynnwood, WA. Uniform included, no commitment.",
+  description: "Try 2 weeks of taekwondo classes for just $49 at Master Cho's in Lynnwood, WA. No commitment.",
   path: "/special-offer",
 });
 
@@ -11,7 +11,6 @@ const benefits = [
   "2 classes per week for 2 weeks",
   "No commitment required",
   "All ages welcome",
-  "Uniform included",
 ] as const;
 
 const stripItems = [
@@ -19,7 +18,6 @@ const stripItems = [
   "2 CLASSES / WEEK",
   "NO COMMITMENT",
   "ALL AGES",
-  "UNIFORM INCLUDED",
   "ZERO RISK",
 ] as const;
 
@@ -65,7 +63,7 @@ export default function SpecialOfferPage(): React.ReactElement {
 
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-brand-black/65">
               A zero-risk introduction to Master Cho&rsquo;s Taekwondo. Pick
-              your classes, grab your gear, show up. We handle the rest.
+              your classes, show up, and step onto the mat. We handle the rest.
             </p>
 
             {/* Benefits as numbered data strip — hairline dividers, not a card */}
